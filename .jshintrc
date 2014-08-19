@@ -44,7 +44,7 @@
   "supernew"      : false,
   "validthis"     : false,
 
-  "browser"       : false,
+  "browser"       : true,
   "couch"         : false,
   "devel"         : false,
   "dojo"          : false,
@@ -63,6 +63,8 @@
 
   "maxerr"        : 100,
   "predef"        : [
+    "chrome",
+    "require",
     "describe",
     "it",
     "after",
