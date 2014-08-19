@@ -10,7 +10,10 @@
     "https://api-staging.anyfetch.com/"
   ],
   "browser_action": {
-    "default_icon": "res/logo.png",
+    "default_icon": {
+      "19": "res/logo19.png",
+      "38": "res/logo38.png"
+    },
     "default_popup": "views/popover.html",
     "default_title": "AnyFetch"
   }
