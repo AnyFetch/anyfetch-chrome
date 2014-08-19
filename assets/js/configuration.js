@@ -6,9 +6,9 @@ var configuration = {
    */
   supportedSites: {
     // https://github.com/merlinND
-    'github': /github\.com\/([^\w]+)/i,
+    github: /github\.com\/([^\w]+)/i,
     // https://www.linkedin.com/profile/view?id=255575282
-    'linkedin': /linkedin\.com\/profile\//i
+    linkedin: /linkedin\.com\/profile\//i
   },
 
   /**
@@ -21,8 +21,8 @@ var configuration = {
    * @see https://developer.chrome.com/extensions/content_scripts
    */
   contextPattern: {
-    'github': /.+\(([^\)]+)\)/i,
-    'linkedin': /([^|]+) |/i
+    github: /.+\(([^\)]+)\)/i,
+    linkedin: /([^|]+) |/i
   }
 };
 
