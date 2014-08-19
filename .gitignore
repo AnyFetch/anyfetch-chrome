@@ -1,0 +1,28 @@
+# OS Artifacts
+*.DS_Store
+
+# Vagrant Artifacts
+.vagrant/*
+Berksfile.lock
+
+# NPM Artifacts
+node_modules/*
+npm-debug.log
+libpeerconnection.log
+
+# Foreman Artifacts
+Procfile
+.env
+
+# Docco Artifacts
+docs/*
+
+# IDE Artifacts
+.idea/*
+*.iml
+*.sublime-*
+
+# Jekyll Artifacts
+_site/*
+
+.env
