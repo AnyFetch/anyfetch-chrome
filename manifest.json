@@ -9,6 +9,7 @@
     "https://api.anyfetch.com/",
     "https://api-staging.anyfetch.com/"
   ],
+
   "browser_action": {
     "default_icon": {
       "19": "res/logo19.png",
