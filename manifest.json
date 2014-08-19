@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "AnyFetch",
+  "description": "Find documents related to the current page with AnyFetch.",
+  "version": "0.1",
+
+  "permissions": [
+    "https://api.anyfetch.com/",
+    "https://api-staging.anyfetch.com/"
+  ],
+  "browser_action": {
+    "default_icon": "res/logo.png",
+    "default_popup": "views/popover.html",
+    "default_title": "AnyFetch"
+  }
+}
