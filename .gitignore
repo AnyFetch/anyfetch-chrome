@@ -28,4 +28,7 @@ _site/*
 # Bower
 lib/*
 
+# Compiled JS & CSS
+dist/*
+
 .env

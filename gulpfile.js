@@ -18,3 +18,9 @@ var paths = {
   ignores: ['/lib/**']
 };
 
+// LESS compiling
+gulp.task('less', function() {
+  return gulp.src(paths.less.entryPoint)
+    .pipe(less())
+    .pipe(gulp.dest(paths.target));
+});
