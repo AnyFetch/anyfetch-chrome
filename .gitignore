@@ -25,4 +25,7 @@ docs/*
 # Jekyll Artifacts
 _site/*
 
+# Bower
+lib/*
+
 .env

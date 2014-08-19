@@ -1,0 +1,33 @@
+{
+  "name": "anyfetch-chrome",
+  "version": "0.1.0",
+  "homepage": "https://github.com/AnyFetch/anyfetch-chrome",
+  "authors": [
+    "Merlin Nimier-David <merlin.nimier@gmail.com>"
+  ],
+  "description": "AnyFetch Chrome extension",
+  "main": "dist/main.js",
+  "private": true,
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "anyfetch",
+    "chrome",
+    "extension",
+    "search",
+    "context"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1"
+  }
+}
