@@ -25,4 +25,10 @@ docs/*
 # Jekyll Artifacts
 _site/*
 
+# Bower
+lib/*
+
+# Compiled JS & CSS
+dist/*
+
 .env
