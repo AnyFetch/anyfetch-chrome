@@ -14,6 +14,9 @@ var paths = {
     all: 'assets/less/**/*.less',
     entryPoint: 'assets/less/style.less',
   },
+  templates: {
+    all: 'assets/templates/**'
+  },
   target: 'dist/',
   ignores: ['/lib/**']
 };
@@ -30,7 +33,8 @@ gulp.task('browserify', function() {
   return gulp.src(paths.js.entryPoint)
     .pipe(browserify({
       debug: true,
-      insertGlobals: false
+      insertGlobals: false,
+      transform: ['brfs']
     }))
     .pipe(gulp.dest(paths.target));
 });
@@ -45,6 +49,7 @@ gulp.task('lint', function() {
 // Auto-run tasks on file changes
 gulp.task('watch', function() {
   gulp.watch(paths.js.all, ['lint', 'browserify']);
+  gulp.watch(paths.templates.all, ['browserify']);
   gulp.watch(paths.less.all, ['less']);
 });
 
