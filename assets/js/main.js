@@ -10,8 +10,6 @@ var detectContext = require('./detect-context.js');
 // TODO: consider using a PageAction rather than a BrowserAction (https://developer.chrome.com/extensions/overview)
 // chrome.browserAction.disable(tab.id);
 
-console.log(templates);
-
 chrome.tabs.getSelected(null, function(tab) {
   var resultsDisplay = document.getElementById('results');
   var errorDisplay = document.getElementById('error');

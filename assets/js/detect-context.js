@@ -10,16 +10,14 @@ var config = require('./configuration.js');
  * @return {Boolean|String}
  */
 module.exports = function detectContext(url, title) {
-  var siteRegex, contextRegex;
+  var site;
   for(var siteName in config.supportedSites) {
-    siteRegex = config.supportedSites[siteName];
+    site = config.supportedSites[siteName];
 
-    if(url.match(siteRegex)) {
-      contextRegex = config.contextPattern[siteName];
-
+    if(url.match(site.url)) {
       // We're on a supported site, let's find the query string
-      var matches = title.match(contextRegex);
-      if(contextRegex && matches) {
+      var matches = title.match(site.context);
+      if(matches) {
         return matches[1];
       }
     }

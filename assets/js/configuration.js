@@ -2,27 +2,28 @@
 
 var configuration = {
   /**
-   * site name => URL pattern regexp
-   */
-  supportedSites: {
-    // https://github.com/merlinND
-    github: /github\.com\/([^\/]+)/i,
-    // https://www.linkedin.com/profile/view?id=255575282
-    linkedin: /linkedin\.com\/profile\//i
-  },
-
-  /**
-   * site name => tab title regexp capturing the context query string
+   * site name => {
+   *   url: regexp to determine if we're on a supported page
+   *   context: regexp to extract the context query from the page's title
+   * }
    *
-   * Other way (more complex): match from the HTML
-   * <span class="vcard-fullname" itemprop="name">Merlin Nimier-David</span>
-   * But it's way more complicated:
+   * @note Other way (more complex): match from the HTML. But it seems more complicated:
    * @see http://stackoverflow.com/questions/11684454/getting-the-source-html-of-the-current-page-from-chrome-extension
    * @see https://developer.chrome.com/extensions/content_scripts
    */
-  contextPattern: {
-    github: /.+\(([^\)]+)\)/i,
-    linkedin: /([^|]+) |/i
+  supportedSites: {
+    github: {
+      // https://github.com/Neamar
+      url: /github\.com\/([^\/]+)/i,
+      // Neamar (Matthieu Bacconnier)
+      context: /.+\(([^\)]+)\)/i
+    },
+    linkedin: {
+      // https://www.linkedin.com/profile/view?id=246055775
+      url: /linkedin\.com\/profile\//i,
+      // Matthieu Bacconnier | LinkedIn
+      context: /([^|]+) |/i
+    }
   }
 };
 
