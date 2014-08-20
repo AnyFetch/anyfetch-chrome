@@ -6,7 +6,7 @@ var configuration = {
    */
   supportedSites: {
     // https://github.com/merlinND
-    github: /github\.com\/([^\w]+)/i,
+    github: /github\.com\/([^\/]+)/i,
     // https://www.linkedin.com/profile/view?id=255575282
     linkedin: /linkedin\.com\/profile\//i
   },
