@@ -12,7 +12,7 @@ var documentsEndpoint = '/documents';
  * @param {Function} cb(documents)
  * @return {Array} An array of matching documents
  */
-module.exports = function getDocuments(query, cb) {
+module.exports = function getDocuments(query, successCallback, errorCallback) {
   var url = config.anyFetchUrl + documentsEndpoint;
 
   $.ajax({
@@ -24,10 +24,17 @@ module.exports = function getDocuments(query, cb) {
       'Authorization': 'Bearer ' + config.anyFetchToken
     },
     success: function(res) {
-      cb(res.data);
+      if(res && res.data) {
+        if(res.data.length > 0) {
+          successCallback(res.data);
+        }
+        else {
+          errorCallback('No results for query "' + query + '"');
+        }
+      }
     },
-    error: function(err, status, res) {
-      console.log('ERR', arguments);
+    error: function(res) {
+      errorCallback(res.responseJSON || res.responseText);
     }
   });
 };

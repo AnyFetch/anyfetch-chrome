@@ -1,5 +1,6 @@
 'use strict';
 
+require('../../node_modules/zepto/zepto.min.js');
 var Mustache = require('../../node_modules/mustache/mustache.js');
 
 var config = require('./configuration.js');
@@ -14,53 +15,62 @@ var getDocuments = require('./get-documents.js');
 // TODO: look-ahead (do not wait to be clicked to fetch results)
 // TODO: send updates (~30min delay)
 
-chrome.tabs.getSelected(null, function(tab) {
-  var resultsDisplay = document.getElementById('results');
-  var errorDisplay = document.getElementById('error');
+$(document).ready(function() {
 
-  // ----- Detect context
-  var context = detectContext(tab.url, tab.title);
-  if(context) {
-    // TODO: adjust view when switching back and forth between tabs
-    errorDisplay.innerHTML = '';
+  var resultsDisplay = $('#results');
+  var errorDisplay = $('#error');
 
-    // ----- Retrieve documents
-    getDocuments(context, function(documents) {
-      var count = documents.length;
-      var renderedResults = documents.map(function(doc) {
-        console.log(doc);
-        var snippetTemplate = templates.snippet;
-        if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
-          snippetTemplate = doc.document_type.templates.snippet;
-        }
+  var showError = function(err) {
+    console.log(err);
+    resultsDisplay.html('');
+    errorDisplay.html(err);
+  };
+
+  chrome.tabs.getSelected(null, function(tab) {
+
+    // ----- Detect context
+    var context = detectContext(tab.url, tab.title);
+    if(context) {
+      // TODO: adjust view when switching back and forth between tabs
+      errorDisplay.innerHTML = '';
+
+      // ----- Retrieve documents
+      getDocuments(context, function success(documents) {
+        var count = documents.length;
+        var renderedResults = documents.map(function(doc) {
+          console.log(doc);
+          var snippetTemplate = templates.snippet;
+          if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
+            snippetTemplate = doc.document_type.templates.snippet;
+          }
+          var view = {
+            snippet: Mustache.render(snippetTemplate, doc.data),
+            actionUrl: doc.actions.show
+          };
+          return Mustache.render(templates.listItem, view);
+        });
+
+        // ----- Update view
         var view = {
-          snippet: Mustache.render(snippetTemplate, doc.data),
-          actionUrl: doc.actions.show
+          context: context,
+          results: renderedResults,
+          appUrl: config.anyFetchAppUrl
         };
-        return Mustache.render(templates.listItem, view);
-      });
+        var resultsHtml = Mustache.render(templates.results, view);
+        resultsDisplay.html(resultsHtml);
 
-      // ----- Update view
-      var view = {
-        context: context,
-        results: renderedResults,
-        appUrl: config.anyFetchAppUrl
-      };
-      var resultsHtml = Mustache.render(templates.results, view);
-      resultsDisplay.innerHTML = resultsHtml;
+        // `tabId` restricts the badge count to a specific tab
+        // The badge is reset when the targeted tab is closed
+        chrome.browserAction.setBadgeText({
+          text: '' + count,
+          tabId: tab.id
+        });
 
-      // `tabId` restricts the badge count to a specific tab
-      // The badge is reset when the targeted tab is closed
-      chrome.browserAction.setBadgeText({
-        text: '' + count,
-        tabId: tab.id
-      });
+      }, showError);
+    }
+    else {
+      showError('No context detected.');
+    }
+  });
 
-    });
-  }
-  else {
-    resultsDisplay.innerHTML = '';
-    errorDisplay.innerHTML = 'No context detected';
-    //chrome.browserAction.disable(tab.id);
-  }
 });
