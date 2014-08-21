@@ -12,6 +12,7 @@ var getDocuments = require('./get-documents.js');
 // TODO: consider using a PageAction rather than a BrowserAction (https://developer.chrome.com/extensions/overview)
 // chrome.browserAction.disable(tab.id);
 // TODO: look-ahead (do not wait to be clicked to fetch results)
+// TODO: send updates (~30min delay)
 
 chrome.tabs.getSelected(null, function(tab) {
   var resultsDisplay = document.getElementById('results');
@@ -32,8 +33,11 @@ chrome.tabs.getSelected(null, function(tab) {
         if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
           snippetTemplate = doc.document_type.templates.snippet;
         }
-        // TODO: add action
-        return Mustache.render(snippetTemplate, doc.data);
+        var view = {
+          snippet: Mustache.render(snippetTemplate, doc.data),
+          actionUrl: doc.actions.show
+        };
+        return Mustache.render(templates.listItem, view);
       });
 
       // ----- Update view

@@ -10,5 +10,6 @@ var fs = require('fs');
 
 module.exports = {
   results: fs.readFileSync(__dirname + '/results.html', 'utf8'),
+  listItem: fs.readFileSync(__dirname + '/list-item.html', 'utf8'),
   snippet: fs.readFileSync(__dirname + '/snippet.html', 'utf8')
 };
