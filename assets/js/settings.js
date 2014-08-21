@@ -65,7 +65,13 @@ var saveSettings = function() {
 
 /** Reset all settings do their default value */
 var resetSettings = function() {
-  // TODO
+  chrome.storage.sync.clear(function() {
+    var newValues = {};
+    for(var id in settings) {
+      newValues[id] = '';
+    }
+    displayValues(newValues);
+  });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
