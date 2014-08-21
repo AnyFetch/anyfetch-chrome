@@ -10,7 +10,6 @@ var config = require('./configuration.js');
 config.loadUserSettings(function() {
 
   // TODO: warn the user if no token is set
-  console.log('Done loading settings', config);
 
   var templates = require('../templates/templates.js');
   var detectContext = require('./detect-context.js');
@@ -30,7 +29,7 @@ config.loadUserSettings(function() {
     var errorDisplay = $('#error');
 
     var showError = function(err) {
-      console.log(err);
+      console.error(err);
       resultsDisplay.html('');
       errorDisplay.html(err);
     };
@@ -44,10 +43,9 @@ config.loadUserSettings(function() {
         errorDisplay.innerHTML = '';
 
         // ----- Retrieve documents
-        getDocuments(context, function success(documents) {
-          var count = documents.length;
+        getDocuments(context, function success(documents, totalCount) {
+
           var renderedResults = documents.map(function(doc) {
-            console.log(doc);
             var snippetTemplate = templates.snippet;
             if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
               snippetTemplate = doc.document_type.templates.snippet;
@@ -63,6 +61,9 @@ config.loadUserSettings(function() {
           var view = {
             context: context,
             results: renderedResults,
+
+            totalCount: totalCount,
+            hasMore: (documents.length < totalCount),
             appUrl: config.appUrl
           };
           var resultsHtml = Mustache.render(templates.results, view);
@@ -71,7 +72,7 @@ config.loadUserSettings(function() {
           // `tabId` restricts the badge count to a specific tab
           // The badge is reset when the targeted tab is closed
           chrome.browserAction.setBadgeText({
-            text: '' + count,
+            text: '' + totalCount,
             tabId: tab.id
           });
 

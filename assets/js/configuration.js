@@ -76,7 +76,10 @@ var configuration = {
       // Matthieu Bacconnier | LinkedIn
       context: /([^|]+) |/i
     }
-  }
+  },
+
+  /** Number of results to load for a query */
+  resultsCountLimit: 10
 };
 
 module.exports = configuration;

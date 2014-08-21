@@ -7,5 +7,12 @@
 </ul>
 
 <footer>
-  <a href="https://app.anyfetch.com/#/?q={{context}}" target="_blank">See all</a>
+  <a href="{{appUrl}}/#/?q={{context}}" target="_blank">
+    {{#hasMore}}
+      See all ({{totalCount}} matches)
+    {{/hasMore}}
+    {{^hasMore}}
+      See on AnyFetch app
+    {{/hasMore}}
+  </a>
 </footer>
