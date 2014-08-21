@@ -1,6 +1,6 @@
 'use strict';
 
-var Mustache = require('../../lib/mustache/mustache.js');
+var Mustache = require('../../node_modules/mustache/mustache.js');
 
 var templates = require('../templates/templates.js');
 var detectContext = require('./detect-context.js');
