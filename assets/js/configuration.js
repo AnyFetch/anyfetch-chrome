@@ -1,6 +1,13 @@
 'use strict';
 
 var configuration = {
+  // TODO: read from the extension's settings
+  anyFetchUrl: 'https://api-staging.anyfetch.com',
+  // TODO: read from the extension's settings
+  anyFetchAppUrl: 'https://app-staging.anyfetch.com',
+  // TODO: read from the extension's settings
+  anyFetchToken: 'some_token',
+
   /**
    * site name => {
    *   url: regexp to determine if we're on a supported page
