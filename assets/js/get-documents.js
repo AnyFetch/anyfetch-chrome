@@ -13,7 +13,7 @@ var documentsEndpoint = '/documents';
  * @return {Array} An array of matching documents
  */
 module.exports = function getDocuments(query, successCallback, errorCallback) {
-  var url = config.anyFetchUrl + documentsEndpoint;
+  var url = config.apiUrl + documentsEndpoint;
 
   $.ajax({
     url: url,
@@ -21,7 +21,7 @@ module.exports = function getDocuments(query, successCallback, errorCallback) {
       search: query
     },
     headers: {
-      'Authorization': 'Bearer ' + config.anyFetchToken
+      'Authorization': 'Bearer ' + config.token
     },
     success: function(res) {
       if(res && res.data) {

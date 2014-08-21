@@ -2,27 +2,7 @@
 
 var Mustache = require('../../node_modules/mustache/mustache.js');
 var templates = require('../templates/templates.js');
-
-/**
- * Setting name => default value
- */
-var settings = {
-  token: {
-    placeholder: '64 hexadecimal characters',
-    default: '',
-    label: 'Token'
-  },
-  apiUrl: {
-    placeholder: 'https://api.anyfetch.com',
-    default: 'https://api.anyfetch.com',
-    label: 'AnyFetch API URL'
-  },
-  appUrl: {
-    placeholder: 'https://app.anyfetch.com',
-    default: 'https://app.anyfetch.com',
-    label: 'AnyFetch app URL'
-  }
-};
+var config = require('./configuration.js');
 
 var insertFields = function(descriptors) {
   var inputs = '';
@@ -48,12 +28,12 @@ var displayValues = function(values) {
  */
 var loadSettings = function() {
   // Fill in the overrided values only
-  chrome.storage.sync.get(Object.keys(settings), displayValues);
+  chrome.storage.sync.get(Object.keys(config.settings), displayValues);
 };
 
 var saveSettings = function() {
   var newValues = {};
-  for(var id in settings) {
+  for(var id in config.settings) {
     newValues[id] = document.getElementById(id).value;
   }
 
@@ -67,7 +47,7 @@ var saveSettings = function() {
 var resetSettings = function() {
   chrome.storage.sync.clear(function() {
     var newValues = {};
-    for(var id in settings) {
+    for(var id in config.settings) {
       newValues[id] = '';
     }
     displayValues(newValues);
@@ -75,7 +55,7 @@ var resetSettings = function() {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  insertFields(settings);
+  insertFields(config.settings);
   loadSettings();
   document.getElementById('save').addEventListener('click', saveSettings);
   document.getElementById('reset').addEventListener('click', resetSettings);
