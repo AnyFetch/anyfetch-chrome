@@ -8,11 +8,11 @@ var jshint = require('gulp-jshint');
 var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
-    entryPoint: 'assets/js/main.js'
+    entryPoints: ['assets/js/main.js', 'assets/js/settings.js']
   },
   less: {
     all: 'assets/less/**/*.less',
-    entryPoint: 'assets/less/style.less',
+    entryPoints: ['assets/less/style.less']
   },
   templates: {
     all: 'assets/templates/**'
@@ -23,14 +23,14 @@ var paths = {
 
 // LESS compiling
 gulp.task('less', function() {
-  return gulp.src(paths.less.entryPoint)
+  return gulp.src(paths.less.entryPoints)
     .pipe(less())
     .pipe(gulp.dest(paths.target));
 });
 
 // JS compiling
 gulp.task('browserify', function() {
-  return gulp.src(paths.js.entryPoint)
+  return gulp.src(paths.js.entryPoints)
     .pipe(browserify({
       debug: true,
       insertGlobals: false,

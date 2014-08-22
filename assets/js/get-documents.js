@@ -9,24 +9,26 @@ var documentsEndpoint = '/documents';
  * Request the AnyFetch API for documents matching `query`.
  * Only the first 20 matches will be returned by the API.
  * @param {String} query The search query
- * @param {Function} cb(documents)
- * @return {Array} An array of matching documents
+ * @param {Function} cb(documents, totalCount)
+ *   documents An array of matching documents
+ *   totalCount The total number of matches (may be superior to `documents.length`)
  */
 module.exports = function getDocuments(query, successCallback, errorCallback) {
-  var url = config.anyFetchUrl + documentsEndpoint;
+  var url = config.apiUrl + documentsEndpoint;
 
   $.ajax({
     url: url,
     data: {
-      search: query
+      search: query,
+      limit: config.resultsCountLimit
     },
     headers: {
-      'Authorization': 'Bearer ' + config.anyFetchToken
+      'Authorization': 'Bearer ' + config.token
     },
     success: function(res) {
       if(res && res.data) {
         if(res.data.length > 0) {
-          successCallback(res.data);
+          successCallback(res.data, res.count);
         }
         else {
           errorCallback('No results for query "' + query + '"');
