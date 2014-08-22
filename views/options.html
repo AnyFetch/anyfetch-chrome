@@ -2,17 +2,26 @@
 <html>
   <head>
     <script type="text/javascript" src='../dist/settings.js'></script>
+    <link rel="stylesheet" type="text/css" href="../dist/chrome-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../dist/settings.css">
+
+    <link rel="icon" type="image/png" href="../res/favicon.png">
 
     <title>AnyFetch | Settings</title>
   </head>
-  <body>
-    <h1>AnyFetch | Settings</h1>
+  <body class="chrome-bootstrap">
+    <header>
+      <img id="logo" src="../res/logo38.png">
+      <h1>AnyFetch | Settings</h1>
+    </header>
 
-    <section id="settingsInputs">
+    <section>
+      <div id="settingsInputs"></div>
 
+      <div class="buttons">
+        <button id="save">Save</button>
+        <button id="reset" class="small">Reset to defaults</button>
+      </div>
     </section>
-
-    <button id="save">Save</button>
-    <button id="reset">Reset to defaults</button>
   </body>
 </html>
