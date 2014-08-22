@@ -9,10 +9,8 @@ var insertFields = function(descriptors) {
   for(var id in descriptors) {
     var view = descriptors[id];
     view.id = id;
-    console.log(view);
     inputs += Mustache.render(templates.settingsInput, view);
   }
-  console.log(inputs);
   document.getElementById('settingsInputs').innerHTML = inputs;
 };
 
