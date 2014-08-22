@@ -14,17 +14,17 @@ config.loadUserSettings(function() {
   var templates = require('../templates/templates.js');
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
+  var postUpdateIfNecessary = require('./post-update-if-necessary.js');
 
+  postUpdateIfNecessary();
 
   // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites.
   // chrome.tabs.query(null, cb([tabs]));
   // TODO: consider using a PageAction rather than a BrowserAction (https://developer.chrome.com/extensions/overview)
   // chrome.browserAction.disable(tab.id);
   // TODO: look-ahead (do not wait to be clicked to fetch results)
-  // TODO: send updates (~30min delay)
 
   $(document).ready(function() {
-
     var resultsDisplay = $('#results');
     var errorDisplay = $('#error');
 
