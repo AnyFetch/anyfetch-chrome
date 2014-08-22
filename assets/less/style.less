@@ -1,14 +1,73 @@
+@import "base.less";
+@import "variables.less";
+
+// TODO: reset.css
+html, body {
+  height: 100%;
+}
 body {
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  min-width: 400px;
-  min-height: 100px;
+  min-width: 400px; min-height: 100px;
+  margin: 0; padding: 0;
 
-  background: #32fcf9;
-  background: -moz-linear-gradient(45deg,  #32fcf9 0%, #d325ea 32%, #f72e2e 58%, #eeff00 100%);
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#32fcf9), color-stop(32%,#d325ea), color-stop(58%,#f72e2e), color-stop(100%,#eeff00));
-  background: -webkit-linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
-  background: -o-linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
-  background: -ms-linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
+  background: #d325ea;
   background: linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#32fcf9', endColorstr='#eeff00',GradientType=1 );
+}
+
+#context {
+  text-align: center;
+  margin-bottom: 10px; padding: 5px 0;
+  border-bottom: 1px solid #444;
+
+  &::before {
+    // TODO: loop icon
+    content: '(?) ';
+  }
+}
+
+#results {
+
+  #document-list {
+    list-style: none;
+    margin: 0; padding: 0;
+
+    .document-snippet {
+      max-height: 100px;
+      overflow: ellipsis;
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: @snippetBackgroundColor;
+
+      &:hover {
+        background-color: @highlightBackgroundColor;
+      }
+
+
+    }
+  }
+
+  footer {
+    display: block;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    width: 100%; min-height: 50px;
+
+    background-color: @footerBackgroundColor;
+
+    text-align: center;
+    font-size: 1.3em;
+
+    a {
+      display: block;
+      width: 100%;
+      padding: 0.6em 0;
+
+      &:hover {
+        color: @highlightColor;
+      }
+      &:after {
+        content: '⇗';
+      }
+    }
+  }
 }

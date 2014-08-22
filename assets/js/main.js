@@ -32,15 +32,18 @@ config.loadUserSettings(function() {
       console.error(err);
       resultsDisplay.html('');
       errorDisplay.html(err);
+      errorDisplay.show();
+    };
+    var clearError = function() {
+      errorDisplay.hide();
+      errorDisplay.innerHTML = '';
     };
 
     chrome.tabs.getSelected(null, function(tab) {
-
       // ----- Detect context
       var context = detectContext(tab.url, tab.title);
       if(context) {
         // TODO: adjust view when switching back and forth between tabs
-        errorDisplay.innerHTML = '';
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
