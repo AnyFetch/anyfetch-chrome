@@ -79,7 +79,13 @@ var configuration = {
   },
 
   /** Number of results to load for a query */
-  resultsCountLimit: 10
+  resultsCountLimit: 10,
+
+  /**
+   * Minimum delay between two calls to `POST /company/update`
+   * for a single company (in milliseconds).
+   */
+  companyUpdateDelay: 30 * 60 * 1000
 };
 
 module.exports = configuration;
