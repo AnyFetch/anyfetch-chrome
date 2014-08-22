@@ -9,9 +9,10 @@ var documentsEndpoint = '/documents';
  * Request the AnyFetch API for documents matching `query`.
  * Only the first 20 matches will be returned by the API.
  * @param {String} query The search query
- * @param {Function} cb(documents, totalCount)
+ * @param {Function} successCallback(documents, totalCount)
  *   documents An array of matching documents
  *   totalCount The total number of matches (may be superior to `documents.length`)
+ * @param {Function} errorCallback(err)
  */
 module.exports = function getDocuments(query, successCallback, errorCallback) {
   var url = config.apiUrl + documentsEndpoint;

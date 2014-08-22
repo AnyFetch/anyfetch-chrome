@@ -14,7 +14,9 @@ config.loadUserSettings(function() {
   var templates = require('../templates/templates.js');
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
+  var postCompanyUpdate = require('./post-company-update.js');
 
+  postCompanyUpdate();
 
   // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites.
   // chrome.tabs.query(null, cb([tabs]));
