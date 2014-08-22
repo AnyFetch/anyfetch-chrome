@@ -4,11 +4,13 @@
 // TODO: reset.css
 html, body {
   height: 100%;
+  width: 400px;
+  min-height: 250px; max-height: 600px;
 }
 body {
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  min-width: 400px; min-height: 100px;
   margin: 0; padding: 0;
+  //padding-bottom: @footerHeight;
 
   background: #d325ea;
   background: linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
@@ -20,8 +22,8 @@ body {
   border-bottom: 1px solid #444;
 
   &::before {
-    // TODO: loop icon
-    content: '(?) ';
+    // TODO: magnifying glass icon
+    content: '';
   }
 }
 
@@ -32,7 +34,7 @@ body {
     margin: 0; padding: 0;
 
     .document-snippet {
-      max-height: 100px;
+      min-height: 60px; max-height: 100px;
       overflow: ellipsis;
       margin-bottom: 10px;
       padding: 5px;
@@ -42,15 +44,20 @@ body {
         background-color: @highlightBackgroundColor;
       }
 
-
+      aside {
+        float: left;
+      }
+      img {
+        width: 50px;
+        margin-right: 10px;
+      }
     }
   }
 
   footer {
     display: block;
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    width: 100%; min-height: 50px;
+    position: relative;
+    width: 100%; height: @footerHeight;
 
     background-color: @footerBackgroundColor;
 
