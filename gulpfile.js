@@ -12,7 +12,7 @@ var paths = {
   },
   less: {
     all: 'assets/less/**/*.less',
-    entryPoints: ['assets/less/style.less']
+    entryPoints: ['assets/less/style.less', 'node_modules/chrome-bootstrap/chrome-bootstrap.less']
   },
   templates: {
     all: 'assets/templates/**'
