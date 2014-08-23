@@ -27,8 +27,32 @@ body {
   }
 }
 
-#results {
+#settingsLink {
+  display: block;
+  position: absolute;
+  top: 0; right: 0;
+  width: 30px; height: 30px;
 
+  // TODO: gear icon
+  text-align: center;
+  &::before {
+    content: '(S)';
+    line-height: 30px;
+  }
+  background-color: grey;
+}
+
+#error {
+  width: 100%;
+  margin: 0 0 10px 0; padding: 10px 0;
+  background: @errorBackground;
+
+  a {
+    color: @anyFetchBlue;
+  }
+}
+
+#results {
   #document-list {
     list-style: none;
     margin: 0; padding: 0;
@@ -76,15 +100,5 @@ body {
         content: '⇗';
       }
     }
-  }
-}
-
-#error {
-  width: 100%;
-  margin: 0 0 10px 0; padding: 10px 0;
-  background: @errorBackground;
-
-  a {
-    color: @anyFetchBlue;
   }
 }
