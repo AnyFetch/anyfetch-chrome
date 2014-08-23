@@ -9,14 +9,10 @@ var config = require('./configuration.js');
 // before doing anything else
 config.loadUserSettings(function() {
 
-  // TODO: warn the user if no token is set
-
   var templates = require('../templates/templates.js');
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
   var postUpdateIfNecessary = require('./post-update-if-necessary.js');
-
-  postUpdateIfNecessary();
 
   // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites.
   // chrome.tabs.query(null, cb([tabs]));
@@ -39,6 +35,9 @@ config.loadUserSettings(function() {
       errorDisplay.innerHTML = '';
     };
 
+    // ----- Post update
+    postUpdateIfNecessary();
+
     chrome.tabs.getSelected(null, function(tab) {
       // ----- Detect context
       var context = detectContext(tab.url, tab.title);
@@ -47,6 +46,7 @@ config.loadUserSettings(function() {
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
+          clearError();
 
           var renderedResults = documents.map(function(doc) {
             var snippetTemplate = templates.snippet;
