@@ -10,13 +10,15 @@ config.loadUserSettings(function() {
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
   var view = require('./view.js');
+  var badge = require('./badge.js');
 
-  // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites.
+  // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites
   // chrome.tabs.query(null, cb([tabs]));
   // TODO: consider using a PageAction rather than a BrowserAction (https://developer.chrome.com/extensions/overview)
   // chrome.browserAction.disable(tab.id);
   // TODO: look-ahead (do not wait to be clicked to fetch results)
   // TODO: i18n
+  // TODO: cache results & adjust view when switching back and forth between tabs
 
   $(document).ready(function() {
     if(!config.token) {
@@ -28,20 +30,14 @@ config.loadUserSettings(function() {
     postUpdateIfNecessary();
 
     chrome.tabs.getSelected(null, function(tab) {
-      // ----- Detect context
+      // ----- Detect context for the current tab
       var context = detectContext(tab.url, tab.title);
       if(context) {
-        // TODO: adjust view when switching back and forth between tabs
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
           // ----- Update badge count
-          // `tabId` restricts the badge count to a specific tab
-          // The badge is reset when the targeted tab is closed
-          chrome.browserAction.setBadgeText({
-            text: '' + totalCount,
-            tabId: tab.id
-          });
+          badge.setCount(totalCount, tab.id);
 
           // ----- Update view
           view.showResults(context, documents, totalCount);
