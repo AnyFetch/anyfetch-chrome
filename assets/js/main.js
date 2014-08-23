@@ -8,7 +8,7 @@ var config = require('./configuration.js');
 // We need to wait on `chrome.storage` to load the user's settings
 // before doing anything else
 config.loadUserSettings(function() {
-
+  var errors = require('./errors.js');
   var templates = require('../templates/templates.js');
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
@@ -21,22 +21,8 @@ config.loadUserSettings(function() {
   // TODO: look-ahead (do not wait to be clicked to fetch results)
 
   $(document).ready(function() {
-    var resultsDisplay = $('#results');
-    var errorDisplay = $('#error');
-
-    var showError = function(err) {
-      console.error(err);
-      resultsDisplay.html('');
-      errorDisplay.html(err);
-      errorDisplay.show();
-    };
-    var clearError = function() {
-      errorDisplay.hide();
-      errorDisplay.innerHTML = '';
-    };
-
     if(!config.token) {
-      showError('Please <a href="options.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
+      errors.show('Please <a href="options.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
       return;
     }
 
@@ -51,7 +37,7 @@ config.loadUserSettings(function() {
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
-          clearError();
+          errors.clear();
 
           var renderedResults = documents.map(function(doc) {
             var snippetTemplate = templates.snippet;
@@ -84,10 +70,10 @@ config.loadUserSettings(function() {
             tabId: tab.id
           });
 
-        }, showError);
+        }, errors.show);
       }
       else {
-        showError('No context detected.');
+        errors.show('No context detected.');
       }
     });
 
