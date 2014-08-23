@@ -35,6 +35,11 @@ config.loadUserSettings(function() {
       errorDisplay.innerHTML = '';
     };
 
+    if(!config.token) {
+      showError('Please <a href="options.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
+      return;
+    }
+
     // ----- Post update
     postUpdateIfNecessary();
 
