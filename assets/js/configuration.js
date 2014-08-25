@@ -67,13 +67,13 @@ var configuration = {
   supportedSites: {
     github: {
       // https://github.com/Neamar
-      url: 'github\.com\/([^\/]+)',
+      url: 'github\\.com\/([^\/]+)',
       // Neamar (Matthieu Bacconnier)
       context: /.+\(([^\)]+)\)/i
     },
     linkedin: {
       // https://www.linkedin.com/profile/view?id=246055775
-      url: 'linkedin\.com\/profile\/',
+      url: 'linkedin\\.com\/profile\/',
       // Matthieu Bacconnier | LinkedIn
       context: /([^|]+) |/i
     }
