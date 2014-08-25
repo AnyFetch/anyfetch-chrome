@@ -35,7 +35,8 @@ config.loadUserSettings(function() {
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
           // ----- Update badge count
-          badge.setCount(totalCount, tab.id);
+          // TODO: the badge doesn't exist in PageActions
+          // badge.setCount(totalCount, tab.id);
 
           // ----- Update view
           view.showResults(context, documents, totalCount);

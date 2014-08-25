@@ -7,6 +7,7 @@
 
   "permissions": [
     "declarativeContent",
+    "tabs",
     "storage",
     "https://api.anyfetch.com/",
     "https://api-staging.anyfetch.com/"
