@@ -5,6 +5,12 @@
   "description": "Find documents related to the current page with AnyFetch.",
   "version": "0.1",
 
+  "icons": {
+    "16": "res/logo16.png",
+    "48": "res/logo48.png",
+    "128": "res/logo128.png"
+  },
+
   "permissions": [
     "tabs",
     "storage",
