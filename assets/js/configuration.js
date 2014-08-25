@@ -37,6 +37,12 @@ var supportedSites = {
     url: 'linkedin\\.com\/profile\/',
     // Matthieu Bacconnier | LinkedIn
     context: /([^|]+) |/i
+  },
+  twitter: {
+    // https://twitter.com/r_ricard
+    url: 'twitter\\.com\/([^\/]+)$',
+    // Robin Ricard (r_ricard) on Twitter
+    context: /(.+)\([^\)]+\)/i
   }
 };
 
