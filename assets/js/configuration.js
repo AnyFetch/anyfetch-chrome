@@ -43,6 +43,12 @@ var supportedSites = {
     url: 'twitter\\.com\/([^\/]+)$',
     // Robin Ricard (r_ricard) on Twitter
     context: /(.+)\([^\)]+\)/i
+  },
+  facebook: {
+    // https://www.facebook.com/ricardrobin
+    url: 'facebook\\.com\/([^\/]+)$',
+    // Robin Ricard
+    context: /(.+)/i
   }
 };
 
