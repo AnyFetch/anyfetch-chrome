@@ -24,6 +24,22 @@ var loadUserSettings = function(cb) {
   });
 };
 
+// TODO: more site support
+var supportedSites = {
+  github: {
+    // https://github.com/Neamar
+    url: 'github\\.com\/([^\/]+)',
+    // Neamar (Matthieu Bacconnier)
+    context: /.+\(([^\)]+)\)/i
+  },
+  linkedin: {
+    // https://www.linkedin.com/profile/view?id=246055775
+    url: 'linkedin\\.com\/profile\/',
+    // Matthieu Bacconnier | LinkedIn
+    context: /([^|]+) |/i
+  }
+};
+
 var configuration = {
   /**
    * Setting name => default value
@@ -64,20 +80,7 @@ var configuration = {
    * @see http://stackoverflow.com/questions/11684454/getting-the-source-html-of-the-current-page-from-chrome-extension
    * @see https://developer.chrome.com/extensions/content_scripts
    */
-  supportedSites: {
-    github: {
-      // https://github.com/Neamar
-      url: 'github\\.com\/([^\/]+)',
-      // Neamar (Matthieu Bacconnier)
-      context: /.+\(([^\)]+)\)/i
-    },
-    linkedin: {
-      // https://www.linkedin.com/profile/view?id=246055775
-      url: 'linkedin\\.com\/profile\/',
-      // Matthieu Bacconnier | LinkedIn
-      context: /([^|]+) |/i
-    }
-  },
+  supportedSites: supportedSites,
 
   /** Number of results to load for a query */
   resultsCountLimit: 10,
