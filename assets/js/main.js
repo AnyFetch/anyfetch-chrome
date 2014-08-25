@@ -13,10 +13,7 @@ config.loadUserSettings(function() {
   var getDocuments = require('./get-documents.js');
   var postUpdateIfNecessary = require('./post-update-if-necessary.js');
 
-  // TODO: go through the tabs and disable the BrowserAction for each, except the supported sites
-  // chrome.tabs.query(null, cb([tabs]));
-  // chrome.browserAction.disable(tab.id);
-  // TODO: consider using a PageAction rather than a BrowserAction (https://developer.chrome.com/extensions/overview)
+  // TODO: check out `chrome.declarativeContent.PageStateMatcher`
   // TODO: start loading results without waiting to be clicked (using a content script?)
   // TODO: i18n
   // TODO: cache results & adjust view when switching back and forth between tabs
