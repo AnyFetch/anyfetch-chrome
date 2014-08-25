@@ -57,7 +57,13 @@ var supportedSites = {
     url: 'mail\\.google\\.com\/mail\/',
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
     // TODO: dirty hack, we should make a stricter match on the URL
-    context: /^([^-]+) - .*contact.*/i
+    context: /^(.+) - .*contact.*/i
+  },
+  googlePlus: {
+    // https://plus.google.com/+MatthieuBacconnier/posts
+    url: 'plus\\.google\\.com\/\\+(.+)',
+    // Matthieu Bacconnier - Google+
+    context: /^(.+) - /i
   }
 };
 
