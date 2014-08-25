@@ -25,6 +25,8 @@ var loadUserSettings = function(cb) {
 };
 
 // TODO: more site support
+// TODO: ability to match on URL fragment hash (page#hash)
+// This seems to be a limitation of UrlFilter for now
 var supportedSites = {
   github: {
     // https://github.com/Neamar
@@ -36,19 +38,26 @@ var supportedSites = {
     // https://www.linkedin.com/profile/view?id=246055775
     url: 'linkedin\\.com\/profile\/',
     // Matthieu Bacconnier | LinkedIn
-    context: /([^|]+) |/i
+    context: /^([^|]+) |/i
   },
   twitter: {
     // https://twitter.com/r_ricard
     url: 'twitter\\.com\/([^\/]+)$',
     // Robin Ricard (r_ricard) on Twitter
-    context: /(.+)\([^\)]+\)/i
+    context: /^(.+)\([^\)]+\)/i
   },
   facebook: {
     // https://www.facebook.com/ricardrobin
     url: 'facebook\\.com\/([^\/]+)$',
     // Robin Ricard
-    context: /(.+)/i
+    context: /^(.+)$/i
+  },
+  googleContact: {
+    // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
+    url: 'mail\\.google\\.com\/mail\/',
+    // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
+    // TODO: dirty hack, we should make a stricter match on the URL
+    context: /^([^-]+) - .*contact.*/i
   }
 };
 
