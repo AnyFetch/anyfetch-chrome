@@ -6,15 +6,16 @@ var config = require('./configuration.js');
 // before doing anything else
 config.loadUserSettings(function() {
   var view = require('./view.js');
-  var badge = require('./badge.js');
+  // TODO: the badge doesn't exist in PageActions
+  // var badge = require('./badge.js');
   var errors = require('./errors.js');
 
   var detectContext = require('./detect-context.js');
   var getDocuments = require('./get-documents.js');
   var postUpdateIfNecessary = require('./post-update-if-necessary.js');
 
-  // TODO: check out `chrome.declarativeContent.PageStateMatcher`
-  // TODO: start loading results without waiting to be clicked (using a content script?)
+  // TODO: start loading results without waiting to be clicked
+  // See: https://developer.chrome.com/extensions/declarativeContent#type-RequestContentScript
   // TODO: i18n
   // TODO: cache results & adjust view when switching back and forth between tabs
 
@@ -34,10 +35,6 @@ config.loadUserSettings(function() {
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
-          // ----- Update badge count
-          // TODO: the badge doesn't exist in PageActions
-          // badge.setCount(totalCount, tab.id);
-
           // ----- Update view
           view.showResults(context, documents, totalCount);
         }, errors.show);
