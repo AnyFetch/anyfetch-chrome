@@ -1,3 +1,4 @@
+@import "mixins.less";
 @import "base.less";
 @import "variables.less";
 
@@ -19,9 +20,14 @@ body {
   margin-bottom: 10px; padding: 5px 0;
   border-bottom: 1px solid #444;
 
+  line-height: 24px;
+
+  // Magnifying glass icon
   &::before {
-    // TODO: magnifying glass icon
     content: '';
+    display: inline-block;
+    margin: 3px 5px 0 0;
+    .icon("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABCUlEQVQ4y2NggAIWFhY2IJUHxKeB+DsQ/wTi80BcApTjYMAHmJiYpKCK/+PAV4Fq5LBqhtp8FqrwOiMjox87OzsHCADZXkCxy1C5y6ysrFhdkgZVcJuZmVkIiwV8IBeA1AANzMNmwEGoZBguLwLlfKCWnMQm/xokCbRJBJcBPEAANeArNvmXUAPEcBnAxcXFh8+AvVAvxODxQgjUgOPYJBOgkg+BgSiBJRBBXrsLtWQihgHAKGMBUoehhjwGGQiMLikQhrrqPgMiPfzF6lJo9B1kwJ2Q/hM0BBhQTECJKCBzJxA/h+K9QLHZRBuCJxDLqGFICRZDnhJtAA6X1JBkAJJLPgJxIzCKmQBmPFsyiMlVawAAAABJRU5ErkJggg==", 16px, 16px);
   }
 }
 
@@ -29,15 +35,9 @@ body {
   display: block;
   position: absolute;
   top: 0; right: 0;
-  width: 30px; height: 30px;
-
-  // TODO: gear icon
-  text-align: center;
-  &::before {
-    content: '(S)';
-    line-height: 30px;
-  }
-  background-color: grey;
+  // Gear icon
+  .icon("iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABAUlEQVRIx71WOw7CMAxtI7p07SU4A8dh6hF6l86dK06RgRN04hxMYCMbWZHjNijmSRYh8Sf+xW2ag2jb9g4/LyRa10PXdWdWzkR75YDbXUMIF/7f9/0J9tbUAO7hGfOhDMruKZ+Ekgg0A22pckEb8URheMre3FBURKonFJYqBmSIU8QKBqKVhtkQfIDrCxKuDb5Z1UwVoSX0CS6PwzAE5sU17uGZlnhZXR9gTWulSPEcc+7SmZbk9dsnskO1sMibp6CzbLi4461yW5odEI+VdGcD/wiRb5IZrmUq4NdoBL+nwv2xc3+uyUjxwAGZYwNHenJwZN6KR2YOVYe+4dlPny1vzbU8LXTtLFUAAAAASUVORK5CYII=");
+  margin: 3px 3px 0 0;
 }
 
 #error {
@@ -107,8 +107,12 @@ body {
       &:hover {
         color: @highlightColor;
       }
-      &:after {
-        content: '⇗';
+      // Arrow icon
+      &::before {
+        content: '';
+        display: inline-block;
+        margin-right: 5px;
+        .icon("iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABL0lEQVRIx2NgGAVDFjAxMeWxsrIK0dKOg0D8FGiRGy0t+A/CjIyMU9nZ2bkoNpGNjU0BaFgFEB8Fcn/DLIDim8zMzBZkGczCwmIHNHQrkPkXzVB0/Buorpmbm5uFWIO1gBp2EzAUGz4N0ovTYAEBAWDcMVUBmT/JMByGv4NSGrZw5gO6eicFBsPwY2CcuKAYDk3XZyk1HOjApUCHCqAYDkxmHEDqKIWGvwUGSxjWcAfaOp2A5r9ANc+B+DIQnwTyP6K5ejswBKSwGg601QGLgS+BmhYC5ZKAKcJASEiIA00bLKN9BqrJIJQiYeEOcuVmYOR4CAsLE0rLIAuOAy1XwasKaLsT1PCjQIONCLkEBoBqfXh5eYnKUPOBrq7i4+NjItZwkgDQiy6UmzIKBjMAAP9xjrfFS6OvAAAAAElFTkSuQmCC");
       }
     }
   }
