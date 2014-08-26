@@ -12,15 +12,16 @@ body {
   margin: 0; padding: 0;
 
   background: @backgroundColor;
-  background: linear-gradient(45deg,  #32fcf9 0%,#d325ea 32%,#f72e2e 58%,#eeff00 100%);
 }
 
 #context {
   text-align: center;
-  margin-bottom: 10px; padding: 5px 0;
-  border-bottom: 1px solid #444;
-
-  line-height: 24px;
+  margin-bottom: 10px;
+  padding: 5px 0;
+  background-color: @darkGray;
+  box-shadow: @innerShadow;
+  height: @headerHeight;
+  color: @headerColor;
 
   // Magnifying glass icon
   &::before {
