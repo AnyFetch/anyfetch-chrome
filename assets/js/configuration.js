@@ -30,7 +30,7 @@ var loadUserSettings = function(cb) {
 var supportedSites = {
   github: {
     // https://github.com/Neamar
-    url: 'github\\.com\/([^\/]+)$',
+    url: 'github\\.com\/([^\/]+)\/?$',
     // Neamar (Matthieu Bacconnier)
     context: /.+\(([^\)]+)\)/i
   },
