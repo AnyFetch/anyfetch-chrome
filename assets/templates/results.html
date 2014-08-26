@@ -3,7 +3,10 @@
 <ul id="document-list">
   {{#timeSlices}}
     {{#isActive}}
-      <h2 class="sliceHeader">{{label}}</h2>
+      <fieldset>
+        <legend class="sliceHeader">{{label}}</legend>
+      </fieldset>
+
 
       {{#documents}}
         {{{.}}}

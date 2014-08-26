@@ -1,16 +1,38 @@
 @linkColor: #000;
 @highlightColor: #333;
 @anyFetchBlue: #25AAE1;
+@gray: #DDDDDD;
+@lightGray: #F0F0F0;
+@extraLightGray: #FAFAFA;
+@darkGray: #474747;
+
+@defaultFontSize: 12px;
+
+@navbarDefaultHeight: 50px;
+@navbarDefaultColor: white;
+
 
 // TODO: check this value
 @lineHeight: 1.3em;
 
 // TODO: pick background coor
-@backgroundColor: rgba(200, 200, 200, 0);
-@snippetBackgroundColor: rgba(255, 255, 255, 0.2);
-@highlightBackgroundColor: rgba(255, 255, 255, 0.2);
+@backgroundColor: @lightGray;
 
-@footerHeight: 50px;
-@footerBackgroundColor: #07A;
+@innerShadow: inset 0 -20px 30px -25px #000;
 
-@errorBackground: rgba(255, 0, 0, 0.1);
+@headerHeight: @navbarDefaultHeight;
+@headerBackgroundColor: @darkGray;
+@headerColor: @navbarDefaultColor;
+
+@footerHeight: @navbarDefaultHeight;
+@footerBackgroundColor: @darkGray;
+@footerColor: @navbarDefaultColor;
+
+@snippetBorder: @gray solid 1px;
+@snippetBackgroundColor: @extraLightGray;
+@snippetHighlightBackgroundColor: white;
+@snippetPadding: 5px;
+@snippetBadgeWidth: 20px;
+
+@errorBackground: #A44;
+@errorColor: white;
