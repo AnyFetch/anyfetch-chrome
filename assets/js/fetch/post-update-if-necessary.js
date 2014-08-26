@@ -1,7 +1,7 @@
 'use strict';
 
-require('../../node_modules/zepto/zepto.min.js');
-var config = require('./configuration.js');
+require('zepto/zepto.min.js');
+var config = require('../configuration.js');
 
 var updateEndpoint = '/company/update';
 

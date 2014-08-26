@@ -11,8 +11,9 @@ config.loadUserSettings(function() {
   var errors = require('./errors.js');
 
   var detectContext = require('./detect-context.js');
-  var getDocuments = require('./get-documents.js');
-  var postUpdateIfNecessary = require('./post-update-if-necessary.js');
+  var getDocuments = require('./fetch/get-documents.js');
+  var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
+  var sliceInTime = require('./helpers/slice-in-time.js');
 
   // TODO: start loading results without waiting to be clicked
   // See: https://developer.chrome.com/extensions/declarativeContent#type-RequestContentScript
@@ -35,8 +36,11 @@ config.loadUserSettings(function() {
 
         // ----- Retrieve documents
         getDocuments(context, function success(documents, totalCount) {
+          // ----- Order documents by time periods
+          var timeSlices = sliceInTime(documents);
+
           // ----- Update view
-          view.showResults(context, documents, totalCount);
+          view.showResults(context, timeSlices, totalCount);
         }, errors.show);
       }
       else {
