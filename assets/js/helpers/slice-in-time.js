@@ -9,7 +9,7 @@ var timeSlices = [
   },
   {
     label: 'Yesterday',
-    maxDate: moment().startOf('day').subtract('day', 1)
+    maxDate: moment().startOf('day').subtract(1, 'day')
   },
   {
     label: 'Earlier this Week',
@@ -17,7 +17,7 @@ var timeSlices = [
   },
   {
     label: 'Last Week',
-    maxDate: moment().startOf('week').subtract('week', 1)
+    maxDate: moment().startOf('week').subtract(1, 'week')
   },
   {
     label: 'Earlier this Month',
@@ -25,7 +25,7 @@ var timeSlices = [
   },
   {
     label: 'Last Month',
-    maxDate: moment().startOf('month').subtract('month', 1)
+    maxDate: moment().startOf('month').subtract(1, 'month')
   },
   {
     label: 'Earlier this Year',
@@ -33,7 +33,7 @@ var timeSlices = [
   },
   {
     label: 'Last Year',
-    maxDate: moment().startOf('year').subtract('year', 1)
+    maxDate: moment().startOf('year').subtract(1, 'year')
   },
   {
     label: 'Older'
