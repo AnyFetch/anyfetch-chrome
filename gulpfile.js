@@ -51,7 +51,7 @@ gulp.task('lint', function() {
 });
 
 // Packaging the app as a zip for publishing
-gulp.task('package', function() {
+gulp.task('package', ['lint', 'less', 'browserify'], function() {
   // Read version number from `package.json`
   var npmPackageInfo = require('./package.json');
   // Update Chrome extension version
