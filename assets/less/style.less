@@ -9,6 +9,7 @@ html, body {
 }
 body {
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: @defaultFontSize;
   margin: 0; padding: 0;
 
   background: @backgroundColor;
@@ -58,31 +59,44 @@ body {
     list-style: none;
     margin: 0; padding: 0;
 
-    .sliceHeader {
-      margin-top: 1.5em;
-      font-size: 0.8em;
+    fieldset {
+      border: 0;
+      border-top: 1px solid #dddddd;
       text-align: center;
-      border-bottom: 1px solid grey;
+      margin: 20px 10px -10px 10px;
+    }
+
+    .sliceHeader {
+      width: auto;
+      color: #6D6D6D;
+      padding: 0px 10px;
+      font-size: 14px;
     }
 
     .document-snippet {
       position: relative;
       height: 80px;
       overflow: hidden;
-      margin-bottom: 10px; padding: 5px;
+      margin: 0px 5px 10px 5px;
+      padding: 5px;
       background-color: @snippetBackgroundColor;
+      border: @snippetBorder;
 
-      &:hover {
-        background-color: @highlightBackgroundColor;
+      h1 {
+        max-width: 100%;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-bottom: 5px;
       }
 
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 1 * @lineHeight;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, @backgroundColor 100%);
+      .two-columns {
+        margin-bottom: 3px;
+      }
+
+      &:hover {
+        background-color: @snippetHighlightBackgroundColor;
       }
 
       aside {
