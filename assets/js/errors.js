@@ -1,6 +1,6 @@
 'use strict';
 
-require('../../node_modules/zepto/zepto.min.js');
+require('zepto/zepto.min.js');
 
 var resultsDisplay = $('#results');
 var errorDisplay = $('#error');

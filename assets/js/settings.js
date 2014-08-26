@@ -1,6 +1,6 @@
 'use strict';
 
-var Mustache = require('../../node_modules/mustache/mustache.js');
+var Mustache = require('mustache');
 var templates = require('../templates/templates.js');
 var config = require('./configuration.js');
 
