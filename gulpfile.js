@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var browserify = require('gulp-browserify');
 var jshint = require('gulp-jshint');
+var zip = require('gulp-zip');
 
 var paths = {
   js: {
@@ -18,7 +19,8 @@ var paths = {
     all: 'assets/templates/**'
   },
   target: 'dist/',
-  ignores: ['/lib/**']
+  // Files to be included in the final package
+  package: ['dist/**', 'res/**', 'views/**', 'manifest.json']
 };
 
 // LESS compiling
@@ -44,6 +46,14 @@ gulp.task('lint', function() {
   return gulp.src(paths.js.all)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
+});
+
+// Packaging the app as a zip for publishing
+gulp.task('package', function() {
+  // TODO: bump version number (or read it from `package.json`)
+  return gulp.src(paths.package, { base: '.' })
+    .pipe(zip('anyfetch-chrome.zip'))
+    .pipe(gulp.dest('./'));
 });
 
 // Auto-run tasks on file changes
