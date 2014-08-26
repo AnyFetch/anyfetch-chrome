@@ -29,11 +29,11 @@ var postCompanyUpdate = function() {
     headers: {
       'Authorization': 'Bearer ' + config.token
     },
-    success: function(res) {
+    success: function() {
       console.log('Posted company update');
       setLastUpdateDate(Date.now());
     },
-    error: function(res) {
+    error: function() {
       console.error('Failed to post company update');
     }
   });

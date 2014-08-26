@@ -59,6 +59,7 @@ var configuration = {
    *   context: regexp to extract the context query from the page's title
    * }
    *
+   * @note For some reason, Chrome UrlFilter regexp must be strings.
    * @note Other way (more complex): match from the HTML. But it seems more complicated:
    * @see http://stackoverflow.com/questions/11684454/getting-the-source-html-of-the-current-page-from-chrome-extension
    * @see https://developer.chrome.com/extensions/content_scripts
@@ -66,13 +67,13 @@ var configuration = {
   supportedSites: {
     github: {
       // https://github.com/Neamar
-      url: /github\.com\/([^\/]+)/i,
+      url: 'github\\.com\/([^\/]+)',
       // Neamar (Matthieu Bacconnier)
       context: /.+\(([^\)]+)\)/i
     },
     linkedin: {
       // https://www.linkedin.com/profile/view?id=246055775
-      url: /linkedin\.com\/profile\//i,
+      url: 'linkedin\\.com\/profile\/',
       // Matthieu Bacconnier | LinkedIn
       context: /([^|]+) |/i
     }

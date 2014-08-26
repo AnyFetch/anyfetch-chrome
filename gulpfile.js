@@ -8,7 +8,7 @@ var jshint = require('gulp-jshint');
 var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
-    entryPoints: ['assets/js/main.js', 'assets/js/settings.js']
+    entryPoints: ['assets/js/main.js', 'assets/js/settings.js', 'assets/js/background.js']
   },
   less: {
     all: 'assets/less/**/*.less',
