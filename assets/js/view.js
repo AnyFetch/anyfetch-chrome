@@ -1,7 +1,7 @@
 'use strict';
 
-require('../../node_modules/zepto/zepto.min.js');
-var Mustache = require('../../node_modules/mustache/mustache.js');
+require('zepto/zepto.min.js');
+var Mustache = require('mustache');
 
 var config = require('./configuration.js');
 var templates = require('../templates/templates.js');

@@ -18,7 +18,6 @@ var setLastUpdateDate = function(timestamp) {
 /**
  * Request the AnyFetch API to update the providers
  * of the user's company.
- * @TODO Use the hydrater's document count to display a "still hydrating" warning message
  */
 var postCompanyUpdate = function() {
   var url = config.apiUrl + updateEndpoint;
