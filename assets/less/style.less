@@ -78,9 +78,19 @@ body {
       height: 80px;
       overflow: hidden;
       margin: 0px 5px 10px 5px;
-      padding: 5px;
+      padding: @snippetPadding;
+      padding-left: @snippetPadding + @snippetBadgeWidth;
       background-color: @snippetBackgroundColor;
       border: @snippetBorder;
+
+      .badge-icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: 20px;
+        background-color: red;
+      }
 
       h1 {
         max-width: 100%;
