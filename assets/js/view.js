@@ -21,19 +21,24 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-module.exports.showResults = function(context, documents, totalCount) {
+module.exports.showResults = function(context, timeSlices, totalCount) {
   errors.clear();
 
   // Render each document
-  var renderedResults = documents.map(renderDocument);
+  var count = 0;
+  timeSlices.forEach(function(slice) {
+    slice.documents = slice.documents.map(renderDocument);
+    slice.isActive = (slice.documents.length > 0);
+    count += slice.documents.length;
+  });
 
   // Render the overall results view (containing the list of documents)
   var view = {
     context: context,
-    results: renderedResults,
+    timeSlices: timeSlices,
 
     totalCount: totalCount,
-    hasMore: (documents.length < totalCount),
+    hasMore: (count < totalCount),
 
     appUrl: config.appUrl
   };

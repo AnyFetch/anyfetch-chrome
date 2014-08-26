@@ -1,9 +1,15 @@
 <h1 id="context">{{context}}</h1>
 
 <ul id="document-list">
-  {{#results}}
-    {{{.}}}
-  {{/results}}
+  {{#timeSlices}}
+    {{#isActive}}
+      <h2 class="sliceHeader">{{label}}</h2>
+
+      {{#documents}}
+        {{{.}}}
+      {{/documents}}
+    {{/isActive}}
+  {{/timeSlices}}
 </ul>
 
 <footer>
