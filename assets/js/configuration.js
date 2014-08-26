@@ -64,7 +64,13 @@ var supportedSites = {
     url: 'plus\\.google\\.com\/\\+(.+)',
     // Matthieu Bacconnier - Google+
     context: /^(.+) - /i
-  }
+  },
+  salesForceContact: {
+    // https://emea.salesforce.com/0032000001DoV22
+    url: 'salesforce\\.com\/[a-zA-Z0-9]{15}$',
+    // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
+    context: /^Contact: (.+) \~ /i
+  },
 };
 
 var configuration = {
