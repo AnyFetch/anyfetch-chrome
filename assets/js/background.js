@@ -2,8 +2,6 @@
 
 var config = require('./configuration.js');
 
-console.log('Updating rules');
-
 /**
  *
  * @return {Array} An array of PageStateMatcher
@@ -26,6 +24,8 @@ var getPageMatchingRules = function(descriptors) {
 
 // When the extension is installed or upgraded
 chrome.runtime.onInstalled.addListener(function() {
+  console.log('Updating rules');
+
   // Update the activation rule
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([
