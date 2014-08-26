@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node ./node_modules/.bin/bower install",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
-    "lint": "node ./node_modules/.bin/gulp lint"
+    "lint": "gulp lint"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,8 @@
     "mustache": "^0.8.2",
     "zepto": "0.0.4",
     "moment": "^2.8.2",
-    "normalize.less": "^1.0.0"
+    "normalize.less": "^1.0.0",
+    "gulp-zip": "^2.0.1"
   },
   "devDependencies": {
     "mocha": "^1.21.4",

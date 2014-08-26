@@ -30,5 +30,6 @@ lib/*
 
 # Compiled JS & CSS
 dist/*
+anyfetch-chrome.zip
 
 .env
