@@ -16,7 +16,8 @@ var renderDocument = function(doc) {
   }
   var view = {
     snippet: Mustache.render(snippetTemplate, doc.data),
-    actionUrl: doc.actions.show
+    actionUrl: doc.actions.show,
+    type: doc.document_type.name
   };
   return Mustache.render(templates.listItem, view);
 };

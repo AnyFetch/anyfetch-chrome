@@ -88,8 +88,40 @@ body {
         top: 0px;
         left: 0px;
         bottom: 0px;
-        width: 20px;
-        background-color: red;
+        width: @snippetBadgeWidth;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        &.email {
+          background-color: #CA1400;
+          background-image: url('/res/document_types-icons/email.png');
+        }
+
+        &.image {
+          background-color: #F7931D;
+          background-image: url('/res/document_types-icons/image.png');
+        }
+
+        &.contact {
+          background-color: #8829BF;
+          background-image: url('/res/document_types-icons/contact.png');
+        }
+
+        &.salesforce {
+          background-color: #CDEEFA;
+          background-image: url('/res/document_types-icons/salesforce.png');
+        }
+
+        &.document {
+          background-color: #0084EE;
+          background-image: url('/res/document_types-icons/document.png');
+        }
+
+        &.event {
+          background-color: #BE41A4;
+          background-image: url('/res/document_types-icons/event.png');
+        }
       }
 
       h1 {
