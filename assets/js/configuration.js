@@ -30,7 +30,7 @@ var loadUserSettings = function(cb) {
 var supportedSites = {
   github: {
     // https://github.com/Neamar
-    url: 'github\\.com\/([^\/]+)',
+    url: 'github\\.com\/([^\/]+)$',
     // Neamar (Matthieu Bacconnier)
     context: /.+\(([^\)]+)\)/i
   },
@@ -39,6 +39,12 @@ var supportedSites = {
     url: 'linkedin\\.com\/profile\/',
     // Matthieu Bacconnier | LinkedIn
     context: /^([^|]+) |/i
+  },
+  viadeo: {
+    // http://fr.viadeo.com/fr/profile/arnaud.malon
+    url: 'viadeo\\.com\/.*\/*profile\/',
+    // Arnaud Malon, CIC - France | Viadeo
+    context: /^([^,]+), |/i
   },
   twitter: {
     // https://twitter.com/r_ricard
