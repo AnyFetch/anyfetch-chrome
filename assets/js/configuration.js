@@ -24,6 +24,55 @@ var loadUserSettings = function(cb) {
   });
 };
 
+// TODO: more site support
+// TODO: ability to match on URL fragment hash (page#hash)
+// This seems to be a limitation of UrlFilter for now
+var supportedSites = {
+  github: {
+    // https://github.com/Neamar
+    url: 'github\\.com\/([^\/]+)',
+    // Neamar (Matthieu Bacconnier)
+    context: /.+\(([^\)]+)\)/i
+  },
+  linkedin: {
+    // https://www.linkedin.com/profile/view?id=246055775
+    url: 'linkedin\\.com\/profile\/',
+    // Matthieu Bacconnier | LinkedIn
+    context: /^([^|]+) |/i
+  },
+  twitter: {
+    // https://twitter.com/r_ricard
+    url: 'twitter\\.com\/([^\/]+)$',
+    // Robin Ricard (r_ricard) on Twitter
+    context: /^(.+)\([^\)]+\)/i
+  },
+  facebook: {
+    // https://www.facebook.com/ricardrobin
+    url: 'facebook\\.com\/([^\/]+)$',
+    // Robin Ricard
+    context: /^(.+)$/i
+  },
+  googleContact: {
+    // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
+    url: 'mail\\.google\\.com\/mail\/',
+    // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
+    // TODO: dirty hack, we should make a stricter match on the URL
+    context: /^(.+) - .*contact.*/i
+  },
+  googlePlus: {
+    // https://plus.google.com/+MatthieuBacconnier/posts
+    url: 'plus\\.google\\.com\/\\+(.+)',
+    // Matthieu Bacconnier - Google+
+    context: /^(.+) - /i
+  },
+  salesForceContact: {
+    // https://emea.salesforce.com/0032000001DoV22
+    url: 'salesforce\\.com\/[a-zA-Z0-9]{15}$',
+    // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
+    context: /^Contact: (.+) \~ /i
+  },
+};
+
 var configuration = {
   /**
    * Setting name => default value
@@ -64,20 +113,7 @@ var configuration = {
    * @see http://stackoverflow.com/questions/11684454/getting-the-source-html-of-the-current-page-from-chrome-extension
    * @see https://developer.chrome.com/extensions/content_scripts
    */
-  supportedSites: {
-    github: {
-      // https://github.com/Neamar
-      url: 'github\\.com\/([^\/]+)',
-      // Neamar (Matthieu Bacconnier)
-      context: /.+\(([^\)]+)\)/i
-    },
-    linkedin: {
-      // https://www.linkedin.com/profile/view?id=246055775
-      url: 'linkedin\\.com\/profile\/',
-      // Matthieu Bacconnier | LinkedIn
-      context: /([^|]+) |/i
-    }
-  },
+  supportedSites: supportedSites,
 
   /** Number of results to load for a query */
   resultsCountLimit: 10,
