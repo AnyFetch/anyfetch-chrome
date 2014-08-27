@@ -13,11 +13,9 @@ config.loadUserSettings(function() {
   var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
   var sliceInTime = require('./helpers/slice-in-time.js');
 
-  // TODO: start loading results without waiting to be clicked
-  // See: https://developer.chrome.com/extensions/declarativeContent#type-RequestContentScript
-  // TODO: i18n
-  // TODO: cache results & adjust view when switching back and forth between tabs
+  // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)
+  // TODO: i18n
 
   var main = function() {
     if(!config.token) {
