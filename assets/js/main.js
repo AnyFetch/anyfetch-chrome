@@ -6,8 +6,6 @@ var config = require('./configuration.js');
 // before doing anything else
 config.loadUserSettings(function() {
   var view = require('./view.js');
-  // TODO: the badge doesn't exist in PageActions, can we find an alternative solution?
-  // var badge = require('./badge.js');
   var errors = require('./errors.js');
 
   var detectContext = require('./detect-context.js');
