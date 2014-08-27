@@ -67,9 +67,11 @@ var supportedSites = {
   },
   googlePlus: {
     // https://plus.google.com/+MatthieuBacconnier/posts
-    url: 'plus\\.google\\.com\/\\+(.+)',
+    // https://plus.google.com/116561125336713006886/posts
+    url: 'plus\\.google\\.com\/.*(?:\\+(.+)|(\\d{21,}))',
     // Matthieu Bacconnier - Google+
-    context: /^(.+) - /i
+    // Matthieu Bacconnier (neamar) - Google+
+    context: /^([^\(]+) [\(-]/i
   },
   salesForceContact: {
     // https://emea.salesforce.com/0032000001DoV22
