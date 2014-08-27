@@ -37,7 +37,8 @@
     "zepto": "0.0.4",
     "moment": "^2.8.2",
     "normalize.less": "^1.0.0",
-    "gulp-zip": "^2.0.1"
+    "gulp-zip": "^2.0.1",
+    "chrome-bootstrap": "^1.4.0"
   },
   "devDependencies": {
     "mocha": "^1.21.4",
