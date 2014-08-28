@@ -9,6 +9,8 @@ var insertFields = function(descriptors) {
   for(var id in descriptors) {
     var view = descriptors[id];
     view.id = id;
+    view.value = view.default;
+
     inputs += Mustache.render(templates.settingsInput, view);
   }
   document.getElementById('settingsInputs').innerHTML = inputs;
@@ -16,7 +18,9 @@ var insertFields = function(descriptors) {
 
 var displayValues = function(values) {
   for(var id in values) {
-    document.getElementById(id).value = values[id];
+    if(values[id]) {
+      document.getElementById(id).value = values[id];
+    }
   }
 };
 
@@ -32,7 +36,12 @@ var loadSettings = function() {
 var saveSettings = function() {
   var newValues = {};
   for(var id in config.settings) {
-    newValues[id] = document.getElementById(id).value;
+    var input = document.getElementById(id)
+    newValues[id] = input.value;
+    // Empty fields are filled with their default value
+    if(!input.value) {
+      input.value = config.settings[id].default;
+    }
   }
 
   // Persist settings using the `chrome.storage` API
