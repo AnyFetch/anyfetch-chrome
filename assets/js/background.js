@@ -23,8 +23,13 @@ var getPageMatchingRules = function(descriptors) {
 };
 
 // When the extension is installed or upgraded
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function(details) {
   console.log('Updating rules');
+
+  if(details.reason === "install") {
+    // open first run page on install
+    chrome.tabs.create({url: 'views/first-run.html'});
+  }
 
   // Update the activation rule
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
