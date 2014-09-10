@@ -22,8 +22,8 @@ var paths = {
     all: 'assets/less/**/*.less',
     entryPoints: [
       'assets/less/style.less',
+      'assets/less/popover.less',
       'assets/less/settings.less',
-      'assets/less/first-run.less',
       'node_modules/chrome-bootstrap/chrome-bootstrap.less',
       'node_modules/bootstrap/less/chrome-bootstrap.less',
     ]
