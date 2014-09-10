@@ -11,7 +11,7 @@ var loadUserSettings = function(cb) {
   var config = this;
 
   chrome.storage.sync.get(Object.keys(config.settings), function(userValues) {
-    for(var key in userValues) {
+    for(var key in config.settings) {
       var userValue = userValues[key];
       if(userValue || userValue === false) {
         config[key] = userValue;
