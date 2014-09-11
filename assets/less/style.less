@@ -1,5 +1,7 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+@brand-primary: #26AAE0; // AnyFetch Blue
+
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -74,16 +76,16 @@ header {
     }
   }
 
-  #success {
+  #success, #state {
     text-align: center;
-    img {
-      width: 40%;
-      margin-bottom: 40px;
-      margin-top: 20px;
-    }
   }
 }
 
+img.big-icon {
+  width: 40%;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
 
 ul#providers {
   list-style: none;
