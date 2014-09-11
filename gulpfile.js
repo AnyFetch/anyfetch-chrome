@@ -16,6 +16,7 @@ var paths = {
       'assets/js/settings.js',
       'assets/js/first-run.js',
       'assets/js/add-provider.js',
+      'assets/js/provider-callback.js',
       'assets/js/background.js',
     ]
   },

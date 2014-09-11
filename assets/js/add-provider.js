@@ -25,10 +25,11 @@ async.waterfall([
   function displayMarketPlace(clients, providers, cb) {
     var html = '';
     clients.forEach(function(client) {
+      var return_to = encodeURIComponent(chrome.extension.getURL('views/provider-callback.html') + '?state=success&client=' + client.name);
       var view = {
         name: client.name,
         description: client.description,
-        url: config.managerUrl + '/connect/' + client.id + '?return_to=' + window.location.href,
+        url: config.managerUrl + '/connect/' + client.id + '?return_to=' + return_to,
         tokens: '',
       };
       providers.forEach(function(provider) {

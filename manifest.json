@@ -12,11 +12,12 @@
     "declarativeContent",
     "tabs",
     "storage",
+    "extension",
     "https://api.anyfetch.com/",
     "https://api-staging.anyfetch.com/"
   ],
   "web_accessible_resources": [
-    "views/add-provider.html"
+    "views/provider-callback.html"
   ],
   "page_action": {
     "default_icon": {
