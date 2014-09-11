@@ -24,7 +24,7 @@
       "19": "res/logo19.png",
       "38": "res/logo38.png"
     },
-    "default_popup": "views/popover.html*",
+    "default_popup": "views/popover.html",
     "default_title": "AnyFetch"
   },
   "background": {
