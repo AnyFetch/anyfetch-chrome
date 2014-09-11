@@ -96,6 +96,11 @@ var configuration = {
       default: 'https://api.anyfetch.com',
       label: 'AnyFetch API URL'
     },
+    managerUrl: {
+      placeholder: 'https://manager.anyfetch.com',
+      default: 'https://manager.anyfetch.com',
+      label: 'Anyfetch manager URL'
+    },
     appUrl: {
       placeholder: 'https://app.anyfetch.com',
       default: 'https://app.anyfetch.com',
