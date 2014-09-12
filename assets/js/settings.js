@@ -66,4 +66,5 @@ document.addEventListener('DOMContentLoaded', function() {
   loadSettings();
   document.getElementById('save').addEventListener('click', saveSettings);
   document.getElementById('reset').addEventListener('click', resetSettings);
+  document.getElementById('settings').classList.remove('section-invisible');
 });

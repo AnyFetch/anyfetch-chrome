@@ -40,6 +40,7 @@ async.waterfall([
       html += Mustache.render(templates.provider, view);
     });
     document.getElementById('providers').innerHTML = html;
+    document.getElementById('providers-container').classList.remove('section-invisible');
     cb();
   }
 ]);
