@@ -26,7 +26,8 @@ config.loadUserSettings(function() {
     // ----- Post update
     postUpdateIfNecessary();
 
-    chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      var tab = tabs[0];
       // ----- Detect context for the current tab
       var context = detectContext(tab.url, tab.title);
       if(context) {
