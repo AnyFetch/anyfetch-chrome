@@ -79,6 +79,11 @@ var supportedSites = {
     // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
     context: /^Contact: (.+) \~ /i
   },
+  googleCalendar: {
+    // https://www.google.com/calendar/render
+    // https://www.google.com/calendar/render#
+    url: 'google\\.com\/calendar\/render'
+  }
 };
 
 var configuration = {

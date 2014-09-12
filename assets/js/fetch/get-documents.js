@@ -5,6 +5,28 @@ var config = require('../configuration.js');
 
 var documentsEndpoint = '/documents';
 
+var escapeChars = function(str) {
+  return str
+  .replace('+', '\\+')
+  .replace('-', '\\-')
+  .replace('&', '\\&')
+  .replace('|', '\\|')
+  .replace('!', '\\!')
+  .replace('(', '\\(')
+  .replace(')', '\\)')
+  .replace('{', '\\{')
+  .replace('}', '\\}')
+  .replace('[', '\\[')
+  .replace(']', '\\]')
+  .replace('^', '\\^')
+  .replace('"', '\\"')
+  .replace('~', '\\~')
+  .replace('*', '\\*')
+  .replace('?', '\\?')
+  .replace(':', '\\:')
+  .replace('/', '\\/');
+};
+
 /**
  * Request the AnyFetch API for documents matching `query`.
  * Only the first 20 matches will be returned by the API.
@@ -20,7 +42,7 @@ module.exports = function getDocuments(query, successCallback, errorCallback) {
   $.ajax({
     url: url,
     data: {
-      search: query,
+      search: escapeChars(query),
       limit: config.resultsCountLimit,
       sort: '-creationDate'
     },

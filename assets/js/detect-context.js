@@ -5,24 +5,43 @@ var config = require('./configuration.js');
 /**
  * Return the query string corresponding to the detected context
  * or false if the current website is not supported at this time.
- * @param {String} url URL of the current tab
- * @param {String} title Title of the current tab
+ * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
  * @return {Boolean|String}
  */
-module.exports = function detectContext(url, title) {
+module.exports = function detectContext(tab, cb) {
   var site;
+  var match = false;
   for(var siteName in config.supportedSites) {
     site = config.supportedSites[siteName];
 
-    if(url.match(site.url)) {
-      // We're on a supported site, let's find the query string
-      var matches = title.match(site.context);
-      if(matches) {
-        return matches[1];
+    if(tab.url.match(site.url)) {
+      match = true;
+      if(site.context) {
+        // We're on a supported site, let's find the query string
+        var matches = tab.title.match(site.context);
+        if(matches) {
+          return cb(null, matches[1]);
+        }
       }
+
+      // Search advanced context
+      // Set message listener
+      chrome.runtime.onMessage.addListener(function(request, sender) {
+        console.log(request.context);
+        if(sender.tab.id === tab.id) {
+          return cb(null, request.context);
+        }
+        return cb(null, false);
+      });
+
+      chrome.tabs.executeScript(tab.id, {
+        file: '/dist/advanced_detection.js'
+      });
     }
   }
 
   // No supported site detected
-  return false;
+  if(!match) {
+    cb(null, false);
+  }
 };
