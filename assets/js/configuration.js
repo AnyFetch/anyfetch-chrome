@@ -70,7 +70,7 @@ var supportedSites = {
   },
   googleContact: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
-    url: 'mail\\.google\\.com\/mail\/',
+    url: 'mail.google.com\/mail\/u\/[0-9]+\/#contact\/[0-9a-f]',
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
     // TODO: dirty hack, we should make a stricter match on the URL
     context: {
