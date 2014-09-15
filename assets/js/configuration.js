@@ -32,38 +32,50 @@ var supportedSites = {
     // https://github.com/Neamar
     url: 'github\\.com\/([^\/]+)\/?$',
     // Neamar (Matthieu Bacconnier)
-    context: /.+\(([^\)]+)\)/i
+    context: {
+      title: /.+\(([^\)]+)\)/i
+    }
   },
   linkedin: {
     // https://www.linkedin.com/profile/view?id=246055775
     url: 'linkedin\\.com\/profile\/',
     // Matthieu Bacconnier | LinkedIn
-    context: /^([^|]+) |/i
+    context: {
+      title: /^([^|]+) |/i
+    }
   },
   viadeo: {
     // http://fr.viadeo.com/fr/profile/arnaud.malon
     url: 'viadeo\\.com\/.*\/*profile\/',
     // Arnaud Malon, CIC - France | Viadeo
-    context: /^([^,]+), |/i
+    context: {
+      title: /^([^,]+), |/i
+    }
   },
   twitter: {
     // https://twitter.com/r_ricard
     url: 'twitter\\.com\/([^\/]+)$',
     // Robin Ricard (r_ricard) on Twitter
-    context: /^(.+)\([^\)]+\)/i
+    context: {
+  title:     /^(.+)\([^\)]+\)/i
+}
   },
   facebook: {
     // https://www.facebook.com/ricardrobin
     url: 'facebook\\.com\/([^\/]+)$',
     // Robin Ricard
-    context: /^(.+)$/i
+    context: {
+      title: /^(.+)$/i
+    }
   },
   googleContact: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
     url: 'mail\\.google\\.com\/mail\/',
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
     // TODO: dirty hack, we should make a stricter match on the URL
-    context: /^(.+) - .*contact.*/i
+    context: {
+      title: /^(.+) - .*contact.*/i
+    }
   },
   googlePlus: {
     // https://plus.google.com/+MatthieuBacconnier/posts
@@ -71,18 +83,29 @@ var supportedSites = {
     url: 'plus\\.google\\.com\/.*(?:\\+(.+)|(\\d{21,}))',
     // Matthieu Bacconnier - Google+
     // Matthieu Bacconnier (neamar) - Google+
-    context: /^([^\(]+) [\(-]/i
+    context: {
+      title: /^([^\(]+) [\(-]/i
+    }
   },
   salesForceContact: {
     // https://emea.salesforce.com/0032000001DoV22
     url: 'salesforce\\.com\/[a-zA-Z0-9]{15}$',
     // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
-    context: /^Contact: (.+) \~ /i
+    context: {
+      title: /^Contact: (.+) \~ /i
+    },
   },
   googleCalendar: {
     // https://www.google.com/calendar/render
     // https://www.google.com/calendar/render#
-    url: 'google\\.com\/calendar\/render'
+    url: 'google\\.com\/calendar\/render',
+
+    context: {
+      dom: [
+        'input[title="Event title"]',
+        '.ep-gl-guest'
+      ]
+    }
   }
 };
 

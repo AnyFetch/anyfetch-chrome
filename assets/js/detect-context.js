@@ -16,9 +16,9 @@ module.exports = function detectContext(tab, cb) {
 
     if(tab.url.match(site.url)) {
       match = true;
-      if(site.context) {
+      if(site.context && site.context.title) {
         // We're on a supported site, let's find the query string
-        var matches = tab.title.match(site.context);
+        var matches = tab.title.match(site.context.title);
         if(matches) {
           return cb(null, matches[1]);
         }
@@ -27,7 +27,6 @@ module.exports = function detectContext(tab, cb) {
       // Search advanced context
       // Set message listener
       chrome.runtime.onMessage.addListener(function(request, sender) {
-        console.log(request.context);
         if(sender.tab.id === tab.id) {
           return cb(null, request.context);
         }
