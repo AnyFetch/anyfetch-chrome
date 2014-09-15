@@ -57,8 +57,8 @@ var supportedSites = {
     url: /twitter\.com\/([^\/]+)$/,
     // Robin Ricard (r_ricard) on Twitter
     context: {
-  title:     /^(.+)\([^\)]+\)/i
-}
+      title:     /^(.+)\([^\)]+\)/i
+    }
   },
   facebook: {
     // https://www.facebook.com/ricardrobin
@@ -74,6 +74,24 @@ var supportedSites = {
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
     context: {
       title: /^(.+) - .*contact.*/i
+    }
+  },
+  googleContact: {
+    // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
+    url: /google\.com\/contacts\/u\/[0-9]+\/#contact\/[0-9a-f]+/,
+    // Matthieu Bacconnier - Google Contacts
+    context: {
+      title: /^(.+) - .*contact.*/i
+    }
+  },
+  gmail: {
+    // https://mail.google.com/mail/u/0/#inbox
+    // https://mail.google.com/mail/u/1/#drafts
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/#.+/,
+    context: {
+      dom: [
+        'td > div > div > div > div > h2', // Subject
+      ]
     }
   },
   googlePlus: {
