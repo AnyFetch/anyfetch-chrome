@@ -30,7 +30,7 @@ var loadUserSettings = function(cb) {
 var supportedSites = {
   github: {
     // https://github.com/Neamar
-    url: 'github\\.com\/([^\/]+)\/?$',
+    url: /github\.com\/([^\/]+)\/?$/,
     // Neamar (Matthieu Bacconnier)
     context: {
       title: /.+\(([^\)]+)\)/i
@@ -38,7 +38,7 @@ var supportedSites = {
   },
   linkedin: {
     // https://www.linkedin.com/profile/view?id=246055775
-    url: 'linkedin\\.com\/profile\/',
+    url: /linkedin\.com\/profile\//,
     // Matthieu Bacconnier | LinkedIn
     context: {
       title: /^([^|]+) |/i
@@ -46,7 +46,7 @@ var supportedSites = {
   },
   viadeo: {
     // http://fr.viadeo.com/fr/profile/arnaud.malon
-    url: 'viadeo\\.com\/.*\/*profile\/',
+    url: /viadeo\.com\/.*\/*profile\//,
     // Arnaud Malon, CIC - France | Viadeo
     context: {
       title: /^([^,]+), |/i
@@ -54,7 +54,7 @@ var supportedSites = {
   },
   twitter: {
     // https://twitter.com/r_ricard
-    url: 'twitter\\.com\/([^\/]+)$',
+    url: /twitter\.com\/([^\/]+)$/,
     // Robin Ricard (r_ricard) on Twitter
     context: {
   title:     /^(.+)\([^\)]+\)/i
@@ -62,17 +62,16 @@ var supportedSites = {
   },
   facebook: {
     // https://www.facebook.com/ricardrobin
-    url: 'facebook\\.com\/([^\/]+)$',
+    url: /facebook\.com\/([^\/]+)$/,
     // Robin Ricard
     context: {
       title: /^(.+)$/i
     }
   },
-  googleContact: {
+  googleContactOnGmail: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
-    url: 'mail.google.com\/mail\/u\/[0-9]+\/#contact\/[0-9a-f]',
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/#contact\/[0-9a-f]+/,
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
-    // TODO: dirty hack, we should make a stricter match on the URL
     context: {
       title: /^(.+) - .*contact.*/i
     }
@@ -80,7 +79,7 @@ var supportedSites = {
   googlePlus: {
     // https://plus.google.com/+MatthieuBacconnier/posts
     // https://plus.google.com/116561125336713006886/posts
-    url: 'plus\\.google\\.com\/.*(?:\\+(.+)|(\\d{21,}))',
+    url: /plus\.google\.com\/.*(?:\\+(.+)|(\\d{21,}))/,
     // Matthieu Bacconnier - Google+
     // Matthieu Bacconnier (neamar) - Google+
     context: {
@@ -89,7 +88,7 @@ var supportedSites = {
   },
   salesForceContact: {
     // https://emea.salesforce.com/0032000001DoV22
-    url: 'salesforce\\.com\/[a-zA-Z0-9]{15}$',
+    url: /salesforce\.com\/[a-zA-Z0-9]{15}$/,
     // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
     context: {
       title: /^Contact: (.+) \~ /i
@@ -98,7 +97,7 @@ var supportedSites = {
   googleCalendar: {
     // https://www.google.com/calendar/render
     // https://www.google.com/calendar/render#
-    url: 'google\\.com\/calendar\/render',
+    url: /google\.com\/calendar\/render/,
 
     context: {
       dom: [
