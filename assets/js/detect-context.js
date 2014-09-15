@@ -34,7 +34,7 @@ module.exports = function detectContext(tab, cb) {
       });
 
       chrome.tabs.executeScript(tab.id, {
-        file: '/dist/advanced_detection.js'
+        file: '/dist/advanced-detection.js'
       });
     }
   }
