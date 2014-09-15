@@ -1,5 +1,5 @@
 'use strict';
-/* This file is injected in the page to find a advanced context */
+/* This file is injected in the page to find dom element that match the configuration */
 
 require('zepto/zepto.min.js');
 var supportedSites = require('./configuration.js').supportedSites;
@@ -19,10 +19,10 @@ for (var siteName in supportedSites) {
       var elements = document.querySelectorAll(domMatch);
       elements = turnObjToArray(elements);
       elements.forEach(function(element) {
-        toSearch.push(element.value || element.title || element.innerHTML);
+        toSearch.push(element);
       });
     });
   }
 }
 
-chrome.runtime.sendMessage({context: toSearch.join(' OR ')});
+chrome.runtime.sendMessage({context: toSearch});
