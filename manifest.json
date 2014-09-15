@@ -12,7 +12,6 @@
     "declarativeContent",
     "tabs",
     "storage",
-    "extension",
     "https://api.anyfetch.com/",
     "https://api-staging.anyfetch.com/"
   ],
