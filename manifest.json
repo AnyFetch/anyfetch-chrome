@@ -12,7 +12,6 @@
     "declarativeContent",
     "tabs",
     "storage",
-    "extension",
     "https://*/",
     "http://*/"
   ],
