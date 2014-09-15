@@ -70,7 +70,7 @@ var supportedSites = {
   },
   googleContactOnGmail: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
-    url: /mail\.google\.com\/mail\/u\/[0-9]+\/#contact\/[0-9a-f]+/,
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#contact\/[0-9a-f]+/,
     // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
     context: {
       title: /^(.+) - .*contact.*/i
@@ -78,7 +78,7 @@ var supportedSites = {
   },
   googleContact: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
-    url: /google\.com\/contacts\/u\/[0-9]+\/#contact\/[0-9a-f]+/,
+    url: /google\.com\/contacts\/u\/[0-9]+\/.*#contact\/[0-9a-f]+/,
     // Matthieu Bacconnier - Google Contacts
     context: {
       title: /^(.+) - .*contact.*/i
@@ -87,7 +87,7 @@ var supportedSites = {
   gmail: {
     // https://mail.google.com/mail/u/0/#inbox
     // https://mail.google.com/mail/u/1/#drafts
-    url: /mail\.google\.com\/mail\/u\/[0-9]+\/#.+/,
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#.+/,
     context: {
       dom: [
         'td > div > div > div > div > h2', // Subject
