@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('./configuration.js');
+var async = require('async');
 
 /**
  * Return the query string corresponding to the detected context
@@ -9,38 +10,41 @@ var config = require('./configuration.js');
  * @return {Boolean|String}
  */
 module.exports = function detectContext(tab, cb) {
-  var site;
-  var match = false;
-  for(var siteName in config.supportedSites) {
-    site = config.supportedSites[siteName];
-
-    if(tab.url.match(site.url)) {
-      match = true;
-      if(site.context && site.context.title) {
-        // We're on a supported site, let's find the query string
+  var context = false;
+  async.each(Object.keys(config.supportedSites), function(siteName, cb) {
+    var site = config.supportedSites[siteName];
+    if(tab.url.match(site.url) && site.context) {
+      // We're on a supported site
+      if(site.context.title) {
         var matches = tab.title.match(site.context.title);
         if(matches) {
-          return cb(null, matches[1]);
+          context = matches[1];
+          return cb(null);
         }
+        cb();
       }
+      else if(site.context.dom) {
+        // Search advanced context
+        chrome.runtime.onMessage.addListener(function(request, sender) {
+          // Set message listener
+          if(sender.tab.id === tab.id) {
+            context = request.context;
+          }
+          return cb(null);
+        });
 
-      // Search advanced context
-      // Set message listener
-      chrome.runtime.onMessage.addListener(function(request, sender) {
-        if(sender.tab.id === tab.id) {
-          return cb(null, request.context);
-        }
-        return cb(null, false);
-      });
-
-      chrome.tabs.executeScript(tab.id, {
-        file: '/dist/advanced-detection.js'
-      });
+        chrome.tabs.executeScript(tab.id, {
+          file: '/dist/advanced-detection.js'
+        });
+      }
+      else {
+        cb(null);
+      }
     }
-  }
-
-  // No supported site detected
-  if(!match) {
-    cb(null, false);
-  }
+    else {
+      cb(null);
+    }
+  }, function(err) {
+    cb(err, context);
+  });
 };
