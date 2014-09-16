@@ -1,5 +1,7 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+@brand-primary: #26AAE0; // AnyFetch Blue
+
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -54,12 +56,24 @@ header {
     border-radius: 4px;
   }
 
-  #index {
+  section {
     h1 {
-      margin-top: 10px;
-      margin-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 1.5em;
     }
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .1s linear;
+  }
 
+  section.section-invisible {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s .1s, opacity .1s linear;
+  }
+
+  #index {
     hr {
       margin-top: 30px;
       margin-bottom: 30px;
@@ -71,12 +85,51 @@ header {
     }
   }
 
-  #success {
+  #success, #state {
     text-align: center;
-    img {
-      width: 40%;
-      margin-bottom: 40px;
-      margin-top: 20px;
+  }
+}
+
+img.big-icon {
+  width: 40%;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+ul#providers {
+  list-style: none;
+  padding: 0;
+
+  border-collapse: collapse;
+
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+
+  li {
+    display: table-row;
+    p {
+      display: table-cell;
+      float: left;
+    }
+    a {
+      display: table-cell;
+      float: right;
+    }
+    .tokens {
+      margin-left: 10px;
+      ul {
+        list-style: none;
+        padding: 0;
+        clear: both;
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+
+        li {
+          margin-left: 20px;
+        }
+      }
     }
   }
 }

@@ -15,7 +15,10 @@ var paths = {
       'assets/js/main.js',
       'assets/js/settings.js',
       'assets/js/first-run.js',
+      'assets/js/add-provider.js',
+      'assets/js/provider-callback.js',
       'assets/js/background.js',
+      'assets/js/advanced-detection.js'
     ]
   },
   less: {

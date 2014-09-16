@@ -29,21 +29,26 @@ config.loadUserSettings(function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       var tab = tabs[0];
       // ----- Detect context for the current tab
-      var context = detectContext(tab.url, tab.title);
-      if(context) {
+      detectContext(tab, function(err, context) {
+        if(err) {
+          errors.show(err);
+          return;
+        }
+        if(context) {
 
-        // ----- Retrieve documents
-        getDocuments(context, function success(documents, totalCount) {
-          // ----- Order documents by time periods
-          var timeSlices = sliceInTime(documents);
+          // ----- Retrieve documents
+          getDocuments(context, function success(documents, totalCount) {
+            // ----- Order documents by time periods
+            var timeSlices = sliceInTime(documents);
 
-          // ----- Update view
-          view.showResults(context, timeSlices, totalCount);
-        }, errors.show);
-      }
-      else {
-        errors.show('No context detected.');
-      }
+            // ----- Update view
+            view.showResults(context, timeSlices, totalCount);
+          }, errors.show);
+        }
+        else {
+          errors.show('No context detected.');
+        }
+      });
     });
   };
 
