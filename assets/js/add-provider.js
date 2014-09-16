@@ -42,4 +42,10 @@ async.waterfall([
     document.getElementById('providers-container').classList.remove('section-invisible');
     cb();
   }
-]);
+], function(err) {
+  if(err) {
+    if(err.status === 401) {
+      document.getElementById('error-signin').classList.remove('hidden');
+    }
+  }
+});
