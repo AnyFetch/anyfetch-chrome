@@ -54,7 +54,6 @@ var formListener = function(e) {
 document.addEventListener('DOMContentLoaded', function() {
   async.waterfall([
     function loadSettings(cb) {
-      // Load the user settings to check retrieve the token
       config.loadUserSettings(cb);
     },
     function checkToken(cb) {

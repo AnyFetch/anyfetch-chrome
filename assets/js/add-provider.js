@@ -11,7 +11,6 @@ var config = require('./configuration.js');
 
 async.waterfall([
   function loadSettings(cb) {
-    // Load the user settings to check retrieve the token
     config.loadUserSettings(cb);
   },
   function callGetMarketplace(cb) {
