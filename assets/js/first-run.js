@@ -18,8 +18,14 @@ var displayError = function(err) {
 var showSuccess = function() {
   var success = document.getElementById('success');
   var index = document.getElementById('index');
+  var close = document.getElementById('close-tab');
   index.classList.add('hidden');
   success.classList.remove('hidden');
+  close.addEventListener('click', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.remove(tabs[0].id);
+    });
+  });
 };
 
 var showForm = function() {
