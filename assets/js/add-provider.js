@@ -11,7 +11,6 @@ var config = require('./configuration.js');
 
 async.waterfall([
   function loadSettings(cb) {
-    // Load the user settings to retrieve the token
     config.loadUserSettings(cb);
   },
   function callGetMarketplace(cb) {
@@ -43,4 +42,10 @@ async.waterfall([
     document.getElementById('providers-container').classList.remove('section-invisible');
     cb();
   }
-]);
+], function(err) {
+  if(err) {
+    if(err.status === 401) {
+      document.getElementById('error-signin').classList.remove('hidden');
+    }
+  }
+});
