@@ -18,6 +18,7 @@ var paths = {
       'assets/js/add-provider.js',
       'assets/js/provider-callback.js',
       'assets/js/background.js',
+      'assets/js/advanced-detection.js'
     ]
   },
   less: {

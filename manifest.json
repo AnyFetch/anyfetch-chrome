@@ -12,8 +12,8 @@
     "declarativeContent",
     "tabs",
     "storage",
-    "https://api.anyfetch.com/",
-    "https://api-staging.anyfetch.com/"
+    "https://*/",
+    "http://*/"
   ],
   "web_accessible_resources": [
     "views/provider-callback.html"

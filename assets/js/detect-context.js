@@ -1,28 +1,53 @@
 'use strict';
 
 var config = require('./configuration.js');
+var async = require('async');
 
 /**
  * Return the query string corresponding to the detected context
  * or false if the current website is not supported at this time.
- * @param {String} url URL of the current tab
- * @param {String} title Title of the current tab
+ * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
  * @return {Boolean|String}
  */
-module.exports = function detectContext(url, title) {
-  var site;
-  for(var siteName in config.supportedSites) {
-    site = config.supportedSites[siteName];
+module.exports = function detectContext(tab, cb) {
+  var context = false;
+  async.each(Object.keys(config.supportedSites), function(siteName, cb) {
+    var site = config.supportedSites[siteName];
+    if(tab.url.match(site.url) && site.context) {
+      // We're on a supported site
+      if(site.context.title) {
+        var matches = tab.title.match(site.context.title);
+        if(matches) {
+          context = matches[1];
+          return cb(null);
+        }
+        cb();
+      }
+      else if(site.context.dom) {
+        // Search advanced context
+        chrome.runtime.onMessage.addListener(function(request, sender) {
+          // Set message listener
+          if(sender.tab.id === tab.id) {
+            var values = request.context.map(function(item) {
+              return item.value || item.title || item.innerHTML;
+            });
+            context = values.join(' OR ');
+          }
+          return cb(null);
+        });
 
-    if(url.match(site.url)) {
-      // We're on a supported site, let's find the query string
-      var matches = title.match(site.context);
-      if(matches) {
-        return matches[1];
+        chrome.tabs.executeScript(tab.id, {
+          file: '/dist/advanced-detection.js'
+        });
+      }
+      else {
+        cb(null);
       }
     }
-  }
-
-  // No supported site detected
-  return false;
+    else {
+      cb(null);
+    }
+  }, function(err) {
+    cb(err, context);
+  });
 };

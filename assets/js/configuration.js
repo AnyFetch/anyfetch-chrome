@@ -30,55 +30,100 @@ var loadUserSettings = function(cb) {
 var supportedSites = {
   github: {
     // https://github.com/Neamar
-    url: 'github\\.com\/([^\/]+)\/?$',
+    url: /github\.com\/([^\/]+)\/?$/,
     // Neamar (Matthieu Bacconnier)
-    context: /.+\(([^\)]+)\)/i
+    context: {
+      title: /.+\(([^\)]+)\)/i
+    }
   },
   linkedin: {
     // https://www.linkedin.com/profile/view?id=246055775
-    url: 'linkedin\\.com\/profile\/',
+    url: /linkedin\.com\/profile\//,
     // Matthieu Bacconnier | LinkedIn
-    context: /^([^|]+) |/i
+    context: {
+      title: /^([^|]+) |/i
+    }
   },
   viadeo: {
     // http://fr.viadeo.com/fr/profile/arnaud.malon
-    url: 'viadeo\\.com\/.*\/*profile\/',
+    url: /viadeo\.com\/.*\/*profile\//,
     // Arnaud Malon, CIC - France | Viadeo
-    context: /^([^,]+), |/i
+    context: {
+      title: /^([^,]+), |/i
+    }
   },
   twitter: {
     // https://twitter.com/r_ricard
-    url: 'twitter\\.com\/([^\/]+)$',
+    url: /twitter\.com\/([^\/]+)$/,
     // Robin Ricard (r_ricard) on Twitter
-    context: /^(.+)\([^\)]+\)/i
+    context: {
+      title:     /^(.+)\([^\)]+\)/i
+    }
   },
   facebook: {
     // https://www.facebook.com/ricardrobin
-    url: 'facebook\\.com\/([^\/]+)$',
+    url: /facebook\.com\/([^\/]+)$/,
     // Robin Ricard
-    context: /^(.+)$/i
+    context: {
+      title: /^(.+)$/i
+    }
+  },
+  googleContactOnGmail: {
+    // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#contact\/[0-9a-f]+/,
+    // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
+    context: {
+      title: /^(.+) - .*contact.*/i
+    }
   },
   googleContact: {
     // https://mail.google.com/mail/u/0/#contact/36ac30c08f01eff7
-    url: 'mail\\.google\\.com\/mail\/',
-    // Matthieu Bacconnier - Gestionnaire de contact - [email] - Gmail
-    // TODO: dirty hack, we should make a stricter match on the URL
-    context: /^(.+) - .*contact.*/i
+    url: /google\.com\/contacts\/u\/[0-9]+\/.*#contact\/[0-9a-f]+/,
+    // Matthieu Bacconnier - Google Contacts
+    context: {
+      title: /^(.+) - .*contact.*/i
+    }
+  },
+  gmail: {
+    // https://mail.google.com/mail/u/0/#inbox
+    // https://mail.google.com/mail/u/1/#drafts
+    url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#.+/,
+    context: {
+      dom: [
+        'td > div > div > div > div > h2', // Subject
+      ]
+    }
   },
   googlePlus: {
     // https://plus.google.com/+MatthieuBacconnier/posts
     // https://plus.google.com/116561125336713006886/posts
-    url: 'plus\\.google\\.com\/.*(?:\\+(.+)|(\\d{21,}))',
+    url: /plus\.google\.com\/.*(?:\\+(.+)|(\\d{21,}))/,
     // Matthieu Bacconnier - Google+
     // Matthieu Bacconnier (neamar) - Google+
-    context: /^([^\(]+) [\(-]/i
+    context: {
+      title: /^([^\(]+) [\(-]/i
+    }
   },
   salesForceContact: {
     // https://emea.salesforce.com/0032000001DoV22
-    url: 'salesforce\\.com\/[a-zA-Z0-9]{15}$',
+    url: /salesforce\.com\/[a-zA-Z0-9]{15}$/,
     // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
-    context: /^Contact: (.+) \~ /i
+    context: {
+      title: /^Contact: (.+) \~ /i
+    },
   },
+  googleCalendar: {
+    // https://www.google.com/calendar/render
+    // https://www.google.com/calendar/render#
+    url: /google\.com\/calendar\/render/,
+
+    context: {
+      dom: [
+        'input[title="Event title"]',
+        '.ep-gl-guest'
+      ]
+    }
+  }
 };
 
 var configuration = {
