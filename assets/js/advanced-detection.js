@@ -19,7 +19,7 @@ for (var siteName in supportedSites) {
       var elements = document.querySelectorAll(domMatch);
       elements = turnObjToArray(elements);
       elements.forEach(function(element) {
-        toSearch.push(element);
+        toSearch.push(element.value || element.title || element.innerHTML);
       });
     });
   }

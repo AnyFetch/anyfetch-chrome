@@ -28,10 +28,7 @@ module.exports = function detectContext(tab, cb) {
         chrome.runtime.onMessage.addListener(function(request, sender) {
           // Set message listener
           if(sender.tab.id === tab.id) {
-            var values = request.context.map(function(item) {
-              return item.value || item.title || item.innerHTML;
-            });
-            context = values.join(' OR ');
+            context = request.context.join(' OR ');
           }
           return cb(null);
         });
