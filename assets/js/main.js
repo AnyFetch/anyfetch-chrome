@@ -35,7 +35,7 @@ config.loadUserSettings(function() {
           return;
         }
         if(context) {
-
+          view.showContext(context);
           // ----- Retrieve documents
           getDocuments(context, function success(documents, totalCount) {
             // ----- Order documents by time periods

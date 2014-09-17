@@ -46,3 +46,15 @@ module.exports.showResults = function(context, timeSlices, totalCount) {
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
 };
+
+module.exports.showContext = function(context) {
+  errors.clear();
+
+
+  // Render the view (just the context)
+  var view = {
+    context: context,
+  };
+  var resultsHtml = Mustache.render(templates.results, view);
+  resultsDisplay.html(resultsHtml);
+};
