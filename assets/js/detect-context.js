@@ -1,7 +1,57 @@
 'use strict';
 
 var config = require('./configuration.js');
-var async = require('async');
+
+/**
+ * Return the detected context from the title
+ * or false if the regex fails (expected context from a wrong formatted title)
+ * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
+ * @param {Object} site A site from config.supportedSites
+ * @return {Boolean|String}
+ */
+function getFromTitle(tab, site) {
+  var matches = tab.title.match(site.context.title);
+  if(matches) {
+    return matches[1];
+  }
+  return false;
+}
+
+/**
+ * Inject content script in page, to get the context from the page's DOM
+ * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
+ * @param {Object} site A site from config.supportedSites
+ * @return {Boolean|String}
+ */
+function getFromDOM(tab, site, cb) {
+  var called = false;
+  // We only call the cb once.
+  function callCb(err, context) {
+    if(called) {
+      return;
+    }
+    called = true;
+    cb(err, context);
+  }
+
+  // Set message listener
+  chrome.runtime.onMessage.addListener(function(request, sender) {
+    if(sender.tab.id === tab.id) {
+      callCb(null, request.context.join(' OR '));
+    }
+  });
+
+  // Instore a timeout for the page to answer.
+  setTimeout(function() {
+    callCb(new Error('Cannot get context from content script.'), false);
+  }, 1000);
+
+  // Inject script
+  chrome.tabs.executeScript(tab.id, {
+    file: '/dist/advanced-detection.js'
+  });
+}
+
 
 /**
  * Return the query string corresponding to the detected context
@@ -10,41 +60,29 @@ var async = require('async');
  * @return {Boolean|String}
  */
 module.exports = function detectContext(tab, cb) {
-  var context = false;
-  async.each(Object.keys(config.supportedSites), function(siteName, cb) {
-    var site = config.supportedSites[siteName];
-    if(tab.url.match(site.url) && site.context) {
-      // We're on a supported site
-      if(site.context.title) {
-        var matches = tab.title.match(site.context.title);
-        if(matches) {
-          context = matches[1];
-          return cb(null);
-        }
-        cb();
-      }
-      else if(site.context.dom) {
-        // Search advanced context
-        chrome.runtime.onMessage.addListener(function(request, sender) {
-          // Set message listener
-          if(sender.tab.id === tab.id) {
-            context = request.context.join(' OR ');
-          }
-          return cb(null);
-        });
+  var site;
 
-        chrome.tabs.executeScript(tab.id, {
-          file: '/dist/advanced-detection.js'
-        });
-      }
-      else {
-        cb(null);
-      }
+  // Find the tab's site in config.supportedSites
+  Object.keys(config.supportedSites).forEach(function(siteName) {
+    if(tab.url.match(config.supportedSites[siteName].url)) {
+      site = config.supportedSites[siteName];
+      site.name = siteName;
     }
-    else {
-      cb(null);
-    }
-  }, function(err) {
-    cb(err, context);
   });
+
+  // Not on a supported site, but page action was shown, should never happen
+  if(!site) {
+    return cb(new Error('Cannot find a supported site'), false);
+  }
+  // Not on a supported site
+  if(!site.context) {
+    return cb(new Error('No context for ' + site.name), false);
+  }
+
+  if(site.context.title) {
+    return cb(null, getFromTitle(tab, site));
+  }
+  else if(site.context.dom) {
+    return getFromDOM(tab, site, cb);
+  }
 };
