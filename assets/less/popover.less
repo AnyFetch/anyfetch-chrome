@@ -1,6 +1,8 @@
 @import "base.less";
 @import "variables.less";
 @import "icons.less";
+@import "../../lib/anyfetch-snippet-style/dist/index.css";
+@import "../../lib/anyfetch-snippet-style/dist/compact.css";
 
 html, body {
   height: 100%;
@@ -106,7 +108,7 @@ body {
         background-position: center;
         background-size: contain;
 
-        &.email {
+        &.email, &.email-thread {
           background-color: #CA1400;
           background-image: url('/res/document_types-icons/email.png');
         }
