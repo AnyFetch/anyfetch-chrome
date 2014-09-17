@@ -17,14 +17,14 @@ describe('<Context detection>', function() {
     }
   };
 
-  it('should return false for non-supported sites', function(done) {
+  it('should err for non-supported sites', function(done) {
     var tab = {
     url: 'https://some.random.url/profile/view?id=32133742',
     title: fakeName + ' | My Random Site',
     };
-    detectContext(tab, function(err, context) {
-      should(context).not.be.ok;
-      done(err);
+    detectContext(tab, function(err) {
+      err.should.be.ok;
+      done();
     });
   });
 
