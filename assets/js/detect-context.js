@@ -17,13 +17,45 @@ function getFromTitle(tab, site) {
   return false;
 }
 
-function generateQuery(context) {
+/**
+ * Removes useless things from the matched context
+ */
+function removeGarbage(context) {
   context = context.map(function(item) {
     return item.replace(/<wbr>/gi, '')
       .replace(/<\/wbr>/gi, '')
       .replace(/&nbsp;/gi, '');
   });
+  return context;
+}
+
+/**
+ * Generate query with parenthesis and OR
+ */
+function generateQuery(context) {
+  context = context.map(function(item) {
+    return '(' + item + ')';
+  });
   return context.join(' OR ');
+}
+
+/**
+ * Generate user context without parenthesis
+ */
+function generateUserContext(context) {
+  return context.join(', ');
+}
+
+/**
+ * Remove duplicates
+ */
+function uniqContext(context) {
+  return context.reduce(function(acc, item) {
+    if (acc.indexOf(item) < 0 ) {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
 }
 
 /**
@@ -35,18 +67,20 @@ function generateQuery(context) {
 function getFromDOM(tab, site, cb) {
   var called = false;
   // We only call the cb once.
-  function callCb(err, context) {
+  function callCb(err, context, userContext) {
     if(called) {
       return;
     }
     called = true;
-    cb(err, context);
+    cb(err, context, userContext);
   }
 
   // Set message listener
   chrome.runtime.onMessage.addListener(function(request, sender) {
     if(sender.tab.id === tab.id) {
-      callCb(null, generateQuery(request.context));
+      var context = removeGarbage(request.context);
+      context = uniqContext(context);
+      callCb(null, generateQuery(context), generateUserContext(context));
     }
   });
 
@@ -93,7 +127,8 @@ module.exports = function detectContext(tab, cb) {
   }
 
   if(site.context.title) {
-    return cb(null, getFromTitle(tab, site));
+    var context = getFromTitle(tab, site);
+    return cb(null, context, context);
   }
   else if(site.context.dom) {
     return getFromDOM(tab, site, cb);

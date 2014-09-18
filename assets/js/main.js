@@ -29,20 +29,20 @@ config.loadUserSettings(function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       var tab = tabs[0];
       // ----- Detect context for the current tab
-      detectContext(tab, function(err, context) {
+      detectContext(tab, function(err, context, userContext) {
         if(err) {
           errors.show(err);
           return;
         }
         if(context) {
-          view.showContext(context);
+          view.showContext(userContext);
           // ----- Retrieve documents
           getDocuments(context, function success(documents, totalCount) {
             // ----- Order documents by time periods
             var timeSlices = sliceInTime(documents);
 
             // ----- Update view
-            view.showResults(context, timeSlices, totalCount);
+            view.showResults(userContext, timeSlices, totalCount);
           }, errors.show);
         }
         else {
