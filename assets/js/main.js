@@ -42,7 +42,7 @@ config.loadUserSettings(function() {
             var timeSlices = sliceInTime(documents);
 
             // ----- Update view
-            view.showResults(userContext, timeSlices, totalCount);
+            view.showResults(userContext, context, timeSlices, totalCount);
           }, errors.show);
         }
         else {
