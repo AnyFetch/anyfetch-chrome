@@ -30,9 +30,39 @@ function removeGarbage(context) {
 }
 
 /**
+ * Remove forbidden chars
+ */
+function removeForbiddenChars(context) {
+  context = context.map(function(item) {
+    return item.replace(/\+/g, ' ')
+      .replace(/-/g, ' ')
+      .replace(/&&/g, ' ')
+      .replace(/\||/g, ' ')
+      .replace(/\!/g, ' ')
+      .replace(/\(/g, ' ')
+      .replace(/\)/g, ' ')
+      .replace(/{/g, ' ')
+      .replace(/}/g, ' ')
+      .replace(/\[/g, ' ')
+      .replace(/\]/g, ' ')
+      .replace(/\^/g, ' ')
+      .replace(/"/g, ' ')
+      .replace(/\~/g, ' ')
+      .replace(/\*/g, ' ')
+      .replace(/\?/g, ' ')
+      .replace(/\:/g, ' ')
+      .replace(/\\/g, ' ')
+      .replace(/\//g, ' ');
+  });
+  console.log(context);
+  return context;
+}
+
+/**
  * Generate query with parenthesis and OR
  */
 function generateQuery(context) {
+  context = removeForbiddenChars(context);
   context = context.map(function(item) {
     return '(' + item + ')';
   });
