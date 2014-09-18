@@ -90,7 +90,11 @@ var supportedSites = {
     url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#.+/,
     context: {
       dom: [
-        'td > div > div > div > div > h2', // Subject
+        // Subject
+        {
+          target: 'innerHTML',
+          selector: 'td > div > div > div > div > h2'
+        },
       ]
     }
   },
@@ -119,8 +123,22 @@ var supportedSites = {
 
     context: {
       dom: [
-        'input[title="Event title"]',
-        '.ep-gl-guest'
+        // Title of event
+        [
+          {
+            target: 'innerHTML',
+            selector: '.ui-sch.ep-title > div'
+          },
+          {
+            target: 'value',
+            selector: '.ui-sch.ep-title > input'
+          },
+        ],
+        // Attendies
+        {
+          target: 'title',
+          selector: '.ep-gl-guest'
+        },
       ]
     }
   }

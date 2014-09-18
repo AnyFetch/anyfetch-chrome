@@ -1,8 +1,9 @@
 'use strict';
 /* This file is injected in the page to find dom element that match the configuration */
+/* global site: true */
+
 
 require('zepto/zepto.min.js');
-var supportedSites = require('./configuration.js').supportedSites;
 
 var turnObjToArray = function(obj) {
   return [].map.call(obj, function(element) {
@@ -10,19 +11,39 @@ var turnObjToArray = function(obj) {
   });
 };
 
-var site;
-var toSearch = [];
-for (var siteName in supportedSites) {
-  site = supportedSites[siteName];
-  if(document.location.href.match(site.url)) {
-    site.context.dom.forEach(function(domMatch) {
-      var elements = document.querySelectorAll(domMatch);
-      elements = turnObjToArray(elements);
-      elements.forEach(function(element) {
-        toSearch.push(element.value || element.title || element.innerHTML);
-      });
-    });
-  }
+function getValue(rule) {
+  var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
+  nodes = nodes.map(function(node) {
+    return node[rule.target];
+  });
+  return nodes;
 }
 
-chrome.runtime.sendMessage({context: toSearch});
+function getContext(rules) {
+  var values = [];
+  rules.forEach(function(rule) {
+    var value;
+    if(Array.isArray(rule)) {
+      // If the rule is an array of rule, we keep the first found
+      for(var i = 0; i < rule.length; i += 1) {
+        value = getValue(rule[i]);
+        console.log(value);
+        if(value.length) {
+          values = values.concat(value);
+        }
+        if(value.length) {
+          break;
+        }
+      }
+    }
+    else {
+      value = getValue(rule);
+      if(value.length) {
+        values = values.concat(value);
+      }
+    }
+  });
+  return values;
+}
+
+chrome.runtime.sendMessage({context: getContext(site.context.dom)});

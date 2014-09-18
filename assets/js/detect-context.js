@@ -48,7 +48,11 @@ function getFromDOM(tab, site, cb) {
 
   // Inject script
   chrome.tabs.executeScript(tab.id, {
-    file: '/dist/advanced-detection.js'
+    code: 'var site = ' + JSON.stringify(site)
+  }, function() {
+    chrome.tabs.executeScript(tab.id, {
+      file: '/dist/advanced-detection.js'
+    });
   });
 }
 
