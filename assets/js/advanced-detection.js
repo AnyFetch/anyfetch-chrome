@@ -17,6 +17,9 @@ function getValue(rule) {
     if(rule.target === 'innerHTML') {
       return node.innerHTML;
     }
+    if(rule.target === 'value') {
+      return node.value;
+    }
     return node.getAttribute(rule.target);
   });
   return nodes;
@@ -30,7 +33,6 @@ function getContext(rules) {
       // If the rule is an array of rule, we keep the first found
       for(var i = 0; i < rule.length; i += 1) {
         value = getValue(rule[i]);
-        console.log(value);
         if(value.length) {
           values = values.concat(value);
         }
