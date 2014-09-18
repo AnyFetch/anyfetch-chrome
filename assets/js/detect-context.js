@@ -37,7 +37,7 @@ function removeForbiddenChars(context) {
     return item.replace(/\+/g, ' ')
       .replace(/-/g, ' ')
       .replace(/&&/g, ' ')
-      .replace(/\||/g, ' ')
+      .replace(/\|\|/g, ' ')
       .replace(/\!/g, ' ')
       .replace(/\(/g, ' ')
       .replace(/\)/g, ' ')
@@ -54,7 +54,6 @@ function removeForbiddenChars(context) {
       .replace(/\\/g, ' ')
       .replace(/\//g, ' ');
   });
-  console.log(context);
   return context;
 }
 
