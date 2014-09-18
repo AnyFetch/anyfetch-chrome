@@ -17,6 +17,15 @@ function getFromTitle(tab, site) {
   return false;
 }
 
+function generateQuery(context) {
+  context = context.map(function(item) {
+    return item.replace(/<wbr>/gi, '')
+      .replace(/<\/wbr>/gi, '')
+      .replace(/&nbsp;/gi, '');
+  });
+  return context.join(' OR ');
+}
+
 /**
  * Inject content script in page, to get the context from the page's DOM
  * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
@@ -37,7 +46,7 @@ function getFromDOM(tab, site, cb) {
   // Set message listener
   chrome.runtime.onMessage.addListener(function(request, sender) {
     if(sender.tab.id === tab.id) {
-      callCb(null, request.context.join(' OR '));
+      callCb(null, generateQuery(request.context));
     }
   });
 
