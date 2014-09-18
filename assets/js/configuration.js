@@ -93,8 +93,13 @@ var supportedSites = {
         // Subject
         {
           target: 'innerHTML',
-          selector: 'td > div > div > div > div > h2'
+          selector: 'div[role="main"] table > tr > td > div > div > div > div > h2'
         },
+        // Sender
+        {
+          target: 'name',
+          selector: 'div[role="main"] table > tbody > tr > td > h3 > span[email]'
+        }
       ]
     }
   },

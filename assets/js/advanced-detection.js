@@ -14,7 +14,10 @@ var turnObjToArray = function(obj) {
 function getValue(rule) {
   var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
   nodes = nodes.map(function(node) {
-    return node[rule.target];
+    if(rule.target === 'innerHTML') {
+      return node.innerHTML;
+    }
+    return node.getAttribute(rule.target);
   });
   return nodes;
 }
