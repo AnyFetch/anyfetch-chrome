@@ -7,11 +7,13 @@ var getStatus = require('./fetch/get-status.js');
 var config = require('./configuration.js');
 
 var displayError = function(err) {
-  console.log(err);
-  if(err.status === 401) {
-    // 401, invalid credentials: show failed login error
-    var form = document.getElementById('login-form');
-    form.classList.add('has-error');
+  if(err) {
+    console.log(err);
+    if(err.status === 401) {
+      // 401, invalid credentials: show failed login error
+      var form = document.getElementById('login-form');
+      form.classList.add('has-error');
+    }
   }
 };
 
@@ -49,11 +51,7 @@ var formListener = function(e) {
       showSuccess();
       cb();
     }
-  ], function(err) {
-    if(err.status) {
-      displayError(err);
-    }
-  });
+  ], displayError);
   return false;
 };
 
@@ -63,11 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
       config.loadUserSettings(cb);
     },
     function checkToken(cb) {
+      if(!config.token) {
+        return cb();
+      }
       // Check the stored token, if it is not valid/absent, show the sign-in form, else show success
       getStatus(function(err) {
         if(err) {
+          console.log('Token is invalid');
           return cb();
         }
+        console.log('Token is already valid');
         showSuccess();
       });
     },
