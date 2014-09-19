@@ -5,7 +5,8 @@ var config = require('./configuration.js');
 /**
  * Show pageAction when tab URL matches supportedSites.url regex
  */
-function checkForSupportedSite(tab) {
+function managePageAction(tab) {
+  chrome.pageAction.hide(tab.id);
   var site;
   for(var siteName in config.supportedSites) {
     site = config.supportedSites[siteName];
@@ -14,7 +15,6 @@ function checkForSupportedSite(tab) {
       return;
     }
   }
-  chrome.pageAction.hide(tab.id);
 }
 
 /**
@@ -22,7 +22,7 @@ function checkForSupportedSite(tab) {
  */
 function handleOnUpdated(tabId, changeInfo, tab) {
   if(changeInfo.status === 'loading' && tab.id && tab.url) {
-    checkForSupportedSite(tab);
+    managePageAction(tab);
   }
 }
 
