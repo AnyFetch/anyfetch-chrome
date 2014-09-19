@@ -15,7 +15,7 @@ module.exports = function(context) {
     if(err) {
       return errors.show(err);
     }
-    if(search !== '' && !totalCount) {
+    if(!totalCount) {
       errors.noResultsShow();
     }
     // Order documents by time periods
