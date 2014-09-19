@@ -1,0 +1,202 @@
+@import "base.less";
+@import "variables.less";
+@import "icons.less";
+@import (inline) "../../lib/anyfetch-snippet-style/dist/index.css";
+@import (inline) "../../lib/anyfetch-snippet-style/dist/compact.css";
+
+html, body {
+  height: 100%;
+  width: 400px;
+  min-height: 250px; max-height: 600px;
+}
+body {
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: @defaultFontSize;
+  margin: 0; padding: 0;
+
+  background: @backgroundColor;
+}
+
+.bg-icon {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -100;
+  max-height: 200px;
+  max-width: 200px;
+}
+
+#context {
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 15px 0;
+  background-color: @darkGray;
+  box-shadow: @innerShadow;
+  color: @headerColor;
+  font-weight: 400;
+
+  // Icon
+  &::before {
+    content: '';
+    display: inline-block;
+    margin: 3px 5px 0 0;
+    .icon(@magnifying-glass-icon, 16px, 16px);
+  }
+}
+
+#settingsLink {
+  display: block;
+  position: absolute;
+  top: 10px; right: 10px;
+  .icon(@gear-icon);
+  margin: 3px 3px 0 0;
+}
+
+#error {
+  width: 100%;
+  padding: 17px;
+  background: @errorBackground;
+  color: @errorColor;
+  margin: 0px;
+  font-weight: 500;
+
+  a {
+    color: @errorColor;
+    text-decoration: underline;
+  }
+}
+
+#results {
+  padding-bottom: @footerHeight;
+
+  #document-list {
+    list-style: none;
+    margin: 0; padding: 0;
+
+    fieldset {
+      border: 0;
+      border-top: 1px solid #dddddd;
+      text-align: center;
+      margin: 20px 10px -5px 10px;
+    }
+
+    .sliceHeader {
+      width: auto;
+      color: #6D6D6D;
+      padding: 0px 10px;
+      font-size: 14px;
+    }
+
+    .document-snippet {
+      position: relative;
+      height: 80px;
+      overflow: hidden;
+      margin: 0px 5px 10px 5px;
+      padding: @snippetPadding;
+      padding-left: @snippetPadding + @snippetBadgeWidth;
+      background-color: @snippetBackgroundColor;
+      border: @snippetBorder;
+      font-weight: 300;
+
+      .badge-icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: @snippetBadgeWidth;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        &.email, &.email-thread {
+          background-color: #CA1400;
+          background-image: url('/res/document_types-icons/email.png');
+        }
+
+        &.image {
+          background-color: #F7931D;
+          background-image: url('/res/document_types-icons/image.png');
+        }
+
+        &.contact {
+          background-color: #8829BF;
+          background-image: url('/res/document_types-icons/contact.png');
+        }
+
+        &.salesforce {
+          background-color: #CDEEFA;
+          background-image: url('/res/document_types-icons/salesforce.png');
+        }
+
+        &.document {
+          background-color: #0084EE;
+          background-image: url('/res/document_types-icons/document.png');
+        }
+
+        &.event {
+          background-color: #BE41A4;
+          background-image: url('/res/document_types-icons/event.png');
+        }
+      }
+
+      h1, h4 {
+        max-width: 100%;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-bottom: 2px;
+        font-weight: 400;
+      }
+
+      .two-columns {
+        margin-bottom: 3px;
+      }
+
+      &:hover {
+        background-color: @snippetHighlightBackgroundColor;
+      }
+
+      aside {
+        float: left;
+      }
+      img {
+        height: 80px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  footer {
+    display: block;
+    width: 100%; height: @footerHeight;
+    color: @footerColor;
+
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+
+    background-color: @footerBackgroundColor;
+
+    text-align: center;
+    font-size: 1.3em;
+
+    a {
+      display: block;
+      width: 100%;
+      padding: 0.6em 0;
+      color: @footerColor;
+
+      &:hover {
+        color: @highlightColor;
+      }
+
+      // Icon
+      &::before {
+        content: '';
+        display: inline-block;
+        margin-right: 5px;
+        .icon(@arrow-icon);
+      }
+    }
+  }
+}

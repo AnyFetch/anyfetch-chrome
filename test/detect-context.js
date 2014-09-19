@@ -17,18 +17,25 @@ describe('<Context detection>', function() {
     }
   };
 
-  it('should return false for non-supported sites', function() {
-    var url = 'https://some.random.url/profile/view?id=32133742';
-    var title = fakeName + ' | My Random Site';
-    should(detectContext(url, title)).not.be.ok;
+  it('should err for non-supported sites', function(done) {
+    var tab = {
+    url: 'https://some.random.url/profile/view?id=32133742',
+    title: fakeName + ' | My Random Site',
+    };
+    detectContext(tab, function(err) {
+      err.should.be.ok;
+      done();
+    });
   });
 
   describe('should extract context query string on supported sites', function() {
     for(var siteName in testData) {
-      var site = testData[siteName];
-      it(siteName, function() {
-        var context = detectContext(site.url, site.title);
-        should(context).be.ok.and.equal(fakeName);
+      var tab = testData[siteName];
+      it(siteName, function(done) {
+        detectContext(tab, function(err, context) {
+          should(context).be.ok.and.equal(fakeName);
+          done(err);
+        });
       });
     }
   });

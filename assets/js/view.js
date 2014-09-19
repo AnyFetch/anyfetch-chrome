@@ -22,7 +22,7 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-module.exports.showResults = function(context, timeSlices, totalCount) {
+module.exports.showResults = function(userContext, context, timeSlices, totalCount) {
   errors.clear();
 
   // Render each document
@@ -36,12 +36,25 @@ module.exports.showResults = function(context, timeSlices, totalCount) {
   // Render the overall results view (containing the list of documents)
   var view = {
     context: context,
+    userContext: userContext,
     timeSlices: timeSlices,
 
     totalCount: totalCount,
     hasMore: (count < totalCount),
 
     appUrl: config.appUrl
+  };
+  var resultsHtml = Mustache.render(templates.results, view);
+  resultsDisplay.html(resultsHtml);
+};
+
+module.exports.showContext = function(userContext) {
+  errors.clear();
+
+
+  // Render the view (just the userContext)
+  var view = {
+    userContext: userContext,
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);

@@ -36,7 +36,7 @@ var loadSettings = function() {
 var saveSettings = function() {
   var newValues = {};
   for(var id in config.settings) {
-    var input = document.getElementById(id)
+    var input = document.getElementById(id);
     newValues[id] = input.value;
     // Empty fields are filled with their default value
     if(!input.value) {
@@ -66,4 +66,5 @@ document.addEventListener('DOMContentLoaded', function() {
   loadSettings();
   document.getElementById('save').addEventListener('click', saveSettings);
   document.getElementById('reset').addEventListener('click', resetSettings);
+  document.getElementById('settings').classList.remove('section-invisible');
 });

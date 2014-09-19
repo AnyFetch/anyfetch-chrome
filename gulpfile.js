@@ -11,11 +11,25 @@ var zip = require('gulp-zip');
 var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
-    entryPoints: ['assets/js/main.js', 'assets/js/settings.js', 'assets/js/background.js']
+    entryPoints: [
+      'assets/js/main.js',
+      'assets/js/settings.js',
+      'assets/js/first-run.js',
+      'assets/js/add-provider.js',
+      'assets/js/provider-callback.js',
+      'assets/js/background.js',
+      'assets/js/advanced-detection.js'
+    ]
   },
   less: {
     all: 'assets/less/**/*.less',
-    entryPoints: ['assets/less/style.less', 'assets/less/settings.less', 'node_modules/chrome-bootstrap/chrome-bootstrap.less']
+    entryPoints: [
+      'assets/less/style.less',
+      'assets/less/popover.less',
+      'assets/less/settings.less',
+      'node_modules/chrome-bootstrap/chrome-bootstrap.less',
+      'node_modules/bootstrap/less/chrome-bootstrap.less',
+    ]
   },
   templates: {
     all: 'assets/templates/**'
