@@ -6,6 +6,7 @@ var Mustache = require('mustache');
 var config = require('./configuration.js');
 var templates = require('../templates/templates.js');
 var errors = require('./errors.js');
+var search = require('./search.js');
 
 var resultsDisplay = $('#results');
 var contextDisplay = $('#context');
@@ -23,32 +24,35 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-var toggleContext = function(e) {
-  var context = e.target;
-  if(context.classList.contains('inactive')) {
-    context.classList.remove('inactive');
-  }
-  else {
-    context.classList.add('inactive');
-  }
+var toggleContext = function(toToggle, context) {
+  context = context.map(function(item) {
+    if(item.name === toToggle) {
+      item.active = !item.active;
+    }
+    return item;
+  });
+  search(context);
+  module.exports.showContext(context);
 };
 
 module.exports.showContext = function(context) {
-  context = context.map(function(item) {
+  var viewContext = context.map(function(item) {
     return {
-      name: item,
-      inactive: false,
+      name: item.name,
+      inactive: !item.active,
     };
   });
   var view = {
-    context: context,
+    context: viewContext,
   };
   var resultsHtml = Mustache.render(templates.context, view);
   contextDisplay.html(resultsHtml);
-  $('#context .context-selection .context-item > span').on('click', toggleContext);
+  $('#context .context-selection .context-item > span').on('click', function(e) {
+    toggleContext(e && e.target && e.target.innerHTML, context);
+  });
 };
 
-module.exports.showResults = function(search, context, timeSlices, totalCount) {
+module.exports.showResults = function(search, timeSlices, totalCount) {
   errors.clear();
 
   // Render each document

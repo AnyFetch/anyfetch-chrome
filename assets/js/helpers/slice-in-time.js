@@ -39,11 +39,11 @@ var timeSlices = [
     label: 'Older'
   }
 ];
-timeSlices.forEach(function(slice) {
-  slice.documents = [];
-});
 
 module.exports = function sliceInTime(documents) {
+  timeSlices.forEach(function(slice) {
+    slice.documents = [];
+  });
   documents.forEach(function(doc) {
     var creationDate = moment(doc.creation_date);
     var found = false;
