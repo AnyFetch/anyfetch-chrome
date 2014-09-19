@@ -23,26 +23,26 @@ config.loadUserSettings(function() {
       return;
     }
 
-    // ----- Post update
+    // Post update
     postUpdateIfNecessary();
 
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       var tab = tabs[0];
-      // ----- Detect context for the current tab
-      detectContext(tab, function(err, context, userContext) {
+      // Detect context for the current tab
+      detectContext(tab, function(err, search, context) {
         if(err) {
           errors.show(err);
           return;
         }
-        if(context) {
-          view.showContext(userContext);
-          // ----- Retrieve documents
-          getDocuments(context, function success(documents, totalCount) {
-            // ----- Order documents by time periods
+        if(search) {
+          view.showContext(context);
+          // Retrieve documents
+          getDocuments(search, function success(documents, totalCount) {
+            // Order documents by time periods
             var timeSlices = sliceInTime(documents);
 
-            // ----- Update view
-            view.showResults(userContext, context, timeSlices, totalCount);
+            // Update view
+            view.showResults(search, context, timeSlices, totalCount);
           }, errors.show);
         }
         else {

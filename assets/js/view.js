@@ -22,7 +22,22 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-module.exports.showResults = function(userContext, context, timeSlices, totalCount) {
+var renderContext = function(context) {
+  console.log(context);
+  context = context.map(function(item) {
+    return {
+      name: item,
+      active: true,
+    };
+  });
+  var view = {
+    context: context,
+  };
+  return Mustache.render(templates.context, view);
+
+};
+
+module.exports.showResults = function(search, context, timeSlices, totalCount) {
   errors.clear();
 
   // Render each document
@@ -35,8 +50,8 @@ module.exports.showResults = function(userContext, context, timeSlices, totalCou
 
   // Render the overall results view (containing the list of documents)
   var view = {
-    context: context,
-    userContext: userContext,
+    search: search,
+    context: renderContext(context),
     timeSlices: timeSlices,
 
     totalCount: totalCount,
@@ -48,13 +63,13 @@ module.exports.showResults = function(userContext, context, timeSlices, totalCou
   resultsDisplay.html(resultsHtml);
 };
 
-module.exports.showContext = function(userContext) {
+module.exports.showContext = function(context) {
   errors.clear();
 
 
   // Render the view (just the userContext)
   var view = {
-    userContext: userContext,
+    context: renderContext(context),
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);

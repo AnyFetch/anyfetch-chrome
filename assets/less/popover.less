@@ -27,13 +27,26 @@ body {
 }
 
 #context {
-  text-align: center;
-  margin-bottom: 10px;
-  padding: 15px 0;
+  padding: 17px;
   background-color: @darkGray;
   box-shadow: @innerShadow;
   color: @headerColor;
-  font-weight: 400;
+
+  ul.context-selection {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 24px;
+    margin-right: 34px;
+    font-size: 1.3em;
+
+    li.context-item {
+      display: inline
+    }
+    li.context-item:not(:last-of-type)::after {
+      content: ", ";
+    }
+  }
 
   // Icon
   &::before {
@@ -41,6 +54,7 @@ body {
     display: inline-block;
     margin: 3px 5px 0 0;
     .icon(@magnifying-glass-icon, 16px, 16px);
+    float: left;
   }
 }
 

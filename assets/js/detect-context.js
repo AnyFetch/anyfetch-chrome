@@ -69,13 +69,6 @@ function generateQuery(context) {
 }
 
 /**
- * Generate user context without parenthesis
- */
-function generateUserContext(context) {
-  return context.join(', ');
-}
-
-/**
  * Remove duplicates
  */
 function uniqContext(context) {
@@ -96,12 +89,12 @@ function uniqContext(context) {
 function getFromDOM(tab, site, cb) {
   var called = false;
   // We only call the cb once.
-  function callCb(err, context, userContext) {
+  function callCb(err, search, context) {
     if(called) {
       return;
     }
     called = true;
-    cb(err, context, userContext);
+    cb(err, search, context);
   }
 
   // Set message listener
@@ -109,7 +102,7 @@ function getFromDOM(tab, site, cb) {
     if(sender.tab.id === tab.id) {
       var context = removeGarbage(request.context);
       context = uniqContext(context);
-      callCb(null, generateQuery(context), generateUserContext(context));
+      callCb(null, generateQuery(context), context);
     }
   });
 
@@ -157,7 +150,7 @@ module.exports = function detectContext(tab, cb) {
 
   if(site.context.title) {
     var context = getFromTitle(tab, site);
-    return cb(null, context, context);
+    return cb(null, context, [context]);
   }
   else if(site.context.dom) {
     return getFromDOM(tab, site, cb);

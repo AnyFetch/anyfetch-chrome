@@ -1,4 +1,4 @@
-<h1 id="context">{{userContext}}</h1>
+<div id="context">{{{context}}}</div>
 
 <ul id="document-list">
   {{#timeSlices}}
@@ -16,7 +16,7 @@
 </ul>
 
 <footer>
-  <a href="{{appUrl}}/#/?q={{context}}" target="_blank">
+  <a href="{{appUrl}}/#/?q={{search}}" target="_blank">
     {{#hasMore}}
       See all ({{totalCount}} matches)
     {{/hasMore}}
