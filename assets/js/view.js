@@ -23,11 +23,21 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
+var toggleContext = function(e) {
+  var context = e.target;
+  if(context.classList.contains('inactive')) {
+    context.classList.remove('inactive');
+  }
+  else {
+    context.classList.add('inactive');
+  }
+};
+
 module.exports.showContext = function(context) {
   context = context.map(function(item) {
     return {
       name: item,
-      active: true,
+      inactive: false,
     };
   });
   var view = {
@@ -35,6 +45,7 @@ module.exports.showContext = function(context) {
   };
   var resultsHtml = Mustache.render(templates.context, view);
   contextDisplay.html(resultsHtml);
+  $('#context .context-selection .context-item > span').on('click', toggleContext);
 };
 
 module.exports.showResults = function(search, context, timeSlices, totalCount) {
