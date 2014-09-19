@@ -33,7 +33,7 @@ config.loadUserSettings(function() {
         if(err) {
           return errors.show(err);
         }
-        if(!context) {
+        if(!context.length) {
           return errors.show('No context detected.');
         }
         view.showContext(context);

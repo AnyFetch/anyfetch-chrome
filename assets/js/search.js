@@ -16,7 +16,7 @@ module.exports = function(context) {
       return errors.show(err);
     }
     if(search !== '' && !totalCount) {
-      return errors.show('No result for query "' + search + '"');
+      errors.noResultsShow();
     }
     // Order documents by time periods
     var timeSlices = sliceInTime(documents);
