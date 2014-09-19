@@ -27,34 +27,36 @@ body {
 }
 
 #context {
-  padding: 17px;
-  background-color: @darkGray;
-  box-shadow: @innerShadow;
-  color: @headerColor;
+  .context {
+    padding: 17px;
+    background-color: @darkGray;
+    box-shadow: @innerShadow;
+    color: @headerColor;
 
-  ul.context-selection {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-left: 30px;
-    margin-right: 34px;
-    font-size: 1.3em;
+    ul.context-selection {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      margin-left: 30px;
+      margin-right: 34px;
+      font-size: 1.3em;
 
-    li.context-item {
-      display: inline
+      li.context-item {
+        display: inline
+      }
+      li.context-item:not(:last-of-type)::after {
+        content: ", ";
+      }
     }
-    li.context-item:not(:last-of-type)::after {
-      content: ", ";
-    }
-  }
 
-  // Icon
-  &::before {
-    content: '';
-    display: inline-block;
-    margin: 3px 0 0 0;
-    .icon(@magnifying-glass-icon, 16px, 16px);
-    float: left;
+    // Icon
+    &::before {
+      content: '';
+      display: inline-block;
+      margin: 2px 0 0 0;
+      .icon(@magnifying-glass-icon, 16px, 16px);
+      float: left;
+    }
   }
 }
 

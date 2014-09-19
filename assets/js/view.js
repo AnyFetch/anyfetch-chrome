@@ -8,6 +8,7 @@ var templates = require('../templates/templates.js');
 var errors = require('./errors.js');
 
 var resultsDisplay = $('#results');
+var contextDisplay = $('#context');
 
 var renderDocument = function(doc) {
   var snippetTemplate = templates.snippet;
@@ -22,8 +23,7 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-var renderContext = function(context) {
-  console.log(context);
+module.exports.showContext = function(context) {
   context = context.map(function(item) {
     return {
       name: item,
@@ -33,8 +33,8 @@ var renderContext = function(context) {
   var view = {
     context: context,
   };
-  return Mustache.render(templates.context, view);
-
+  var resultsHtml = Mustache.render(templates.context, view);
+  contextDisplay.html(resultsHtml);
 };
 
 module.exports.showResults = function(search, context, timeSlices, totalCount) {
@@ -51,25 +51,12 @@ module.exports.showResults = function(search, context, timeSlices, totalCount) {
   // Render the overall results view (containing the list of documents)
   var view = {
     search: search,
-    context: renderContext(context),
     timeSlices: timeSlices,
 
     totalCount: totalCount,
     hasMore: (count < totalCount),
 
     appUrl: config.appUrl
-  };
-  var resultsHtml = Mustache.render(templates.results, view);
-  resultsDisplay.html(resultsHtml);
-};
-
-module.exports.showContext = function(context) {
-  errors.clear();
-
-
-  // Render the view (just the userContext)
-  var view = {
-    context: renderContext(context),
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);

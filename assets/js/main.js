@@ -1,5 +1,6 @@
 'use strict';
 
+require('zepto/zepto.min.js');
 var config = require('./configuration.js');
 
 // We need to wait on `chrome.storage` to load the user's settings
