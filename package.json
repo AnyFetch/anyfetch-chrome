@@ -20,6 +20,9 @@
     "context"
   ],
   "author": "Merlin Nimier-David <merlin.nimier@gmail.com>",
+  "contributors": [
+    "Antoine Bolvy <antoine.bolvy@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/AnyFetch/anyfetch-chrome/issues"

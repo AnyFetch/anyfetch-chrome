@@ -1,12 +1,13 @@
 {
   "name": "anyfetch-chrome",
-  "version": "0.1.0",
-  "homepage": "https://github.com/AnyFetch/anyfetch-chrome",
-  "authors": [
-    "Merlin Nimier-David <merlin.nimier@gmail.com>"
-  ],
+  "version": "0.3.1",
   "description": "AnyFetch Chrome extension",
   "main": "dist/main.js",
+  "authors": [
+    "Merlin Nimier-David <merlin.nimier@gmail.com>",
+    "Antoine Bolvy <antoine.bolvy@gmail.com>"
+  ],
+  "homepage": "https://github.com/AnyFetch/anyfetch-chrome",
   "private": true,
   "moduleType": [
     "node"
