@@ -6,8 +6,10 @@ var Mustache = require('mustache');
 var config = require('./configuration.js');
 var templates = require('../templates/templates.js');
 var errors = require('./errors.js');
+var search = require('./search.js');
 
 var resultsDisplay = $('#results');
+var contextDisplay = $('#context');
 
 var renderDocument = function(doc) {
   var snippetTemplate = templates.snippet;
@@ -22,7 +24,35 @@ var renderDocument = function(doc) {
   return Mustache.render(templates.listItem, view);
 };
 
-module.exports.showResults = function(userContext, context, timeSlices, totalCount) {
+var toggleContext = function(toToggle, context) {
+  context = context.map(function(item) {
+    if(item.name === toToggle) {
+      item.active = !item.active;
+    }
+    return item;
+  });
+  search(context);
+  module.exports.showContext(context);
+};
+
+module.exports.showContext = function(context) {
+  var viewContext = context.map(function(item) {
+    return {
+      name: item.name,
+      inactive: !item.active,
+    };
+  });
+  var view = {
+    context: viewContext,
+  };
+  var resultsHtml = Mustache.render(templates.context, view);
+  contextDisplay.html(resultsHtml);
+  $('#context .context-selection .context-item > span').on('click', function(e) {
+    toggleContext(e && e.target && e.target.innerHTML, context);
+  });
+};
+
+module.exports.showResults = function(search, timeSlices, totalCount) {
   errors.clear();
 
   // Render each document
@@ -35,26 +65,13 @@ module.exports.showResults = function(userContext, context, timeSlices, totalCou
 
   // Render the overall results view (containing the list of documents)
   var view = {
-    context: context,
-    userContext: userContext,
+    search: search,
     timeSlices: timeSlices,
 
     totalCount: totalCount,
     hasMore: (count < totalCount),
 
     appUrl: config.appUrl
-  };
-  var resultsHtml = Mustache.render(templates.results, view);
-  resultsDisplay.html(resultsHtml);
-};
-
-module.exports.showContext = function(userContext) {
-  errors.clear();
-
-
-  // Render the view (just the userContext)
-  var view = {
-    userContext: userContext,
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);

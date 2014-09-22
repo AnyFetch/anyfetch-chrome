@@ -146,6 +146,12 @@ var supportedSites = {
         },
       ]
     }
+  },
+  google: {
+    url: /google\.[a-z]{2,63}\/search/,
+    context: {
+      title: /^(.+) - /i,
+    },
   }
 };
 

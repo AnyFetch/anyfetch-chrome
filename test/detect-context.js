@@ -6,6 +6,7 @@ var detectContext = require('../assets/js/detect-context.js');
 
 describe('<Context detection>', function() {
   var fakeName = 'Léo Hua--Döl';
+  var fakeContext = { name: fakeName, active: true };
   var testData = {
     'GitHub': {
       url: 'https://github.com/leoHD',
@@ -29,14 +30,15 @@ describe('<Context detection>', function() {
   });
 
   describe('should extract context query string on supported sites', function() {
-    for(var siteName in testData) {
-      var tab = testData[siteName];
+    Object.keys(testData).forEach(function(siteName) {
       it(siteName, function(done) {
+        var tab = testData[siteName];
         detectContext(tab, function(err, context) {
-          should(context).be.ok.and.equal(fakeName);
+          should(context).be.ok;
+          should(context).containEql(fakeContext);
           done(err);
         });
       });
-    }
+    });
   });
 });
