@@ -16,7 +16,10 @@ function displayResults(search, documents, totalCount) {
   view.showResults(search, timeSlices, totalCount);
 }
 
-module.exports = function(context) {
+module.exports = function(context, cb) {
+  if(!cb) {
+    cb = function() {};
+  }
   var search = generateQuery(context);
   currentSearch = search;
 
@@ -24,7 +27,7 @@ module.exports = function(context) {
   getDocuments(search, function(err, documents, totalCount) {
     if(currentSearch !== search) {
       // Not the last search
-      return;
+      return cb(new Error('Not the last search'));
     }
     if(err) {
       return errors.show(err);
@@ -33,5 +36,6 @@ module.exports = function(context) {
       errors.noResultsShow();
     }
     displayResults(search, documents, totalCount);
+    cb(null);
   });
 };

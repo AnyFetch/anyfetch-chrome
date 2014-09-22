@@ -28,6 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "anyfetch-snippet-style": "~0.2.3"
+    "anyfetch-snippet-style": "~0.2.5",
+    "moment": "~2.8.3"
   }
 }

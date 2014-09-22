@@ -37,7 +37,11 @@ config.loadUserSettings(function() {
           return errors.show('No context detected.');
         }
         view.showContext(context);
-        search(context);
+        search(context, function(err) {
+          if(err) {
+            return;
+          }
+        });
       });
     });
   };
