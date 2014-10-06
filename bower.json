@@ -1,6 +1,6 @@
 {
   "name": "anyfetch-chrome",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "AnyFetch Chrome extension",
   "main": "dist/main.js",
   "authors": [
@@ -28,7 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "anyfetch-snippet-style": "~0.2.5",
+    "anyfetch-assets": "~1.2.0",
     "moment": "~2.8.3"
   }
 }
