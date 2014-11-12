@@ -16,7 +16,8 @@
     "http://*/"
   ],
   "web_accessible_resources": [
-    "views/provider-callback.html"
+    "views/provider-callback.html",
+    "views/oauth-callback.html"
   ],
   "page_action": {
     "default_icon": {

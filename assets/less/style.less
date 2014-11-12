@@ -1,4 +1,5 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
+@import "spinner.less";
 
 @brand-primary: #26AAE0; // AnyFetch Blue
 
@@ -43,7 +44,7 @@ header {
     padding: 0!important;
   }
 
-  img {
+  img.logo {
     width: 50px;
     height: 50px;
     vertical-align: middle;
@@ -78,19 +79,7 @@ header {
     transition: visibility 0s .1s, opacity .1s linear;
   }
 
-  #index {
-    hr {
-      margin-top: 30px;
-      margin-bottom: 30px;
-    }
-
-    #errors {
-      float: right;
-      color: @brand-danger;
-    }
-  }
-
-  #success, #state {
+  #success, #state, #error, #loader, #index {
     text-align: center;
   }
 }
