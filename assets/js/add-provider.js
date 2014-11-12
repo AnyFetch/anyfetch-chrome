@@ -24,6 +24,9 @@ async.waterfall([
   function displayMarketPlace(clients, providers, cb) {
     var html = '';
     clients.forEach(function(client) {
+      if(client.oauth_app) {
+        return;
+      }
       var return_to = encodeURIComponent(chrome.extension.getURL('views/provider-callback.html') + '?state=success&client=' + client.name);
       var view = {
         name: client.name,
