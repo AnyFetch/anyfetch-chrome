@@ -64,6 +64,7 @@ var resetSettings = function() {
 document.addEventListener('DOMContentLoaded', function() {
   insertFields(config.settings);
   loadSettings();
+  document.getElementById('manager-url').setAttribute('href', config.settings.managerUrl.value + '/providers');
   document.getElementById('save').addEventListener('click', saveSettings);
   document.getElementById('reset').addEventListener('click', resetSettings);
   document.getElementById('settings').classList.remove('section-invisible');

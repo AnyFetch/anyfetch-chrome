@@ -14,6 +14,4 @@ module.exports = {
   listItem: fs.readFileSync(__dirname + '/list-item.html', 'utf8'),
   snippet: fs.readFileSync(__dirname + '/snippet.html', 'utf8'),
   settingsInput: fs.readFileSync(__dirname + '/settings-input.html', 'utf8'),
-  provider: fs.readFileSync(__dirname + '/provider.html', 'utf8'),
-  token: fs.readFileSync(__dirname + '/token.html', 'utf8'),
 };
