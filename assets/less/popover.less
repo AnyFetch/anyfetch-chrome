@@ -1,20 +1,23 @@
+@charset "utf-8";
 @import "base.less";
 @import "variables.less";
 @import "icons.less";
 @import (inline) "../../lib/anyfetch-assets/dist/index.css";
 @import (inline) "../../lib/anyfetch-assets/dist/compact.css";
 
+html {
+  background: @backgroundColor;
+}
+
 html, body {
   height: 100%;
-  width: 400px;
-  min-height: 250px; max-height: 600px;
-}
-body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   font-size: @defaultFontSize;
-  margin: 0; padding: 0;
-
-  background: @backgroundColor;
+  width: 400px;
+  min-height: 300px;
 }
 
 .bg-icon {
@@ -45,22 +48,28 @@ body {
 }
 
 #context {
-  .context {
-    padding: 17px;
-    background-color: @darkGray;
-    box-shadow: @innerShadow;
-    color: @headerColor;
+  min-height: 50px;
+  background-color: @darkGray;
+  color: @headerColor;
+  font-size: 1.3em;
 
+  i {
+    float: left;
+  }
+
+  .context {
+    padding: 16px;
     ul.context-selection {
       list-style: none;
       margin: 0;
       padding: 0;
-      margin-left: 30px;
       margin-right: 34px;
-      font-size: 1.3em;
 
       li.context-item {
         display: inline
+      }
+      li.context-item:hover {
+        cursor: pointer;
       }
       li.context-item:not(:last-of-type)::after {
         content: ", ";
@@ -69,15 +78,6 @@ body {
         text-decoration: line-through;
       }
     }
-
-    // Icon
-    &::before {
-      content: '';
-      display: inline-block;
-      margin: 2px 0 0 0;
-      .icon(@magnifying-glass-icon, 16px, 16px);
-      float: left;
-    }
   }
 }
 
@@ -85,11 +85,12 @@ body {
   display: block;
   position: absolute;
   top: 10px; right: 10px;
-  .icon(@gear-icon);
   margin: 3px 3px 0 0;
+  font-size: 24px;
+  color: white;
 }
 
-#error {
+#errors {
   width: 100%;
   padding: 17px;
   background: @errorBackground;
@@ -104,7 +105,10 @@ body {
 }
 
 #results {
-  padding-bottom: @footerHeight;
+  max-height: 450px;
+  min-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   #document-list {
     list-style: none;
@@ -134,6 +138,7 @@ body {
       background-color: @snippetBackgroundColor;
       border: @snippetBorder;
       font-weight: 300;
+      border-radius: 5px;
 
       .badge-icon {
         position: absolute;
@@ -146,32 +151,32 @@ body {
         background-size: contain;
 
         &.email, &.email-thread {
-          background-color: #CA1400;
+          background-color: #DC4638;
           background-image: url('/res/document_types-icons/email.png');
         }
 
         &.image {
-          background-color: #F7931D;
+          background-color: #F8BE46;
           background-image: url('/res/document_types-icons/image.png');
         }
 
         &.contact {
-          background-color: #8829BF;
+          background-color: #F8BE46;
           background-image: url('/res/document_types-icons/contact.png');
         }
 
         &.salesforce {
-          background-color: #CDEEFA;
+          background-color: #4EB1CB;
           background-image: url('/res/document_types-icons/salesforce.png');
         }
 
         &.document {
-          background-color: #0084EE;
+          background-color: #3C8CEA;
           background-image: url('/res/document_types-icons/document.png');
         }
 
         &.event {
-          background-color: #BE41A4;
+          background-color: #45B058;
           background-image: url('/res/document_types-icons/event.png');
         }
       }
@@ -193,37 +198,14 @@ body {
       }
     }
   }
+}
 
-  footer {
-    display: block;
-    width: 100%; height: @footerHeight;
-    color: @footerColor;
-
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-
-    background-color: @footerBackgroundColor;
-
-    text-align: center;
-    font-size: 1.3em;
-
-    a {
-      display: block;
-      width: 100%;
-      padding: 0.6em 0;
-      color: @footerColor;
-
-      &:hover {
-        color: @highlightColor;
-      }
-
-      // Icon
-      &::before {
-        content: '';
-        display: inline-block;
-        margin-right: 5px;
-        .icon(@arrow-icon);
-      }
-    }
+.see-all {
+  width: 100%;
+  text-align: center;
+  font-size: 1.4em;
+  margin: 1em 0;
+  a:hover {
+    text-decoration: underline;
   }
 }

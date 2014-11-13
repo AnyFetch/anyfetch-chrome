@@ -46,9 +46,7 @@ async.waterfall([
     cb();
   }
 ], function(err) {
-  if(err) {
-    if(err.status === 401) {
-      document.getElementById('error-signin').classList.remove('hidden');
-    }
+  if(err && err.status === 401) {
+    document.getElementById('error-signin').classList.remove('hidden');
   }
 });
