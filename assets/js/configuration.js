@@ -175,6 +175,11 @@ var configuration = {
       default: 'https://manager.anyfetch.com',
       label: 'Anyfetch manager URL'
     },
+    serverUrl: {
+      placeholder: 'https://anyfetch-chrome.herokuapp.com',
+      default: 'https://anyfetch-chrome.herokuapp.com',
+      label: 'AnyFetch Chrome Server URL'
+    },
     appUrl: {
       placeholder: 'https://app.anyfetch.com',
       default: 'https://app.anyfetch.com',

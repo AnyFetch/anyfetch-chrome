@@ -2,27 +2,35 @@
 
 require('zepto/zepto.min.js');
 var async = require('async/lib/async.js');
-var getToken = require('./fetch/get-token.js');
 var getStatus = require('./fetch/get-status.js');
 var config = require('./configuration.js');
+var oauthStart = require('./oauth-start.js');
 
-var displayError = function(err) {
-  if(err) {
-    console.log(err);
-    if(err.status === 401) {
-      // 401, invalid credentials: show failed login error
-      var form = document.getElementById('login-form');
-      form.classList.add('has-error');
-    }
+var showById = function showById(id) {
+  var ids = ['error', 'success', 'loader', 'index'];
+  var element;
+
+  var toShow = document.getElementById(id);
+  if(!toShow) {
+    return;
   }
+
+  var toHide = ids.filter(function(itemId) {
+    return itemId !== id;
+  });
+
+  toHide.forEach(function(itemId) {
+    element = document.getElementById(itemId);
+    if(element) {
+      element.classList.add('hidden');
+    }
+  });
+  toShow.classList.remove('hidden');
 };
 
-var showSuccess = function() {
-  var success = document.getElementById('success');
-  var index = document.getElementById('index');
+var showSuccess = function showSuccess() {
+  showById('success');
   var close = document.getElementById('close-tab');
-  index.classList.add('hidden');
-  success.classList.remove('hidden');
   close.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.remove(tabs[0].id);
@@ -30,29 +38,34 @@ var showSuccess = function() {
   });
 };
 
-var showForm = function() {
-  var index = document.getElementById('index');
-  index.classList.remove('hidden');
+var showError = function showError(err) {
+  showById('error');
+  var message = document.getElementById('error-message');
+  var action = document.getElementById('action');
+  if(err.message === 'Canceled by user') {
+    message.innerHTML = 'The authorization process was canceled';
+    action.classList.remove('hidden');
+    action.addEventListener('click', function() {
+      window.location.reload();
+    });
+  }
+  else {
+    message.innerHTML('Error: ' + err.toString);
+  }
 };
 
-var formListener = function(e) {
-  e.preventDefault();
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
-  async.waterfall([
-    function callGetToken(cb) {
-      // Retrieve the user token by signing in with given credentials
-      getToken(email, password, cb);
-    },
-    function saveToken(token, cb) {
-      chrome.storage.sync.set({token: token}, cb);
-    },
-    function success(cb) {
-      showSuccess();
-      cb();
-    }
-  ], displayError);
-  return false;
+var finalHandler = function finalHandler(err) {
+  if(!err) {
+    return showSuccess();
+  }
+  showError(err);
+};
+
+var oauthButtonHandler = function oauthButtonHandler() {
+  document.getElementById('start-oauth').addEventListener('click', function() {
+    showById('loader');
+    oauthStart(finalHandler);
+  });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -61,24 +74,26 @@ document.addEventListener('DOMContentLoaded', function() {
       config.loadUserSettings(cb);
     },
     function checkToken(cb) {
-      if(!config.token) {
+      // token already stored ?
+      if(config.token) {
+        getStatus(function(err) {
+          if(err) {
+            return cb(null, false);
+          }
+          cb(null, true);
+        });
+      }
+      else {
+        cb(null, false);
+      }
+    },
+    function registerHandler(ok, cb) {
+      if(ok) {
+        showSuccess();
         return cb();
       }
-      // Check the stored token, if it is not valid/absent, show the sign-in form, else show success
-      getStatus(function(err) {
-        if(err) {
-          console.log('Token is invalid');
-          return cb();
-        }
-        console.log('Token is already valid');
-        showSuccess();
-      });
-    },
-    function setListener(cb) {
-      showForm();
-      var form = document.getElementById('login-form');
-      form.addEventListener('submit', formListener);
-      cb();
+      showById('index');
+      oauthButtonHandler();
     }
-  ]);
+  ], finalHandler);
 });
