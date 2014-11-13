@@ -13,7 +13,8 @@
   {{/timeSlices}}
 </ul>
 
-<footer>
+{{#totalCount}}
+<section class="see-all">
   <a href="{{appUrl}}/#/?q={{search}}" target="_blank">
     {{#hasMore}}
       See all ({{totalCount}} matches)
@@ -22,4 +23,5 @@
       See on AnyFetch app
     {{/hasMore}}
   </a>
-</footer>
+</section>
+{{/totalCount}}

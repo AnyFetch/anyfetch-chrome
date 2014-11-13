@@ -19,7 +19,13 @@ var paths = {
       'assets/js/oauth-callback.js',
       'assets/js/provider-callback.js',
       'assets/js/background.js',
-      'assets/js/advanced-detection.js'
+      'assets/js/advanced-detection.js',
+    ]
+  },
+  libs: {
+    entryPoints: [
+      'lib/moment/min/moment-with-locales.min.js',
+      'lib/anyfetch-assets/dist/index.min.js',
     ]
   },
   less: {
@@ -47,6 +53,13 @@ gulp.task('less', function() {
     .pipe(gulp.dest(paths.target));
 });
 
+// Libs
+gulp.task('libs', function() {
+  var p = gulp.src(paths.libs.entryPoints);
+  return p.pipe(gulp.dest(paths.target));
+});
+
+
 // JS compiling
 gulp.task('browserify', function() {
   return gulp.src(paths.js.entryPoints)
@@ -66,7 +79,7 @@ gulp.task('lint', function() {
 });
 
 // Packaging the app as a zip for publishing
-gulp.task('package', ['lint', 'less', 'browserify'], function() {
+gulp.task('package', ['lint', 'less', 'browserify', 'libs'], function() {
   // Read version number from `package.json`
   var npmPackageInfo = require('./package.json');
   // Update Chrome extension version
@@ -89,5 +102,5 @@ gulp.task('watch', function() {
 });
 
 // Run main tasks on launch
-gulp.task('default', ['lint', 'less', 'browserify', 'watch'], function() {
+gulp.task('default', ['lint', 'less', 'browserify', 'libs', 'watch'], function() {
 });

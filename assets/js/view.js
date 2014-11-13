@@ -8,9 +8,6 @@ var templates = require('../templates/templates.js');
 var errors = require('./errors.js');
 var search = require('./search.js');
 
-var resultsDisplay = $('#results');
-var contextDisplay = $('#context');
-
 var renderDocument = function(doc) {
   var snippetTemplate = templates.snippet;
   if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
@@ -36,6 +33,7 @@ var toggleContext = function(toToggle, context) {
 };
 
 module.exports.showContext = function(context) {
+  var contextDisplay = $('#context');
   var viewContext = context.map(function(item) {
     return {
       name: item.name,
@@ -53,6 +51,7 @@ module.exports.showContext = function(context) {
 };
 
 module.exports.showResults = function(search, timeSlices, totalCount) {
+  var resultsDisplay = $('#results');
   errors.clear();
 
   // Render each document
@@ -75,4 +74,5 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
+  window.anyfetchAssets.formatDates();
 };

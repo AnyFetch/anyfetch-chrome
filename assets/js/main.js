@@ -19,7 +19,7 @@ config.loadUserSettings(function() {
 
   var main = function() {
     if(!config.token) {
-      errors.show('Please <a href="options.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
+      errors.showSetupAccountError();
       return;
     }
 
