@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "AnyFetch",
   "description": "Find documents related to the current page with AnyFetch.",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "icons": {
     "16": "res/logo16.png",
     "48": "res/logo48.png",
@@ -16,7 +16,8 @@
     "http://*/"
   ],
   "web_accessible_resources": [
-    "views/provider-callback.html"
+    "views/provider-callback.html",
+    "views/oauth-callback.html"
   ],
   "page_action": {
     "default_icon": {

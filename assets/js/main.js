@@ -18,8 +18,11 @@ config.loadUserSettings(function() {
   // TODO: i18n
 
   var main = function() {
+    // Dynamically set manager url for no
+    document.getElementById('manager-url').setAttribute('href', config.managerUrl + '/providers');
+
     if(!config.token) {
-      errors.show('Please <a href="options.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
+      errors.showSetupAccountError();
       return;
     }
 
