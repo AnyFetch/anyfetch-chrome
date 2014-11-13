@@ -1,6 +1,6 @@
 {
   "name": "anyfetch-chrome",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "description": "AnyFetch Chrome extension",
   "main": "dist/main.js",
   "scripts": {
