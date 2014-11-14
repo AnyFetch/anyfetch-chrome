@@ -50,6 +50,12 @@ module.exports.showContext = function(context) {
   });
 };
 
+module.exports.showSpinner = function(message) {
+  var resultsDisplay = $('#results');
+  var resultsHtml = Mustache.render(templates.spinner, {message: message});
+  resultsDisplay.html(resultsHtml);
+};
+
 module.exports.showResults = function(search, timeSlices, totalCount) {
   var resultsDisplay = $('#results');
   errors.clear();
