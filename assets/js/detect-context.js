@@ -46,7 +46,7 @@ function getFromDOM(tab, site, cb) {
   // Instore a timeout for the page to answer.
   setTimeout(function() {
     callCb(new Error('Cannot get context from content script. Please retry!'));
-  }, 2000);
+  }, 5000);
 
   // Inject script
   chrome.tabs.executeScript(tab.id, {
