@@ -40,10 +40,23 @@ config.loadUserSettings(function() {
           return errors.show('No context detected.');
         }
         view.showContext(context);
+
+        var timeout = setTimeout(function() {
+          view.showSpinner("Searching...");
+          timeout = setTimeout(function() {
+            view.showSpinner("Still searching...");
+            timeout = setTimeout(function() {
+              view.showSpinner("Still waiting, but something is not right.");
+            }, 10000);
+          }, 5000);
+        }, 500);
+
         search(context, function(err) {
           if(err) {
+            console.error(err);
             return;
           }
+          clearTimeout(timeout);
         });
       });
     });
