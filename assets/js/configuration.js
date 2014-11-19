@@ -25,7 +25,6 @@ var loadUserSettings = function(cb) {
 };
 
 // TODO: more site support
-// TODO: ability to match on URL fragment hash (page#hash)
 // This seems to be a limitation of UrlFilter for now
 var supportedSites = {
   github: {
@@ -57,7 +56,7 @@ var supportedSites = {
     url: /twitter\.com\/([^\/]+)$/,
     // Robin Ricard (r_ricard) on Twitter
     context: {
-      title:     /^(.+)\([^\)]+\)/i
+      title: /^(.+)\([^\)]+\)/i
     }
   },
   facebook: {
@@ -128,10 +127,10 @@ var supportedSites = {
 
     context: {
       dom: [
-        // Title of event
+        // Event title
         [
           {
-            target: 'innerHTML',
+            target: 'textContent',
             selector: '.ui-sch.ep-title > div'
           },
           {
@@ -139,7 +138,7 @@ var supportedSites = {
             selector: '.ui-sch.ep-title > input'
           },
         ],
-        // Attendies
+        // Attendees
         {
           target: 'title',
           selector: '.ep-gl-guest'
@@ -152,6 +151,40 @@ var supportedSites = {
     context: {
       title: /^(.+) - /i,
     },
+  },
+  baseCrmContacts: {
+    url: /app\.futuresimple\.com\/crm\/contacts/,
+    context: {
+      title: /Base CRM: (.+)/i,
+    },
+  },
+  baseCrmLeads: {
+    url: /app\.futuresimple\.com\/leads/,
+    context: {
+      dom: [
+        // Lead name
+        {
+          target: 'textContent',
+          selector: '.detail-title'
+        },
+      ]
+    }
+  },
+  baseCrmDeals: {
+    url: /app\.futuresimple\.com\/sales\/deals/,
+    context: {
+      dom: [
+        // Deal title
+        {
+          target: 'textContent',
+          selector: '.detail-title'
+        },
+        {
+          target: 'textContent',
+          selector: '.info-section.deal-essentials .associated a'
+        },
+      ]
+    }
   }
 };
 

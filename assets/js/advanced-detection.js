@@ -14,13 +14,22 @@ var turnObjToArray = function(obj) {
 function getValue(rule) {
   var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
   nodes = nodes.map(function(node) {
+    var value = '';
     if(rule.target === 'innerHTML') {
-      return node.innerHTML;
+      value = node.innerHTML;
     }
-    if(rule.target === 'value') {
-      return node.value;
+    else if(rule.target === 'textContent') {
+      console.log(node.textContent);
+      value = node.textContent;
     }
-    return node.getAttribute(rule.target);
+    else if(rule.target === 'value') {
+      value = node.value;
+    }
+    else {
+      value = node.getAttribute(rule.target);
+    }
+
+    return value.trim();
   });
   return nodes;
 }
