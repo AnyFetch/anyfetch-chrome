@@ -91,7 +91,7 @@ var supportedSites = {
       dom: [
         // Subject
         {
-          target: 'innerHTML',
+          target: 'textContent',
           selector: 'div[role="main"] table > tr > td > div > div > div > div > h2'
         },
         // Sender
