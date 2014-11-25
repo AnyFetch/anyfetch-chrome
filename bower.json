@@ -28,7 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "anyfetch-assets": "~1.2.10",
+    "anyfetch-assets": "~2.0.3",
     "moment": "~2.8.3"
   }
 }
