@@ -21,7 +21,7 @@ module.exports = function getDocuments(query, cb) {
     data: {
       search: query,
       limit: config.resultsCountLimit,
-      sort: '-creationDate'
+      sort: '-modificationDate'
     },
     headers: {
       'Authorization': 'Bearer ' + config.token
