@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var path = require('path');
 
 var gulp = require('gulp');
 var rename = require('gulp-rename');
@@ -9,8 +8,6 @@ var less = require('gulp-less');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
-var uglify = require('gulp-uglify');
-var exorcist = require('exorcist');
 var jshint = require('gulp-jshint');
 var zip = require('gulp-zip');
 
@@ -65,18 +62,15 @@ gulp.task('libs', function() {
 gulp.task('browserify', function() {
   paths.js.entryPoints.forEach(function(file) {
     var bundler = browserify({
-      entries: './' + file,
-      debug: true
+      entries: './' + file
     });
 
     bundler.transform('brfs');
 
     return bundler
       .bundle()
-      .pipe(exorcist(paths.target + path.basename(file) + '.map'), '', '..')
       .pipe(source(file))
       .pipe(buffer())
-      // .pipe(uglify())
       .pipe(rename(function(path) {
         path.dirname = '';
       }))
