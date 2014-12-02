@@ -34,7 +34,6 @@ var paths = {
       'assets/less/style.less',
       'assets/less/popover.less',
       'assets/less/settings.less',
-      'node_modules/chrome-bootstrap/chrome-bootstrap.less',
       'node_modules/bootstrap/less/chrome-bootstrap.less',
     ]
   },
