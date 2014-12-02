@@ -24,8 +24,8 @@ var paths = {
   },
   libs: {
     entryPoints: [
-      'lib/moment/min/moment-with-locales.min.js',
-      'lib/anyfetch-assets/dist/index.min.js',
+      'bower_components/moment/min/moment-with-locales.min.js',
+      'bower_components/anyfetch-assets/dist/index.min.js',
     ]
   },
   less: {
