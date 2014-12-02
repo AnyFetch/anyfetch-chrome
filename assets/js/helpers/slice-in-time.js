@@ -45,15 +45,15 @@ module.exports = function sliceInTime(documents) {
     slice.documents = [];
   });
   documents.forEach(function(doc) {
-    var creationDate = moment(doc.creation_date);
+    var modificationDate = moment(doc.creation_date);
     var found = false;
     for(var i = 0; i < timeSlices.length && !found; i += 1) {
-      if(i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+      if(i === 0 && modificationDate.isAfter(timeSlices[i].maxDate)) {
         found = true;
         timeSlices[i].documents.push(doc);
       }
 
-      if(!found && (!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate))) {
+      if(!found && (!timeSlices[i].maxDate || modificationDate.isAfter(timeSlices[i].maxDate))) {
         found = true;
         timeSlices[i].documents.push(doc);
       }
