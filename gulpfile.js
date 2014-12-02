@@ -75,7 +75,7 @@ gulp.task('browserify', function() {
       .pipe(rename(function(path) {
         path.dirname = '';
       }))
-      .pipe(gulp.dest('./dist/'));
+      .pipe(gulp.dest(paths.target));
   });
 });
 
