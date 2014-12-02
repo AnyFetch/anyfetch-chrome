@@ -1,7 +1,7 @@
 'use strict';
 
 require('zepto/zepto.min.js');
-var config = require('../configuration.js');
+var config = require('../config/configuration.js');
 
 var documentsEndpoint = '/documents';
 

@@ -1,16 +1,16 @@
 'use strict';
 
 require('zepto/zepto.min.js');
-var config = require('./configuration.js');
+var config = require('../config/configuration.js');
 
 // We need to wait on `chrome.storage` to load the user's settings
 // before doing anything else
 config.loadUserSettings(function() {
-  var errors = require('./errors.js');
+  var errors = require('../helpers/errors.js');
 
   var detectContext = require('./detect-context.js');
   var view = require('./view.js');
-  var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
+  var postUpdateIfNecessary = require('../fetch/post-update-if-necessary.js');
   var search = require('./search.js');
 
   // TODO: cache results

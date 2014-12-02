@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('./configuration.js');
+var config = require('../config/configuration.js');
 
 /**
  * Show pageAction when tab URL matches supportedSites.url regex
@@ -29,8 +29,6 @@ function handleOnUpdated(tabId, changeInfo, tab) {
 
 // When the extension is installed or upgraded
 chrome.runtime.onInstalled.addListener(function(details) {
-  console.log(new Date() + ': Updating rules');
-
   if(details.reason === "install") {
     // open first run page on install
     chrome.tabs.create({url: 'views/first-run.html'});

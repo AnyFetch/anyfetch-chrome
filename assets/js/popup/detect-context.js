@@ -1,7 +1,7 @@
 'use strict';
 
-var config = require('./configuration.js');
-var getContextObject = require('./context-utils.js').getContextObject;
+var config = require('../config/configuration.js');
+var getContextObject = require('../helpers/content-helper.js').getContextObject;
 
 /**
  * Return the detected context from the title

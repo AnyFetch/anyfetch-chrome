@@ -3,8 +3,12 @@
 var fs = require('fs');
 
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var less = require('gulp-less');
-var browserify = require('gulp-browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var browserify = require('browserify');
+var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
 var zip = require('gulp-zip');
 
@@ -12,14 +16,11 @@ var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
     entryPoints: [
-      'assets/js/main.js',
-      'assets/js/settings.js',
-      'assets/js/first-run.js',
-      'assets/js/add-provider.js',
-      'assets/js/oauth-callback.js',
-      'assets/js/provider-callback.js',
-      'assets/js/background.js',
-      'assets/js/advanced-detection.js',
+      'assets/js/background/background.js',
+      'assets/js/popup/popup.js',
+      'assets/js/ui/first-run.js',
+      'assets/js/ui/settings.js',
+      'assets/js/ui/oauth-callback.js',
     ]
   },
   libs: {
@@ -61,14 +62,24 @@ gulp.task('libs', function() {
 
 
 // JS compiling
+// gulp-browserify seems to be a deprecated plugin. http://goo.gl/bz8n4L
 gulp.task('browserify', function() {
-  return gulp.src(paths.js.entryPoints)
-    .pipe(browserify({
-      debug: true,
-      insertGlobals: false,
-      transform: ['brfs']
-    }))
-    .pipe(gulp.dest(paths.target));
+  paths.js.entryPoints.forEach(function(file) {
+    var bundler = browserify({
+      entries: './' + file,
+      debug: true
+    });
+
+    return bundler
+      .bundle()
+      .pipe(source(file))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(rename(function(path) {
+        path.dirname = '';
+      }))
+      .pipe(gulp.dest('./dist/'));
+  });
 });
 
 // JS linting
