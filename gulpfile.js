@@ -1,6 +1,8 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
+
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
@@ -8,6 +10,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
+var exorcist = require('exorcist');
 var jshint = require('gulp-jshint');
 var zip = require('gulp-zip');
 
@@ -15,17 +18,16 @@ var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
     entryPoints: [
-      'assets/js/background/background.js',
-      'assets/js/popup/popup.js',
-      'assets/js/ui/first-run.js',
-      'assets/js/ui/settings.js',
-      'assets/js/ui/oauth-callback.js',
+      'assets/js/background.js',
+      'assets/js/popup.js',
+      'assets/js/first-run.js',
+      'assets/js/settings.js',
+      'assets/js/oauth-callback.js',
     ]
   },
   libs: {
     entryPoints: [
-      'bower_components/moment/min/moment-with-locales.min.js',
-      'bower_components/anyfetch-assets/dist/index.min.js',
+      'bower_components/anyfetch-assets/dist/index-moment.min.js',
     ]
   },
   less: {
@@ -67,11 +69,14 @@ gulp.task('browserify', function() {
       debug: true
     });
 
+    bundler.transform('brfs');
+
     return bundler
       .bundle()
+      .pipe(exorcist(paths.target + path.basename(file) + '.map'), '', '..')
       .pipe(source(file))
       .pipe(buffer())
-      .pipe(uglify())
+      // .pipe(uglify())
       .pipe(rename(function(path) {
         path.dirname = '';
       }))

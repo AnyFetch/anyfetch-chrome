@@ -2,9 +2,9 @@
 
 require('zepto/zepto.min.js');
 var async = require('async/lib/async.js');
-var getStatus = require('../fetch/get-status.js');
-var config = require('../config/configuration.js');
-var oauthStart = require('./oauth-start.js');
+var getStatus = require('./fetch/get-status.js');
+var config = require('./config/configuration.js');
+var oauthStart = require('./oauth/oauth-start.js');
 
 var showById = function showById(id) {
   var ids = ['error', 'success', 'loader', 'index'];
