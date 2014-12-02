@@ -2,7 +2,7 @@
 
 var should = require('should');
 
-var detectContext = require('../assets/js/detect-context.js');
+var detectContext = require('../assets/js/popup/detect-context.js');
 
 describe('<Context detection>', function() {
   var fakeName = 'Léo Hua--Döl';
