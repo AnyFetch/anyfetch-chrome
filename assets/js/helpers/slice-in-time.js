@@ -3,7 +3,7 @@
 var moment = require('moment');
 
 var timeSlices = [{
-    label: 'Earlier',
+    label: 'In a future far far away...',
     maxDate: moment().endOf('year').add(1, 'year')
   },
   {
@@ -11,23 +11,23 @@ var timeSlices = [{
     maxDate: moment().endOf('year')
   },
   {
-    label: 'Earlier this Year',
+    label: 'Later this Year',
     maxDate: moment().endOf('month').add(1, 'month')
   },
   {
-    label: 'Last Month',
+    label: 'Next Month',
     maxDate: moment().endOf('month')
   },
   {
-    label: 'Earlier this Month',
+    label: 'Later this Month',
     maxDate: moment().endOf('week').add(1, 'week')
   },
   {
-    label: 'Last Week',
+    label: 'Next Week',
     maxDate: moment().endOf('week')
   },
   {
-    label: 'Earlier this Week',
+    label: 'Later this Week',
     maxDate: moment().endOf('day').add(1, 'day')
   },
   {
