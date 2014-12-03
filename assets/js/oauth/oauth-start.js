@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('./configuration.js');
+var config = require('../config/index.js');
 
 /*
  * Start oauth flow with remote server

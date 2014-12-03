@@ -2,7 +2,7 @@
 
 var Mustache = require('mustache');
 var templates = require('../templates/templates.js');
-var config = require('./configuration.js');
+var config = require('./config/index.js');
 
 var insertFields = function(descriptors) {
   var inputs = '';

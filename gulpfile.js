@@ -3,8 +3,11 @@
 var fs = require('fs');
 
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var less = require('gulp-less');
-var browserify = require('gulp-browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var browserify = require('browserify');
 var jshint = require('gulp-jshint');
 var zip = require('gulp-zip');
 
@@ -12,20 +15,16 @@ var paths = {
   js: {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
     entryPoints: [
-      'assets/js/main.js',
-      'assets/js/settings.js',
-      'assets/js/first-run.js',
-      'assets/js/add-provider.js',
-      'assets/js/oauth-callback.js',
-      'assets/js/provider-callback.js',
       'assets/js/background.js',
-      'assets/js/advanced-detection.js',
+      'assets/js/popup.js',
+      'assets/js/first-run.js',
+      'assets/js/settings.js',
+      'assets/js/oauth-callback.js',
     ]
   },
   libs: {
     entryPoints: [
-      'lib/moment/min/moment-with-locales.min.js',
-      'lib/anyfetch-assets/dist/index.min.js',
+      'bower_components/anyfetch-assets/dist/index-moment.min.js',
     ]
   },
   less: {
@@ -34,8 +33,6 @@ var paths = {
       'assets/less/style.less',
       'assets/less/popover.less',
       'assets/less/settings.less',
-      'node_modules/chrome-bootstrap/chrome-bootstrap.less',
-      'node_modules/bootstrap/less/chrome-bootstrap.less',
     ]
   },
   templates: {
@@ -61,14 +58,24 @@ gulp.task('libs', function() {
 
 
 // JS compiling
+// gulp-browserify seems to be a deprecated plugin. http://goo.gl/bz8n4L
 gulp.task('browserify', function() {
-  return gulp.src(paths.js.entryPoints)
-    .pipe(browserify({
-      debug: true,
-      insertGlobals: false,
-      transform: ['brfs']
-    }))
-    .pipe(gulp.dest(paths.target));
+  paths.js.entryPoints.forEach(function(file) {
+    var bundler = browserify({
+      entries: './' + file
+    });
+
+    bundler.transform('brfs');
+
+    return bundler
+      .bundle()
+      .pipe(source(file))
+      .pipe(buffer())
+      .pipe(rename(function(path) {
+        path.dirname = '';
+      }))
+      .pipe(gulp.dest(paths.target));
+  });
 });
 
 // JS linting

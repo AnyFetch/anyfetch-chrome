@@ -3,9 +3,9 @@
 require('zepto/zepto.min.js');
 var Mustache = require('mustache');
 
-var config = require('./configuration.js');
-var templates = require('../templates/templates.js');
-var errors = require('./errors.js');
+var config = require('../config/index.js');
+var templates = require('../../templates/templates.js');
+var errors = require('../helpers/errors.js');
 var search = require('./search.js');
 
 var renderDocument = function(doc) {
