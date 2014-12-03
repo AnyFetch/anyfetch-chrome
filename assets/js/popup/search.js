@@ -30,10 +30,11 @@ module.exports = function(context, cb) {
       return cb(new Error('Not the last search'));
     }
     if(err) {
-      return errors.show(err);
+      errors.show(err);
+      return cb(err);
     }
     if(!totalCount) {
-      errors.noResultsShow();
+      return errors.noResultsShow();
     }
     displayResults(search, documents, totalCount);
     cb(null);

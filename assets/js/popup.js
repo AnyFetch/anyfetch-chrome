@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       detectContext(tab, function(err, context) {
         if(err) {
+          clearTimeout(timeout);
           return errors.show(err);
         }
         cb(null, context);
@@ -61,16 +62,17 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function showContextAndSearch(context, cb) {
       if(!context.length) {
+        clearTimeout(timeout);
         return errors.show('No context detected.');
       }
       view.showContext(context);
 
       search(context, function(err) {
+        clearTimeout(timeout);
         if(err) {
           console.error(err);
           return;
         }
-        clearTimeout(timeout);
         cb();
       });
     }
