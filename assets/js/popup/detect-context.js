@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('../config/configuration.js');
+var config = require('../config/index.js');
 var getContextObject = require('../helpers/content-helper.js').getContextObject;
 
 /**

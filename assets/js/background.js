@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('./config/configuration.js');
+var config = require('./config/index.js');
 
 /**
  * Show pageAction when tab URL matches supportedSites.url regex

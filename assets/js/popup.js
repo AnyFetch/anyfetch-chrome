@@ -2,7 +2,7 @@
 
 var async = require('async');
 
-var config = require('./config/configuration.js');
+var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
 var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
 var view = require('./popup/view.js');
