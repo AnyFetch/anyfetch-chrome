@@ -22,11 +22,12 @@ var renderDocument = function(doc) {
 };
 
 var toggleContext = function(toToggle, context) {
-  context = context.map(function(item) {
+  context.some(function(item, index, context) {
     if(item.name === toToggle) {
-      item.active = !item.active;
+      context[index].active = !item.active;
+      return true;
     }
-    return item;
+    return false;
   });
   search(context);
   module.exports.showContext(context);
@@ -46,7 +47,7 @@ module.exports.showContext = function(context) {
   var resultsHtml = Mustache.render(templates.context, view);
   contextDisplay.html(resultsHtml);
   $('#context .context-selection .context-item > span').on('click', function(e) {
-    toggleContext(e && e.target && e.target.innerHTML, context);
+    toggleContext(e && e.target && e.target.textContent, context);
   });
 };
 

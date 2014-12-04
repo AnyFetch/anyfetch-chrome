@@ -52,6 +52,21 @@ function removeForbiddenChars(context) {
   return context;
 }
 
+var getHash = function(str) {
+  var hash = 0;
+
+  if(str.length === 0) {
+    return hash;
+  }
+  var i;
+  for (i = 0; i < str.length; i += 1) {
+    /*jshint bitwise: false*/
+    hash  = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash.toString();
+};
+
 /**
  * Generate query with parenthesis and OR from contextOject
  */
@@ -79,7 +94,8 @@ module.exports.getContextObject = function getContextObject(context) {
   return context.map(function(item) {
     return {
       name: item,
-      active: true
+      active: true,
+      hash: getHash(item)
     };
   });
 };

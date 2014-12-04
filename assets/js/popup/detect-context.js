@@ -87,12 +87,7 @@ module.exports = function detectContext(tab, cb) {
 
   if(site.context.title) {
     var context = getFromTitle(tab, site);
-    return cb(null, [
-      {
-        name: context,
-        active: true
-      }
-    ]);
+    return cb(null, getContextObject([context]));
   }
   else if(site.context.dom) {
     return getFromDOM(tab, site, cb);
