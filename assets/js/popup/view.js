@@ -24,7 +24,15 @@ var renderDocument = function(doc) {
 var toggleContext = function(toToggle, context) {
   context.some(function(item, index, context) {
     if(item.name === toToggle) {
-      context[index].active = !item.active;
+      var newState = !item.active;
+      context[index].active = newState;
+      if(config.blacklist[item.hash] && newState) {
+        delete config.blacklist[item.hash];
+      }
+      else if(!newState) {
+        config.blacklist[item.hash] = item.name;
+      }
+      chrome.storage.sync.set({blacklist: config.blacklist});
       return true;
     }
     return false;

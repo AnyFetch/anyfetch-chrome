@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', function() {
         cb(null, context);
       });
     },
+    function filterContext(context, cb) {
+      context = context.map(function(item) {
+        if(config.blacklist[item.hash]) {
+          item.active = false;
+        }
+        return item;
+      });
+      cb(null, context);
+    },
     function showContextAndSearch(context, cb) {
       if(!context.length) {
         clearTimeout(timeout);

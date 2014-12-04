@@ -9,17 +9,19 @@
  */
 var loadUserSettings = function(cb) {
   var config = this;
+  var toLoad = Object.keys(config.settings);
+  toLoad = toLoad.concat(['blacklist']);
 
-  chrome.storage.sync.get(Object.keys(config.settings), function(userValues) {
-    for(var key in config.settings) {
+  chrome.storage.sync.get(toLoad, function(userValues) {
+    toLoad.forEach(function(key) {
       var userValue = userValues[key];
       if(userValue || userValue === false) {
         config[key] = userValue;
       }
-      else {
+      else if(config.settings[key]) {
         config[key] = config.settings[key].default;
       }
-    }
+    });
     cb();
   });
 };
@@ -189,6 +191,8 @@ var supportedSites = {
 };
 
 var configuration = {
+  blacklist: {},
+
   /**
    * Setting name => default value
    */
