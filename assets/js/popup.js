@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
       config.loadUserSettings(cb);
     },
     function init(cb) {
-      // Dynamically set manager url for no results
-      document.getElementById('manager-url').setAttribute('href', config.managerUrl + '/providers');
-
       if(!config.token) {
         errors.showSetupAccountError();
         return;
@@ -59,6 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         cb(null, context);
       });
+    },
+    function filterContext(context, cb) {
+      context = context.map(function(item) {
+        if(config.blacklist[item.name]) {
+          item.active = false;
+        }
+        return item;
+      });
+      cb(null, context);
     },
     function showContextAndSearch(context, cb) {
       if(!context.length) {

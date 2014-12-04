@@ -22,11 +22,20 @@ var renderDocument = function(doc) {
 };
 
 var toggleContext = function(toToggle, context) {
-  context = context.map(function(item) {
+  context.some(function(item, index, context) {
     if(item.name === toToggle) {
-      item.active = !item.active;
+      var newState = !item.active;
+      context[index].active = newState;
+      if(config.blacklist[item.name] && newState) {
+        delete config.blacklist[item.name];
+      }
+      else if(!newState) {
+        config.blacklist[item.name] = true;
+      }
+      chrome.storage.sync.set({blacklist: config.blacklist});
+      return true;
     }
-    return item;
+    return false;
   });
   search(context);
   module.exports.showContext(context);
@@ -46,7 +55,7 @@ module.exports.showContext = function(context) {
   var resultsHtml = Mustache.render(templates.context, view);
   contextDisplay.html(resultsHtml);
   $('#context .context-selection .context-item > span').on('click', function(e) {
-    toggleContext(e && e.target && e.target.innerHTML, context);
+    toggleContext(e && e.target && e.target.textContent, context);
   });
 };
 
@@ -76,7 +85,8 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
     totalCount: totalCount,
     hasMore: (count < totalCount),
 
-    appUrl: config.appUrl
+    appUrl: config.appUrl,
+    managerUrl: config.managerUrl
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);

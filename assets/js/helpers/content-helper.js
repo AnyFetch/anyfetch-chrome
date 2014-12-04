@@ -79,7 +79,7 @@ module.exports.getContextObject = function getContextObject(context) {
   return context.map(function(item) {
     return {
       name: item,
-      active: true
+      active: true,
     };
   });
 };

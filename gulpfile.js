@@ -20,6 +20,7 @@ var paths = {
       'assets/js/first-run.js',
       'assets/js/settings.js',
       'assets/js/oauth-callback.js',
+      'assets/js/content-script/advanced-detection.js',
     ]
   },
   libs: {

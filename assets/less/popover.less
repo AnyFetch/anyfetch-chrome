@@ -29,24 +29,6 @@ html, body {
   opacity: .1;
 }
 
-#noresultserror {
-  color: #ccc;
-  text-align: center;
-  margin-bottom: 2*@footerHeight;
-  margin-top: -@footerHeight;
-  p {
-    text-transform: uppercase;
-    font-size: 3em;
-  }
-  a {
-    color: #999;
-    font-size: 1.2em;
-    text-decoration: underline;
-  }
-  a::hover {
-  }
-}
-
 #context {
   min-height: 50px;
   background-color: @darkGray;
@@ -110,18 +92,34 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
 
-  .spinner-table {
+  .table-center {
     min-height: 250px;
     width: 100%;
     display: table;
     text-align: center;
-    .spinner-cell {
-      .message {
-        margin-top: 10px;
-        color: darken(@backgroundColor, 40%)
-      }
+    .cell-center {
       vertical-align: middle;
       display: table-cell;
+    }
+  }
+
+  .spinner-message {
+    margin-top: 10px;
+    color: darken(@backgroundColor, 40%)
+  }
+
+  #noresultserror {
+    color: #ccc;
+    text-align: center;
+    p {
+      margin-top: 0;
+      text-transform: uppercase;
+      font-size: 3em;
+    }
+    a {
+      color: #999;
+      font-size: 1.2em;
+      text-decoration: underline;
     }
   }
 

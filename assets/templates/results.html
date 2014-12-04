@@ -1,3 +1,4 @@
+{{#totalCount}}
 <ul id="document-list">
   {{#timeSlices}}
     {{#isActive}}
@@ -12,9 +13,7 @@
     {{/isActive}}
   {{/timeSlices}}
 </ul>
-
-{{#totalCount}}
-<section class="see-all">
+<div class="see-all">
   <a href="{{appUrl}}/#/?q={{search}}" target="_blank">
     {{#hasMore}}
       See all ({{totalCount}} matches)
@@ -23,5 +22,16 @@
       See on AnyFetch app
     {{/hasMore}}
   </a>
-</section>
+</div>
+{{/totalCount}}
+
+{{^totalCount}}
+<div id="noresultserror">
+  <div class="table-center">
+    <div class="cell-center">
+      <p>No results :(</p>
+      <a href="{{managerUrl}}/providers" target="_blank">See connected providers</a>
+    </div>
+  </div>
+</div>
 {{/totalCount}}
