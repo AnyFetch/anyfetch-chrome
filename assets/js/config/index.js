@@ -91,6 +91,7 @@ var supportedSites = {
     url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#.+/,
     context: {
       dom: [
+        // Email in full view
         // Subject
         {
           target: 'textContent',
@@ -100,7 +101,21 @@ var supportedSites = {
         {
           target: 'name',
           selector: 'div[role="main"] table > tbody > tr > td > h3 > span[email]'
-        }
+        },
+        // Contact in semi full view
+        [
+          {
+            target: 'textContent',
+            selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a'
+          }
+        ],
+        // Related Google+ Page
+        [
+          {
+            target: 'textContent',
+            selector: 'div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
+          }
+        ]
       ]
     }
   },
