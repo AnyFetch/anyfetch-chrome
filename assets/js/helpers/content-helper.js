@@ -95,7 +95,7 @@ module.exports.getContextObject = function getContextObject(context) {
     return {
       name: item,
       active: true,
-      hash: getHash(item)
+      hash: getHash(item.toLowerCase())
     };
   });
 };
