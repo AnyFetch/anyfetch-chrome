@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
       config.loadUserSettings(cb);
     },
     function init(cb) {
-      // Dynamically set manager url for no results
-      document.getElementById('manager-url').setAttribute('href', config.managerUrl + '/providers');
-
       if(!config.token) {
         errors.showSetupAccountError();
         return;

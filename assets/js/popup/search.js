@@ -33,9 +33,6 @@ module.exports = function(context, cb) {
       errors.show(err);
       return cb(err);
     }
-    if(!totalCount) {
-      return errors.noResultsShow();
-    }
     displayResults(search, documents, totalCount);
     cb(null);
   });

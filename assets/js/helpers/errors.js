@@ -18,12 +18,6 @@ module.exports.clear = function() {
   errorDisplay.empty();
 };
 
-module.exports.noResultsShow = function() {
-  var resultsDisplay = $('#results');
-  var noResultsDisplay = $('#noresultserror');
-  resultsDisplay.empty();
-  noResultsDisplay[0].classList.remove('hidden');
-};
 
 module.exports.showSetupAccountError = function(err) {
   var resultsDisplay = $('#results');

@@ -76,7 +76,8 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
     totalCount: totalCount,
     hasMore: (count < totalCount),
 
-    appUrl: config.appUrl
+    appUrl: config.appUrl,
+    managerUrl: config.managerUrl
   };
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
