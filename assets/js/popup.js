@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function filterContext(context, cb) {
       context = context.map(function(item) {
-        if(config.blacklist[item.hash]) {
+        if(config.blacklist[item.name]) {
           item.active = false;
         }
         return item;

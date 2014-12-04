@@ -6,7 +6,7 @@ var detectContext = require('../assets/js/popup/detect-context.js');
 
 describe('<Context detection>', function() {
   var fakeName = 'Léo Hua--Döl';
-  var fakeContext = { name: fakeName, active: true, hash: '1078456788' };
+  var fakeContext = { name: fakeName, active: true };
   var testData = {
     'GitHub': {
       url: 'https://github.com/leoHD',
