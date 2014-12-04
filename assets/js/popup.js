@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
       search(context, function(err) {
         clearTimeout(timeout);
         if(err) {
-          console.error(err);
           return;
         }
         cb();

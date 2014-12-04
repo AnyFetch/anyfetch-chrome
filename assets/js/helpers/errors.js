@@ -1,7 +1,9 @@
 'use strict';
 
 require('zepto/zepto.min.js');
+var Mustache = require('mustache');
 
+var templates = require('../../templates/templates.js');
 
 module.exports.show = function(err) {
   var resultsDisplay = $('#results');
@@ -21,11 +23,7 @@ module.exports.clear = function() {
 
 module.exports.showSetupAccountError = function(err) {
   var resultsDisplay = $('#results');
-  var errorDisplay = $('#errors');
-  if(err) {
-    console.warn(err);
-  }
-  resultsDisplay.empty();
-  errorDisplay.html('Please <a href="first-run.html" target="_blank">setup your AnyFetch account</a> to start using AnyFetch.');
-  errorDisplay[0].classList.remove('hidden');
+  console.warn(err);
+  console.log(resultsDisplay);
+  resultsDisplay.html(Mustache.render(templates.login));
 };

@@ -30,7 +30,12 @@ module.exports = function(context, cb) {
       return cb(new Error('Not the last search'));
     }
     if(err) {
-      errors.show(err);
+      if(err.indexOf('InvalidCredentials') !== -1 || err.indexOf('InvalidScope') !== -1) {
+        errors.showSetupAccountError(err);
+      }
+      else {
+        errors.show(err);
+      }
       return cb(err);
     }
     displayResults(search, documents, totalCount);
