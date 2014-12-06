@@ -4,9 +4,10 @@
   "description": "Find documents related to the current page with AnyFetch.",
   "version": "1.0.2",
   "icons": {
-    "16": "res/logo16.png",
-    "48": "res/logo48.png",
-    "128": "res/logo128.png"
+    "16": "res/icon16.png",
+    "32": "res/icon32.png",
+    "48": "res/icon48.png",
+    "128": "res/icon128.png"
   },
   "permissions": [
     "declarativeContent",
@@ -21,8 +22,8 @@
   ],
   "page_action": {
     "default_icon": {
-      "19": "res/logo19.png",
-      "38": "res/logo38.png"
+      "19": "res/icon19.png",
+      "38": "res/icon38.png"
     },
     "default_popup": "views/popover.html",
     "default_title": "AnyFetch"
