@@ -13,9 +13,10 @@ var getContextObject = require('./content-helper.js').getContextObject;
 function getFromTitle(tab, site) {
   var matches = tab.title.match(site.context.title);
   if(matches) {
-    return matches[1];
+    matches.shift();
+    return matches;
   }
-  return false;
+  return [];
 }
 
 /**
@@ -67,7 +68,7 @@ function getFromDOM(tab, site, cb) {
 module.exports = function detectContext(tab, site, cb) {
   if(site.context.title) {
     var context = getFromTitle(tab, site);
-    return cb(null, getContextObject([context]));
+    return cb(null, getContextObject(context));
   }
   else if(site.context.dom) {
     return getFromDOM(tab, site, cb);

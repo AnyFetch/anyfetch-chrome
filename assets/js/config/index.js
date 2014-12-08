@@ -56,9 +56,9 @@ var supportedSites = {
   twitter: {
     // https://twitter.com/r_ricard
     url: /twitter\.com\/([^\/]+)$/,
-    // Robin Ricard (r_ricard) on Twitter
+    // Robin Ricard (@r_ricard) | Twitter
     context: {
-      title: /^(.+)\([^\)]+\)/i
+      title: /^(.*) \(@(.*)\) \| Twitter$/i
     }
   },
   facebook: {
@@ -129,7 +129,7 @@ var supportedSites = {
       title: /^([^\(]+) [\(-]/i
     }
   },
-  salesForceContact: {
+ salesForceContact: {
     // https://emea.salesforce.com/0032000001DoV22
     url: /salesforce\.com\/[a-zA-Z0-9]{15}$/,
     // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
