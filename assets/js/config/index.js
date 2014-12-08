@@ -113,7 +113,7 @@ var supportedSites = {
         [
           {
             target: 'textContent',
-            selector: 'div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
+            selector: 'div[role="main"] div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
           }
         ]
       ]
