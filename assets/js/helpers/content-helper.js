@@ -16,12 +16,16 @@ function removeGarbage(context) {
  * Remove duplicates
  */
 function uniqContext(context) {
-  return context.reduce(function(acc, item) {
-    if (acc.indexOf(item) < 0 ) {
-      acc.push(item);
+  var result = [];
+  context.reduce(function(acc, item) {
+    console.log(acc, result, item);
+    if(acc.indexOf(item) < 0) {
+      acc.push(item.toLowerCase());
+      result.push(item);
     }
     return acc;
   }, []);
+  return result;
 }
 
 /**
