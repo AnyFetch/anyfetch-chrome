@@ -6,7 +6,7 @@ var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
 var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
 var view = require('./popup/view.js');
-var detectContext = require('./popup/detect-context.js');
+var detectContext = require('./helpers/detect-context.js');
 var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -39,6 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     },
     function getContext(tab, cb) {
+      var site;
+      for(var siteName in config.supportedSites) {
+        site = config.supportedSites[siteName];
+        if(tab.url.match(site.url)) {
+          break;
+        }
+      }
+
       timeout = setTimeout(function() {
       view.showSpinner("Searching...");
         timeout = setTimeout(function() {
@@ -49,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
       }, 500);
 
-      detectContext(tab, function(err, context) {
+      detectContext(tab, site, function(err, context) {
         if(err) {
           clearTimeout(timeout);
           return errors.show(err);
