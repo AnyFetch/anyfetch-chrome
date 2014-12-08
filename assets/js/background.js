@@ -21,7 +21,14 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
     else {
       console.log('Retry: attempt ' + current + ' failed');
       setTimeout(function() {
-        detectContextWithRetry(tab, site, attempts, delay * 2, current + 1, cb);
+        // Update tab object, may have changed
+        chrome.tabs.get(tab.id, function(tab) {
+          if(!tab) {
+            // We lost the tab, abort now
+            return cb(null, []);
+          }
+          detectContextWithRetry(tab, site, attempts, delay * 2, current + 1, cb);
+        });
       }, delay);
     }
   });
@@ -37,6 +44,14 @@ function managePageAction(tab) {
     site = config.supportedSites[siteName];
     if(tab.url.match(site.url)) {
       async.waterfall([
+        function(cb) {
+          setTimeout(function() {
+            chrome.tabs.get(tab.id, function(tabUpdated) {
+              tab = tabUpdated;
+              cb();
+            });
+          }, 500);
+        },
         function(cb) {
           detectContextWithRetry(tab, site, 2, 1000, cb);
         },
