@@ -65,8 +65,9 @@ var supportedSites = {
     // https://www.facebook.com/ricardrobin
     url: /facebook\.com\/([^\/]+)$/,
     // Robin Ricard
+    // (5) Robin Ricard
     context: {
-      title: /^(.+)$/i
+      title: /^(?:\(\d+\) )?(.*)$/i
     }
   },
   googleContactOnGmail: {
