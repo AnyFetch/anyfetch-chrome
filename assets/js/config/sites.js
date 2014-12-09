@@ -165,16 +165,28 @@ module.exports = {
     }
   },
  salesForceContact: {
-    // https://emea.salesforce.com/0032000001DoV22
+    tests: {
+      urls: [
+        'https://emea.salesforce.com/0032000001DoV22',
+      ],
+      titles: {
+        'Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition': ['Matthieu Bacconnier'],
+        'Contact : Matthieu Bacconnier ~ salesforce.com - Developer Edition': ['Matthieu Bacconnier'],
+      }
+    },
     url: /salesforce\.com\/[a-zA-Z0-9]{15}$/,
-    // Contact: Matthieu Bacconnier ~ salesforce.com - Enterprise Edition
     context: {
-      title: /^Contact:\s(.+) \~ /i
+      title: /^Contact(?:\s)?(.+)\s\~\s/i
     },
   },
   googleCalendar: {
-    // https://www.google.com/calendar/render
-    // https://www.google.com/calendar/render#
+    tests: {
+      urls: [
+        'https://www.google.com/calendar/render',
+        'https://www.google.com/calendar/render#g',
+        'https://www.google.com/calendar/render#f%7Ceid-MjAxNF9CSVJUSERBWV8xZWYxY2IxNjhkYmI4ZWIzICNjb250YWN0c0B2-0-0-',
+      ]
+    },
     url: /google\.com\/calendar\/render/,
 
     context: {
@@ -199,18 +211,42 @@ module.exports = {
     }
   },
   google: {
+    tests: {
+      urls: [
+        'https://www.google.fr/search?q=hello+world&oq=hello+world&aqs=chrome..69i57j0l5.1447j0j1&sourceid=chrome&es_sm=0&ie=UTF-8',
+        'https://www.google.com/search?q=hello+world',
+      ],
+      titles: {
+        'Hello world - Recherche Google': ['Hello world'],
+        'Hello world - Google Search': ['Hello world'],
+        'Hello world - lol - Google Search': ['Hello world - lol'],
+      }
+    },
     url: /google\.[a-z]{2,63}\/search/,
     context: {
       title: /^(.+)\s-\s/i,
     },
   },
   baseCrmContacts: {
+    tests: {
+      urls: [
+        'https://app.futuresimple.com/crm/contacts/70149392',
+      ],
+      titles: {
+        'Base CRM: Alexis Montagne': ['Alexis Montagne'],
+      }
+    },
     url: /app\.futuresimple\.com\/crm\/contacts/,
     context: {
       title: /Base\sCRM:\s(.+)/i,
     },
   },
   baseCrmLeads: {
+    tests: {
+      urls: [
+        'https://app.futuresimple.com/leads/11866410',
+      ],
+    },
     url: /app\.futuresimple\.com\/leads/,
     context: {
       dom: [
@@ -223,6 +259,11 @@ module.exports = {
     }
   },
   baseCrmDeals: {
+    tests: {
+      urls: [
+        'https://app.futuresimple.com/sales/deals/3351303',
+      ],
+    },
     url: /app\.futuresimple\.com\/sales\/deals/,
     context: {
       dom: [
