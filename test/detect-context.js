@@ -2,43 +2,53 @@
 
 var should = require('should');
 
-var detectContext = require('../assets/js/popup/detect-context.js');
+var sites = require('../assets/js/config/sites.js');
 
-describe('<Context detection>', function() {
-  var fakeName = 'Léo Hua--Döl';
-  var fakeContext = { name: fakeName, active: true };
-  var testData = {
-    'GitHub': {
-      url: 'https://github.com/leoHD',
-      title: 'leoHD (' + fakeName + ')'
-    },
-    'LinkedIn': {
-      url: 'https://www.linkedin.com/profile/view?id=255575282',
-      title: fakeName + ' | LinkedIn'
+function testUrlsRegex(siteName) {
+  var site = sites[siteName];
+  describe(siteName, function() {
+    var tests = site.tests;
+    if(!tests || !tests.urls || !tests.urls.length) {
+      it.skip('No URL tests for ' + siteName);
+      return;
     }
-  };
-
-  it('should err for non-supported sites', function(done) {
-    var tab = {
-    url: 'https://some.random.url/profile/view?id=32133742',
-    title: fakeName + ' | My Random Site',
-    };
-    detectContext(tab, function(err) {
-      err.should.be.ok;
-      done();
-    });
-  });
-
-  describe('should extract context query string on supported sites', function() {
-    Object.keys(testData).forEach(function(siteName) {
-      it(siteName, function(done) {
-        var tab = testData[siteName];
-        detectContext(tab, function(err, context) {
-          should(context).be.ok;
-          should(context).containEql(fakeContext);
-          done(err);
-        });
+    tests.urls.forEach(function(url) {
+      it('should match "' + url + '"', function() {
+        url.should.match(site.url);
       });
     });
+  });
+}
+
+function testTitlesRegex(siteName) {
+  var site = sites[siteName];
+  if(!site.context || !site.context.title) {
+    return;
+  }
+  describe(siteName, function() {
+    var tests = site.tests;
+    if(!tests || !tests.titles) {
+      it.skip('No Title tests for ' + siteName);
+      return;
+    }
+    Object.keys(tests.titles).forEach(function(title) {
+      it('should match "' + title + '"', function() {
+        title.should.match(site.context.title);
+
+        var context = title.match(site.context.title);
+        should(context).be.ok;
+        context.shift(1);
+        context.should.containDeep(site.tests.titles[title]);
+      });
+    });
+  });
+}
+
+describe('<Context detection>', function() {
+  describe('URL regex should match test urls', function() {
+    Object.keys(sites).forEach(testUrlsRegex);
+  });
+  describe('Title regex should extract context items', function() {
+    Object.keys(sites).forEach(testTitlesRegex);
   });
 });
