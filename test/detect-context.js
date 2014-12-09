@@ -48,6 +48,7 @@ describe('<Context detection>', function() {
   describe('URL regex should match test urls', function() {
     Object.keys(sites).forEach(testUrlsRegex);
   });
+
   describe('Title regex should extract context items', function() {
     Object.keys(sites).forEach(testTitlesRegex);
   });
