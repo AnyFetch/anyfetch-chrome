@@ -4,15 +4,17 @@ var getContextObject = require('./content-helper.js').getContextObject;
 
 
 /**
- * Return the detected context from the title
- * or false if the regex fails (expected context from a wrong formatted title)
+ * Return the detected elements from the title or an empty array
+ * if the regex fails (expected context from a badly formatted title)
  * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
  * @param {Object} site A site from config.supportedSites
- * @return {Boolean|String}
+ * @return {Array}
  */
 function getFromTitle(tab, site) {
   var matches = tab.title.match(site.context.title);
-  if(matches) {
+  if(matches && matches.length > 1) {
+    // The first element is the input. We return the captured elements
+    // from the string (parenthesis in the regexp)
     matches.shift();
     return matches;
   }
@@ -23,7 +25,6 @@ function getFromTitle(tab, site) {
  * Inject content script in page, to get the context from the page's DOM
  * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
  * @param {Object} site A site from config.supportedSites
- * @return {Boolean|String}
  */
 function getFromDOM(tab, site, cb) {
 
