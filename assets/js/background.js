@@ -1,10 +1,12 @@
 'use strict';
 
+var async = require('async');
+var rarity = require('rarity');
+
 var config = require('./config/index.js');
 var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./fetch/get-count.js');
-var async = require('async');
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -46,8 +48,8 @@ function managePageAction(tab) {
       async.waterfall([
         function(cb) {
           setTimeout(function() {
-            chrome.tabs.get(tab.id, function(tabUpdated) {
-              tab = tabUpdated;
+            chrome.tabs.get(tab.id, function(updatedTab) {
+              tab = updatedTab;
               cb();
             });
           }, 500);
@@ -66,22 +68,17 @@ function managePageAction(tab) {
               '19': 'res/icon19_grayscale.png',
               '38': 'res/icon38_grayscale.png'
             }
-          }, function() {
-            cb(null, context);
-          });
+          }, rarity.carry([context], cb));
         },
         function loadSettings(context, cb) {
           chrome.pageAction.show(tab.id);
-          config.loadUserSettings(function(err) {
-            cb(err, context);
-          });
+          config.loadUserSettings(rarity.carry([context], cb));
         },
         function filterContext(context, cb) {
-          context = context.map(function(item) {
+          context.forEach(function(item) {
             if(config.blacklist[item.name]) {
               item.active = false;
             }
-            return item;
           });
           cb(null, context);
         },

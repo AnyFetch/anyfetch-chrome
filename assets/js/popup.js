@@ -66,11 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     },
     function filterContext(context, cb) {
-      context = context.map(function(item) {
+      context.forEach(function(item) {
         if(config.blacklist[item.name]) {
           item.active = false;
         }
-        return item;
       });
       cb(null, context);
     },
