@@ -4,7 +4,7 @@ var async = require('async');
 
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
-var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
+var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
 var view = require('./popup/view.js');
 var detectContext = require('./helpers/detect-context.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');

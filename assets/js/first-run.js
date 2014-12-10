@@ -2,7 +2,7 @@
 
 require('zepto/zepto.min.js');
 var async = require('async/lib/async.js');
-var getStatus = require('./fetch/get-status.js');
+var getStatus = require('./anyfetch/get-status.js');
 var config = require('./config/index.js');
 var oauthStart = require('./oauth/oauth-start.js');
 

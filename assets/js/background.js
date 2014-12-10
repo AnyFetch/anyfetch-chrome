@@ -6,7 +6,7 @@ var rarity = require('rarity');
 var config = require('./config/index.js');
 var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
-var getCount = require('./fetch/get-count.js');
+var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
