@@ -10,7 +10,7 @@ var detectContext = require('./helpers/detect-context.js');
 var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
-  var timeout;
+  var timeout = null;
 
   // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)
@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function getCurrentTab(cb) {
       // Detect context for the current tab
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        if(!tabs || !tabs[0]) {
+          return cb(new Error('Error while acquiring tab'));
+        }
         return cb(null, tabs[0]);
       });
     },
@@ -57,13 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
       }, 500);
 
-      detectContext(tab, site, function(err, context) {
-        if(err) {
-          clearTimeout(timeout);
-          return errors.show(err);
-        }
-        cb(null, context);
-      });
+      detectContext(tab, site, cb);
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {
@@ -80,13 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       view.showContext(context);
 
-      search(context, function(err) {
-        clearTimeout(timeout);
-        if(err) {
-          return;
-        }
-        cb();
-      });
+      search(context, cb);
     }
-  ]);
+  ], function(err) {
+    if(timeout) {
+      clearTimeout(timeout);
+    }
+    if(err) {
+      errors.show(err);
+    }
+  });
 });
