@@ -7,6 +7,7 @@ var config = require('./config/index.js');
 var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./fetch/get-count.js');
+var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -41,66 +42,64 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  */
 function managePageAction(tab) {
   chrome.pageAction.hide(tab.id);
-  var site;
-  for(var siteName in config.supportedSites) {
-    site = config.supportedSites[siteName];
-    if(tab.url.match(site.url)) {
-      async.waterfall([
-        function(cb) {
-          setTimeout(function() {
-            chrome.tabs.get(tab.id, function(updatedTab) {
-              tab = updatedTab;
-              cb();
-            });
-          }, 500);
-        },
-        function(cb) {
-          detectContextWithRetry(tab, site, 2, 1000, cb);
-        },
-        function setIcon(context, cb) {
-          if(!context.length) {
-            return;
-          }
-          chrome.pageAction.setIcon({
-            tabId: tab.id,
-            path: {
-              '19': 'res/icon19_grayscale.png',
-              '38': 'res/icon38_grayscale.png'
-            }
-          }, rarity.carry([context], cb));
-        },
-        function loadSettings(context, cb) {
-          chrome.pageAction.show(tab.id);
-          config.loadUserSettings(rarity.carry([context], cb));
-        },
-        function filterContext(context, cb) {
-          context.forEach(function(item) {
-            if(config.blacklist[item.name]) {
-              item.active = false;
-            }
-          });
-          cb(null, context);
-        },
-        function getDocumentCount(context, cb) {
-          var query = generateQuery(context);
-          getCount(query, cb);
-        },
-        function showBlue(count, cb) {
-          if(!count) {
-            return cb();
-          }
-          chrome.pageAction.setIcon({
-            tabId: tab.id,
-            path: {
-              '19': 'res/icon19.png',
-              '38': 'res/icon38.png'
-            }
-          }, cb);
-        }
-      ]);
-      return;
-    }
+  var site = getSiteFromTab(config.supportedSites, tab);
+  if(!site) {
+    return;
   }
+
+  async.waterfall([
+    function(cb) {
+      setTimeout(function() {
+        chrome.tabs.get(tab.id, function(updatedTab) {
+          tab = updatedTab;
+          cb();
+        });
+      }, 500);
+    },
+    function(cb) {
+      detectContextWithRetry(tab, site, 2, 1000, cb);
+    },
+    function setIcon(context, cb) {
+      if(!context.length) {
+        return;
+      }
+      chrome.pageAction.setIcon({
+        tabId: tab.id,
+        path: {
+          '19': 'res/icon19_grayscale.png',
+          '38': 'res/icon38_grayscale.png'
+        }
+      }, rarity.carry([context], cb));
+    },
+    function loadSettings(context, cb) {
+      chrome.pageAction.show(tab.id);
+      config.loadUserSettings(rarity.carry([context], cb));
+    },
+    function filterContext(context, cb) {
+      context.forEach(function(item) {
+        if(config.blacklist[item.name]) {
+          item.active = false;
+        }
+      });
+      cb(null, context);
+    },
+    function getDocumentCount(context, cb) {
+      var query = generateQuery(context);
+      getCount(query, cb);
+    },
+    function showBlue(count, cb) {
+      if(!count) {
+        return cb();
+      }
+      chrome.pageAction.setIcon({
+        tabId: tab.id,
+        path: {
+          '19': 'res/icon19.png',
+          '38': 'res/icon38.png'
+        }
+      }, cb);
+    }
+  ]);
 }
 
 /**

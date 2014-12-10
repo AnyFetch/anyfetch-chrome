@@ -7,6 +7,7 @@ var errors = require('./helpers/errors.js');
 var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
 var view = require('./popup/view.js');
 var detectContext = require('./helpers/detect-context.js');
+var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -42,12 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     },
     function getContext(tab, cb) {
-      var site;
-      for(var siteName in config.supportedSites) {
-        site = config.supportedSites[siteName];
-        if(tab.url.match(site.url)) {
-          break;
-        }
+      var site = getSiteFromTab(config.supportedSites, tab);
+      if(!site) {
+        return cb(new Error('No sites matched for the current tab'));
       }
 
       timeout = setTimeout(function() {
