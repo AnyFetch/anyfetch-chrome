@@ -16,7 +16,7 @@ function getFromTitle(tab, site) {
     // The first element is the input. We return the captured elements
     // from the string (parenthesis in the regexp)
     matches.shift();
-    return matches;
+    return getContextObject(matches);
   }
   return [];
 }
@@ -72,8 +72,7 @@ module.exports = function detectContext(tab, site, cb) {
   // We check the site's context detection method.
   // TODO: Mix the results of the two methods.
   if(site.context.title) {
-    var context = getFromTitle(tab, site);
-    return cb(null, getContextObject(context));
+    return cb(null, getFromTitle(tab, site));
   }
   else if(site.context.dom) {
     return getFromDOM(tab, site, cb);
