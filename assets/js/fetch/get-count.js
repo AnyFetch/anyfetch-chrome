@@ -19,18 +19,21 @@ module.exports = function getCount(query, cb) {
     data: {
       search: query,
       limit: 0,
+      //fields: 'count'
+      // TODO: Enable this when active on production
     },
     headers: {
       'Authorization': 'Bearer ' + config.token
     },
     success: function(res) {
+      console.log(res);
       if(res && ('count' in res)) {
         return cb(null, res.count);
       }
-      cb(res.responseJSON || res.responseText);
+      cb(new Error(res.responseJSON || res.responseText));
     },
     error: function(res) {
-      cb(res.responseJSON || res.responseText);
+      cb(new Error(res.responseJSON || res.responseText));
     }
   });
 };
