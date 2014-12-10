@@ -28,15 +28,11 @@ function getFromTitle(tab, site) {
  */
 function getFromDOM(tab, site, cb) {
 
-  // We only call the cb once.
-  var called = false;
-  function callCb(err, context) {
-    if(called) {
-      return;
-    }
-    called = true;
+  var callCb = function(err, context) {
+    // We only call the cb once.
+    callCb = function() {};
     cb(err, context);
-  }
+  };
 
   var requestContext = function(site, cb) {
     chrome.tabs.sendMessage(tab.id, {type: 'contextRequest', site: site}, function(response) {
