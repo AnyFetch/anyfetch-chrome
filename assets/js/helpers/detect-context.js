@@ -35,15 +35,15 @@ function getFromDOM(tab, site, cb) {
   };
 
   var requestContext = function(site, cb) {
-    chrome.tabs.sendMessage(tab.id, {type: 'contextRequest', site: site}, function(response) {
+    chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::contextRequest', site: site}, function(response) {
       var context = getContextObject(response.context);
       cb(null, context);
     });
   };
 
   // Query the tab to know if we already injected the content script
-  chrome.tabs.sendMessage(tab.id, {type: 'ping'}, function(response) {
-    if(response && response.type === 'pong' ) {
+  chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::ping'}, function(response) {
+    if(response && response.type === 'anyfetch::pong' ) {
       requestContext(site, callCb);
     }
     else {
@@ -55,7 +55,7 @@ function getFromDOM(tab, site, cb) {
     }
   });
 
-  // Instore a timeout for the page to answer.
+  // Add a timeout waiting for the page's answer
   setTimeout(function() {
     callCb(new Error('Cannot get context from content script. Please retry!'));
   }, 5000);
