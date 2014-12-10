@@ -63,6 +63,7 @@ function managePageAction(tab) {
       if(!context.length) {
         return;
       }
+      // We have detected a context, show a gray icon, while we don't have confirmation of some results
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
@@ -91,6 +92,7 @@ function managePageAction(tab) {
       if(!count) {
         return cb();
       }
+      // We have some results, so show a the blue icon instead of the gray one
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {

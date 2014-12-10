@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       timeout = setTimeout(function() {
-      view.showSpinner("Searching...");
+        view.showSpinner("Searching...");
         timeout = setTimeout(function() {
           view.showSpinner("Still searching...");
           timeout = setTimeout(function() {
