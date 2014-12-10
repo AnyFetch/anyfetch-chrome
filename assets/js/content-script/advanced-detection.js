@@ -15,7 +15,6 @@ function getValue(rule) {
       value = node.innerHTML;
     }
     else if(rule.target === 'textContent') {
-      console.log(node.textContent);
       value = node.textContent;
     }
     else if(rule.target === 'value') {
@@ -61,10 +60,6 @@ var messageHandler = function messageHandler(request, sender, sendResponse) {
     sendResponse({type: 'pong'});
   }
   else if (request.type === 'contextRequest') {
-    console.log('requested');
-    window.onready = function() {
-      console.log('a');
-    };
     sendResponse({type: 'context', context: getContext(request.site.context.dom)});
   }
 };

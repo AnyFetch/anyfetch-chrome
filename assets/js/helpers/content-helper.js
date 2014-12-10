@@ -18,7 +18,6 @@ function removeGarbage(context) {
 function uniqContext(context) {
   var result = [];
   context.reduce(function(acc, item) {
-    console.log(acc, result, item);
     if(acc.indexOf(item) < 0) {
       acc.push(item.toLowerCase());
       result.push(item);

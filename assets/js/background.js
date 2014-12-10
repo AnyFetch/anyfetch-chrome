@@ -58,7 +58,6 @@ function managePageAction(tab) {
           detectContextWithRetry(tab, site, 2, 1000, cb);
         },
         function setIcon(context, cb) {
-          console.log(context);
           if(!context.length) {
             return;
           }
@@ -87,7 +86,6 @@ function managePageAction(tab) {
           getCount(query, cb);
         },
         function showBlue(count, cb) {
-          console.log(arguments);
           if(!count) {
             return cb();
           }

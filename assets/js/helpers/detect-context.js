@@ -47,7 +47,6 @@ function getFromDOM(tab, site, cb) {
   // Query the tab to know if we already injected the content script
   chrome.tabs.sendMessage(tab.id, {type: 'ping'}, function(response) {
     if(response && response.type === 'pong' ) {
-      console.log('already there!');
       requestContext(site, callCb);
     }
     else {
