@@ -4,13 +4,14 @@ var async = require('async');
 
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
-var postUpdateIfNecessary = require('./fetch/post-update-if-necessary.js');
+var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
 var view = require('./popup/view.js');
-var detectContext = require('./popup/detect-context.js');
+var detectContext = require('./helpers/detect-context.js');
+var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
-  var timeout;
+  var timeout = null;
 
   // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)
@@ -35,12 +36,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function getCurrentTab(cb) {
       // Detect context for the current tab
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        if(!tabs || !tabs[0]) {
+          return cb(new Error('Error while acquiring tab'));
+        }
         return cb(null, tabs[0]);
       });
     },
     function getContext(tab, cb) {
+      var site = getSiteFromTab(config.supportedSites, tab);
+      if(!site) {
+        return cb(new Error('No sites matched for the current tab'));
+      }
+
       timeout = setTimeout(function() {
-      view.showSpinner("Searching...");
+        view.showSpinner("Searching...");
         timeout = setTimeout(function() {
           view.showSpinner("Still searching...");
           timeout = setTimeout(function() {
@@ -49,20 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
       }, 500);
 
-      detectContext(tab, function(err, context) {
-        if(err) {
-          clearTimeout(timeout);
-          return errors.show(err);
-        }
-        cb(null, context);
-      });
+      detectContext(tab, site, cb);
     },
     function filterContext(context, cb) {
-      context = context.map(function(item) {
+      context.forEach(function(item) {
         if(config.blacklist[item.name]) {
           item.active = false;
         }
-        return item;
       });
       cb(null, context);
     },
@@ -73,13 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       view.showContext(context);
 
-      search(context, function(err) {
-        clearTimeout(timeout);
-        if(err) {
-          return;
-        }
-        cb();
-      });
+      search(context, cb);
     }
-  ]);
+  ], function(err) {
+    if(timeout) {
+      clearTimeout(timeout);
+    }
+    if(err) {
+      errors.show(err);
+    }
+  });
 });

@@ -15,7 +15,6 @@ module.exports = function(cb) {
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if(request.targetListener === 'oauth-response') {
-        console.log(request);
         success = true;
         config.token = request.token;
         sendResponse();

@@ -2,7 +2,7 @@
 
 var view = require('./view.js');
 var errors = require('../helpers/errors.js');
-var getDocuments = require('../fetch/get-documents.js');
+var getDocuments = require('../anyfetch/get-documents.js');
 var sliceInTime = require('../helpers/slice-in-time.js');
 var generateQuery = require('../helpers/content-helper.js').generateQuery;
 

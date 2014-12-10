@@ -1,9 +1,5 @@
 'use strict';
 /* This file is injected in the page to find dom element that match the configuration */
-/* global site: true */
-
-
-require('zepto/zepto.min.js');
 
 var turnObjToArray = function(obj) {
   return [].map.call(obj, function(element) {
@@ -19,7 +15,6 @@ function getValue(rule) {
       value = node.innerHTML;
     }
     else if(rule.target === 'textContent') {
-      console.log(node.textContent);
       value = node.textContent;
     }
     else if(rule.target === 'value') {
@@ -60,4 +55,13 @@ function getContext(rules) {
   return values;
 }
 
-chrome.runtime.sendMessage({context: getContext(site.context.dom)});
+var messageHandler = function messageHandler(request, sender, sendResponse) {
+  if (request.type === 'anyfetch::ping') {
+    sendResponse({type: 'anyfetch::pong'});
+  }
+  else if (request.type === 'anyfetch::contextRequest') {
+    sendResponse({type: 'context', context: getContext(request.site.context.dom)});
+  }
+};
+
+chrome.runtime.onMessage.addListener(messageHandler);

@@ -30,10 +30,10 @@ module.exports = function getDocuments(query, cb) {
       if(res && res.data) {
         return cb(null, res.data, res.count);
       }
-      cb(res.responseJSON || res.responseText);
+      cb(new Error(res.responseJSON || res.responseText));
     },
     error: function(res) {
-      cb(res.responseJSON || res.responseText);
+      cb(new Error(res.responseJSON || res.responseText));
     }
   });
 };
