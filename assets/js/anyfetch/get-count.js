@@ -26,7 +26,6 @@ module.exports = function getCount(query, cb) {
       'Authorization': 'Bearer ' + config.token
     },
     success: function(res) {
-      console.log(res);
       if(res && ('count' in res)) {
         return cb(null, res.count);
       }
