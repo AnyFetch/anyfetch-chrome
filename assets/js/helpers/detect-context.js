@@ -27,10 +27,13 @@ function getFromTitle(tab, site) {
  * @param {Object} site A site from config.supportedSites
  */
 function getFromDOM(tab, site, cb) {
+  // Add a timeout waiting for the page's answer
+  var timeout = setTimeout(function() {
+    callCb(new Error('Cannot get context from content script. Please retry!'));
+  }, 5000);
 
   var callCb = function(err, context) {
-    // We only call the cb once.
-    callCb = function() {};
+    clearTimeout(timeout);
     cb(err, context);
   };
 
@@ -55,10 +58,6 @@ function getFromDOM(tab, site, cb) {
     }
   });
 
-  // Add a timeout waiting for the page's answer
-  setTimeout(function() {
-    callCb(new Error('Cannot get context from content script. Please retry!'));
-  }, 5000);
 }
 
 module.exports = function detectContext(tab, site, cb) {
