@@ -57,10 +57,20 @@ function getFromDOM(tab, site, cb) {
       });
     }
   });
-
 }
 
+/**
+ * Detect the context from a target tab.
+ * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
+ * @param {Object} site A site from config.supportedSites
+ * @return {Array} An array of Objects of the following format: {active: true, name: "the context"}
+ *                 This array should not contain any duplicated item.
+ *                 The `active` key is used to know if the user blacklisted this context.
+ *                 This is initialized to true, and currently the filtering is done outside this function.
+ */
 module.exports = function detectContext(tab, site, cb) {
+  // We check the site's context detection method.
+  // TODO: Mix the results of the two methods.
   if(site.context.title) {
     var context = getFromTitle(tab, site);
     return cb(null, getContextObject(context));
