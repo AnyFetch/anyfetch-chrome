@@ -6,10 +6,10 @@ var config = require('../config/index.js');
 var documentsEndpoint = '/documents';
 
 /**
- * Request the AnyFetch API for number of documents matching `query`.
+ * Request the AnyFetch API for the number of documents matching `query`.
  * @param {String} query The search query
  * @param {Function} cb(err, count)
- *   documents An array of matching documents
+ *   count Number of documents matching `query`
  */
 module.exports = function getCount(query, cb) {
   var url = config.apiUrl + documentsEndpoint;
