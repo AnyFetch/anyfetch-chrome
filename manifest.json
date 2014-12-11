@@ -34,5 +34,6 @@
     ],
     "persistent": false
   },
-  "options_page": "views/options.html"
+  "options_page": "views/settings.html"
 }
+
