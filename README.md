@@ -1,5 +1,6 @@
 anyfetch-chrome
 ===============
+[![Circle CI](https://circleci.com/gh/AnyFetch/anyfetch-chrome.svg?style=svg)](https://circleci.com/gh/AnyFetch/anyfetch-chrome)
 
 AnyFetch Chrome extension
 
