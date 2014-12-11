@@ -18,7 +18,7 @@ var paths = {
       'assets/js/background.js',
       'assets/js/popup.js',
       'assets/js/first-run.js',
-      'assets/js/settings.js',
+      'assets/js/advanced-settings.js',
       'assets/js/oauth-callback.js',
       'assets/js/content-script/advanced-detection.js',
     ]

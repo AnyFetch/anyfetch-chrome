@@ -6,6 +6,8 @@ var fs = require('fs');
  * @file Thanks to the BRFS Browserify transform,
  * the static resources loaded via `fs.readFileSync`
  * end up being inlined directly into the compiled JS source.
+ * TODO: As this grows, requiring unused templates would make the generated js heavy.
+ *       -> think of something to prevent this.
  */
 
 module.exports = {

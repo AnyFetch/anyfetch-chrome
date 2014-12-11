@@ -17,11 +17,9 @@ var insertFields = function(descriptors) {
 };
 
 var displayValues = function(values) {
-  for(var id in values) {
-    if(values[id]) {
-      document.getElementById(id).value = values[id];
-    }
-  }
+  Object.keys(values).forEach(function(id) {
+    document.getElementById(id).value = values[id];
+  });
 };
 
 /**
@@ -33,7 +31,7 @@ var loadSettings = function() {
   chrome.storage.sync.get(Object.keys(config.settings), displayValues);
 };
 
-var saveSettings = function() {
+var saveSettings = function(event) {
   var newValues = {};
   for(var id in config.settings) {
     var input = document.getElementById(id);
@@ -44,9 +42,14 @@ var saveSettings = function() {
     }
   }
 
+
   // Persist settings using the `chrome.storage` API
   chrome.storage.sync.set(newValues, function() {
     console.log('Settings updated.');
+    event.target.innerHTML = 'Saved!';
+    window.setTimeout(function() {
+      event.target.innerHTML = 'Save';
+    }, 1000);
   });
 };
 
@@ -54,9 +57,9 @@ var saveSettings = function() {
 var resetSettings = function() {
   chrome.storage.sync.clear(function() {
     var newValues = {};
-    for(var id in config.settings) {
-      newValues[id] = '';
-    }
+    Object.keys(config.settings).forEach(function(id) {
+      newValues[id] = config.settings[id].default;
+    });
     displayValues(newValues);
   });
 };
@@ -64,7 +67,6 @@ var resetSettings = function() {
 document.addEventListener('DOMContentLoaded', function() {
   insertFields(config.settings);
   loadSettings();
-  document.getElementById('manager-url').setAttribute('href', config.settings.managerUrl.value + '/providers');
   document.getElementById('save').addEventListener('click', saveSettings);
   document.getElementById('reset').addEventListener('click', resetSettings);
   document.getElementById('settings').classList.remove('section-invisible');
