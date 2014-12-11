@@ -41,7 +41,6 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  */
 function managePageAction(tab) {
-  chrome.pageAction.hide(tab.id);
   var site = getSiteFromTab(config.supportedSites, tab);
   if(!site) {
     return;
@@ -57,6 +56,7 @@ function managePageAction(tab) {
       }, 500);
     },
     function(cb) {
+      chrome.pageAction.hide(tab.id);
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
