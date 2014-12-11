@@ -8,6 +8,7 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
+var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -41,13 +42,14 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  */
 function managePageAction(tab) {
-  var site = getSiteFromTab(config.supportedSites, tab);
-  if(!site) {
+  if(!tab || !tab.id) {
     return;
   }
 
+  chrome.pageAction.hide(tab.id);
+
   async.waterfall([
-    function(cb) {
+    function confirmTab(cb) {
       setTimeout(function() {
         chrome.tabs.get(tab.id, function(updatedTab) {
           tab = updatedTab;
@@ -56,7 +58,10 @@ function managePageAction(tab) {
       }, 500);
     },
     function(cb) {
-      chrome.pageAction.hide(tab.id);
+      var site = getSiteFromTab(config.supportedSites, tab);
+      if(!site) {
+        return cb('No site for ' + tab.url);
+      }
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
@@ -77,6 +82,13 @@ function managePageAction(tab) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function filterContext(context, cb) {
+      if(!config.token) {
+        return cb(new Error('No token'));
+      }
+
+      // Post update
+      postUpdateIfNecessary();
+
       context.forEach(function(item) {
         if(config.blacklist[item.name]) {
           item.active = false;
