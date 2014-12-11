@@ -21,7 +21,31 @@
   ],
   "author": "Merlin Nimier-David <merlin.nimier@gmail.com>",
   "contributors": [
-    "Antoine Bolvy <antoine.bolvy@gmail.com>"
+    {
+      "name": "Tanguy Hélesbeux",
+      "email": null,
+      "url": "https://github.com/Tgy31"
+    },
+    {
+      "name": "Matthieu Bacconnier",
+      "email": "neamar@neamar.fr",
+      "url": "https://github.com/Neamar"
+    },
+    {
+      "name": "Quentin Buathier",
+      "email": "quentin.buathier@epitech.eu",
+      "url": "https://github.com/Quentin01"
+    },
+    {
+      "name": "Merlin Nimier-David",
+      "email": "",
+      "url": "https://github.com/merlinND"
+    },
+    {
+      "name": "Antoine Bolvy",
+      "email": "antoine.bolvy@gmail.com",
+      "url": "https://github.com/saveman71"
+    }
   ],
   "license": "MIT",
   "bugs": {
