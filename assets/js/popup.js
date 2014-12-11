@@ -82,7 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
       clearTimeout(timeout);
     }
     if(err) {
-      errors.show(err);
+      if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
+        errors.showSetupAccountError(err);
+      }
+      else {
+        errors.show(err);
+      }
     }
   });
 });

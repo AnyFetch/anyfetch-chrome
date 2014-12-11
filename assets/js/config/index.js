@@ -70,15 +70,7 @@ var configuration = {
   loadUserSettings: loadUserSettings,
 
   /**
-   * site name => {
-   *   url: regexp to determine if we're on a supported page
-   *   context: regexp to extract the context query from the page's title
-   * }
-   *
-   * @note For some reason, Chrome UrlFilter regexp must be strings.
-   * @note Other way (more complex): match from the HTML. But it seems more complicated:
-   * @see http://stackoverflow.com/questions/11684454/getting-the-source-html-of-the-current-page-from-chrome-extension
-   * @see https://developer.chrome.com/extensions/content_scripts
+   * Static list of supported sites. Includes their method of detection (regexes)
    */
   supportedSites: supportedSites,
 
