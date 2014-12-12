@@ -12,7 +12,8 @@ module.exports = {
       'Hello world - lol - Google Search': ['Hello world - lol'],
     }
   },
-  url: /google\.[a-z]{2,63}\/search/,
+  // @see https://regex101.com/r/bG9qB7/1
+  url: /google\.(?:\w+(?:\.\w+)?)\/(?:search|.*#q=)/,
   context: {
     title: /^(.+)\s-\s/i,
   },
