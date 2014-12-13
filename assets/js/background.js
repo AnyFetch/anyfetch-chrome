@@ -52,6 +52,10 @@ function managePageAction(tab) {
     function confirmTab(cb) {
       setTimeout(function() {
         chrome.tabs.get(tab.id, function(updatedTab) {
+          if(chrome.runtime.lastError) {
+            // lost the tab, might happen sometimes
+            return cb('Lost the tab');
+          }
           tab = updatedTab;
           cb();
         });
