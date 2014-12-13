@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Facebook',
   tests: {
     urls: [
       'https://www.facebook.com/saveman71'

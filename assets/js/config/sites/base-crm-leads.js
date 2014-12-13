@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Base CRM (Lead)',
   tests: {
     urls: [
       'https://app.futuresimple.com/leads/11866410',

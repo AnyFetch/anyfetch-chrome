@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Salesforce',
   tests: {
     urls: [
       'https://emea.salesforce.com/0032000001DoV22',

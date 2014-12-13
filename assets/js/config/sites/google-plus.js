@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Google Plus',
   tests: {
     urls: [
       'https://plus.google.com/+MatthieuBacconnier/posts',

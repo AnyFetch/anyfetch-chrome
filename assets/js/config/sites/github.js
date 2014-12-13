@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Github',
   tests: {
     urls: [
       'https://github.com/Neamar'

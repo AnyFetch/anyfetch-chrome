@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Google Contacts',
   tests: {
     urls: [
       'https://www.google.com/contacts/?hl=en&tab=CC#contact/group/706c53ee8bdab485/Vie+pro/5c2151189ef6394',

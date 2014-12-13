@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Viadeo',
   tests: {
     urls: [
       'http://fr.viadeo.com/fr/profile/arnaud.malon'
