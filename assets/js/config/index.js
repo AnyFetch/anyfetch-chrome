@@ -59,6 +59,11 @@ var configuration = {
       placeholder: 'https://app.anyfetch.com',
       default: 'https://app.anyfetch.com',
       label: 'AnyFetch app URL'
+    },
+    email: {
+      placeholder: 'Your email',
+      default: '',
+      label: 'Email'
     }
   },
 
