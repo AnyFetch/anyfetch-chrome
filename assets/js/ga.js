@@ -38,9 +38,13 @@ if(extensionId === 'igbnmifdfpgnbdhcnhiadcggoejocfpn') {
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
 
-  window.ga('create', 'UA-35597266-6');
+  window.ga('create', 'UA-35597266-6', 'auto');
   window.ga('set', 'checkProtocolTask', function(){});
   window.ga('set', 'forceSSL', true);
+  var version = chrome.app.getDetails().version;
+  if(version) {
+    window.ga('set', 'appVersion', version);
+  }
 }
 else {
   window.ga = function() {
