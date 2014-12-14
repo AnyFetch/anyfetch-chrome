@@ -45,8 +45,13 @@ function managePageAction(tab) {
   if(!tab || !tab.id) {
     return;
   }
-
+  var ga = window.ga || function() {};
+  var site;
   chrome.pageAction.hide(tab.id);
+  if(chrome.runtime.lastError) {
+    // lost the tab, might happen sometimes
+    return;
+  }
 
   async.waterfall([
     function confirmTab(cb) {
@@ -62,7 +67,7 @@ function managePageAction(tab) {
       }, 500);
     },
     function(cb) {
-      var site = getSiteFromTab(config.supportedSites, tab);
+      site = getSiteFromTab(config.supportedSites, tab);
       if(!site) {
         return cb('No site for ' + tab.url);
       }
@@ -89,6 +94,9 @@ function managePageAction(tab) {
       if(!config.token) {
         return cb(new Error('No token'));
       }
+      if(config.email) {
+        ga('set', '&uid', config.email);
+      }
 
       // Post update
       postUpdateIfNecessary();
@@ -106,8 +114,11 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
+        ga('send', 'event', 'background', 'no results', site.name);
         return cb();
       }
+
+      ga('send', 'event', 'background', 'results', site.name, count);
       // We have some results, so show a the blue icon instead of the gray one
       chrome.pageAction.setIcon({
         tabId: tab.id,
