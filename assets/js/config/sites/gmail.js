@@ -8,7 +8,8 @@ module.exports = {
       'https://mail.google.com/mail/u/42/#inbox/14a2c5913c9c71f4',
     ]
   },
-  url: /mail\.google\.com\/mail\/u\/[0-9]+\/.*#.+/,
+  // @see https://regex101.com/r/aT5nJ2/2
+  url: /mail\.google\.com\/mail\/(?:u\/[0-9]+\/)?.*#(?!contact|label).*$/,
   context: {
     dom: [
       // Email in full view
