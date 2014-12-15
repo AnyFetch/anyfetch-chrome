@@ -12,7 +12,7 @@ var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
-  var ga = window.ga || function() {};
+  var ga = window.ga;
 
   // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)

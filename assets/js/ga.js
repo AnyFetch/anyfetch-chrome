@@ -39,6 +39,7 @@ if(extensionId === 'igbnmifdfpgnbdhcnhiadcggoejocfpn') {
 
 
   window.ga('create', 'UA-35597266-6', 'auto');
+  // Required by the chrome extension (its protocol is chrome-extension:// so ti will wrongly guess the protocol)
   window.ga('set', 'checkProtocolTask', function(){});
   window.ga('set', 'forceSSL', true);
   var version = chrome.app.getDetails().version;
@@ -47,7 +48,5 @@ if(extensionId === 'igbnmifdfpgnbdhcnhiadcggoejocfpn') {
   }
 }
 else {
-  window.ga = function() {
-    console.log(arguments);
-  };
+  window.ga = console.log;
 }

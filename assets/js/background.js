@@ -45,7 +45,7 @@ function managePageAction(tab) {
   if(!tab || !tab.id) {
     return;
   }
-  var ga = window.ga || function() {};
+  var ga = window.ga;
   var site;
   chrome.pageAction.hide(tab.id);
   if(chrome.runtime.lastError) {
