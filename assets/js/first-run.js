@@ -32,7 +32,10 @@ var showSuccess = function showSuccess() {
   showById('success');
   var close = document.getElementById('close-tab');
   close.addEventListener('click', function() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, function(tabs) {
       chrome.tabs.remove(tabs[0].id);
     });
   });

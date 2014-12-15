@@ -56,10 +56,10 @@ function getContext(rules) {
 }
 
 var messageHandler = function messageHandler(request, sender, sendResponse) {
-  if (request.type === 'anyfetch::ping') {
+  if(request.type === 'anyfetch::ping') {
     sendResponse({type: 'anyfetch::pong'});
   }
-  else if (request.type === 'anyfetch::contextRequest') {
+  else if(request.type === 'anyfetch::contextRequest') {
     sendResponse({type: 'context', context: getContext(request.site.context.dom)});
   }
 };
