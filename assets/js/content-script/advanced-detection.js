@@ -9,12 +9,9 @@ var turnObjToArray = function(obj) {
 
 function getValue(rule) {
   var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
-  nodes = nodes.map(function(node) {
+  nodes = nodes.reduce(function(acc, node) {
     var value = '';
-    if(rule.target === 'innerHTML') {
-      value = node.innerHTML;
-    }
-    else if(rule.target === 'textContent') {
+    if(rule.target === 'textContent') {
       value = node.textContent;
     }
     else if(rule.target === 'value') {
@@ -24,8 +21,11 @@ function getValue(rule) {
       value = node.getAttribute(rule.target);
     }
 
-    return value.trim();
-  });
+    if(value) {
+      acc.push(value.trim());
+    }
+    return acc;
+  }, []);
   return nodes;
 }
 
