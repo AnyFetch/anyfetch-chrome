@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function getCurrentTab(cb) {
       // Detect context for the current tab
-      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function(tabs) {
         if(!tabs || !tabs[0]) {
           return cb(new Error('Error while acquiring tab'));
         }

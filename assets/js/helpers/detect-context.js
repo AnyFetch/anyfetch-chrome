@@ -46,7 +46,7 @@ function getFromDOM(tab, site, cb) {
 
   // Query the tab to know if we already injected the content script
   chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::ping'}, function(response) {
-    if(response && response.type === 'anyfetch::pong' ) {
+    if(response && response.type === 'anyfetch::pong') {
       requestContext(site, callCb);
     }
     else {
