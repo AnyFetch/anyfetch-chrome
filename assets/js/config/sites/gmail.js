@@ -21,7 +21,7 @@ module.exports = {
       // Sender
       {
         target: 'name',
-        selector: 'div[role="main"] table > tbody > tr > td > h3 > span[email]'
+        selector: 'div[role="main"] table > tbody > tr > td span[email]'
       },
       // Contact in semi full view
       // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
