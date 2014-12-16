@@ -38,7 +38,9 @@ function testTitlesRegex(siteName) {
         var context = title.match(site.context.title);
         should(context).be.ok;
         context.shift(1);
-        context.should.containDeep(site.tests.titles[title]);
+        // Normalize the array for eql below (hacky hack)
+        context = context.concat([]);
+        context.should.eql(site.tests.titles[title]);
       });
     });
   });
