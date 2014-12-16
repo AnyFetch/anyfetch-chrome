@@ -10,12 +10,8 @@ var search = require('./search.js');
 var gaHelper = require('../helpers/ga-helper.js');
 
 var renderDocument = function(doc) {
-  var snippetTemplate = templates.snippet;
-  if(doc.document_type && doc.document_type.templates && doc.document_type.templates.snippet) {
-    snippetTemplate = doc.document_type.templates.snippet;
-  }
   var view = {
-    snippet: Mustache.render(snippetTemplate, doc.data),
+    snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,
     documentType: doc.document_type.name,
     providerName: doc.provider.client.name
