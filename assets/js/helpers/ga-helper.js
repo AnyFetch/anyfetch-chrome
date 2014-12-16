@@ -2,6 +2,7 @@
 
 
 /**
+ * Attach a listener for clicks on the snippets, for analytics purpose
  */
 module.exports.bindClickDocumentList = function() {
   var elements = document.querySelectorAll('.document-snippet > a');
@@ -21,6 +22,7 @@ module.exports.bindClickDocumentList = function() {
 
 
 /**
+ * Attach a listener for clicks on the see all link, for analytics purpose
  */
 module.exports.bindClickApp = function() {
   var element = document.getElementById('see-all');

@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ga('send', 'pageview', {
         title: site.name
       });
+      // TODO: Do that after the search, and report the result count (maybe the query)
       ga('send', 'event', 'search', 'foreground', site.name);
     },
     function filterContext(context, cb) {
