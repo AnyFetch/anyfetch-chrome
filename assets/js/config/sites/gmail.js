@@ -17,12 +17,12 @@ module.exports = {
       // Subject
       {
         target: 'textContent',
-        selector: 'div[role="main"] table > tr > td > div > div > div > div > h2'
+        selector: 'div[role="main"] table[role="presentation"] > tr > td > div > div > div > div > h2'
       },
       // Sender
       {
         target: 'name',
-        selector: 'div[role="main"] table > tbody > tr > td span[email]'
+        selector: 'div[role="main"] table[role="presentation"] table > tbody > tr > td span[email]'
       },
       // Contact in semi full view
       // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
