@@ -6,7 +6,7 @@ var extensionId = chrome.i18n.getMessage('@@extension_id');
 if(extensionId === 'igbnmifdfpgnbdhcnhiadcggoejocfpn') {
   /**
    * Creates a temporary global ga object and loads analytics.js.
-   * Paramenters o, a, and m are all used internally. They could have been declared using 'var',
+   * Parameters o, a, and m are all used internally. They could have been declared using 'var',
    * instead they are declared as parameters to save 4 bytes ('var ').
    *
    * @param {Window}      i The global context object.
