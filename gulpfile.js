@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
@@ -21,6 +20,7 @@ var paths = {
       'assets/js/advanced-settings.js',
       'assets/js/oauth-callback.js',
       'assets/js/content-script/advanced-detection.js',
+      'assets/js/ga.js',
     ]
   },
   libs: {

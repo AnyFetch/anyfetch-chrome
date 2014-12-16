@@ -8,6 +8,7 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
+var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -41,22 +42,35 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  */
 function managePageAction(tab) {
-  var site = getSiteFromTab(config.supportedSites, tab);
-  if(!site) {
+  if(!tab || !tab.id) {
+    return;
+  }
+  var ga = window.ga;
+  var site;
+  chrome.pageAction.hide(tab.id);
+  if(chrome.runtime.lastError) {
+    // lost the tab, might happen sometimes
     return;
   }
 
   async.waterfall([
-    function(cb) {
+    function confirmTab(cb) {
       setTimeout(function() {
         chrome.tabs.get(tab.id, function(updatedTab) {
+          if(chrome.runtime.lastError) {
+            // lost the tab, might happen sometimes
+            return cb('Lost the tab');
+          }
           tab = updatedTab;
           cb();
         });
       }, 500);
     },
     function(cb) {
-      chrome.pageAction.hide(tab.id);
+      site = getSiteFromTab(config.supportedSites, tab);
+      if(!site) {
+        return cb('No site for ' + tab.url);
+      }
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
@@ -67,8 +81,8 @@ function managePageAction(tab) {
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
-          '19': 'res/icon19_grayscale.png',
-          '38': 'res/icon38_grayscale.png'
+          '19': '/res/icon19_grayscale.png',
+          '38': '/res/icon38_grayscale.png'
         }
       }, rarity.carry([context], cb));
     },
@@ -77,6 +91,16 @@ function managePageAction(tab) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function filterContext(context, cb) {
+      if(!config.token) {
+        return cb(new Error('No token'));
+      }
+      if(config.email) {
+        ga('set', '&uid', config.email);
+      }
+
+      // Post update
+      postUpdateIfNecessary();
+
       context.forEach(function(item) {
         if(config.blacklist[item.name]) {
           item.active = false;
@@ -90,14 +114,17 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
+        ga('send', 'event', 'search', 'background', site.name, 0);
         return cb();
       }
+
+      ga('send', 'event', 'search', 'background', site.name, count);
       // We have some results, so show a the blue icon instead of the gray one
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
-          '19': 'res/icon19.png',
-          '38': 'res/icon38.png'
+          '19': '/res/icon19.png',
+          '38': '/res/icon38.png'
         }
       }, cb);
     }

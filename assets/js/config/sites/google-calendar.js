@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Google Calendar',
   tests: {
     urls: [
       'https://www.google.com/calendar/render',

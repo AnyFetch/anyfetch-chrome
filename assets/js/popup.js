@@ -12,6 +12,7 @@ var search = require('./popup/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
+  var ga = window.ga;
 
   // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)
@@ -27,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if(!config.token) {
         errors.showSetupAccountError();
         return;
+      }
+      if(config.email) {
+        ga('set', '&uid', config.email);
       }
 
       // Post update
@@ -62,6 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 500);
 
       detectContext(tab, site, cb);
+      ga('send', 'pageview', {
+        title: site.name
+      });
+      // TODO: Do that after the search, and report the result count (maybe the query)
+      ga('send', 'event', 'search', 'foreground', site.name);
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {

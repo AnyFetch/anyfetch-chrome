@@ -34,6 +34,9 @@ var postCompanyUpdate = function() {
     },
     error: function() {
       console.error('Failed to post company update');
+      // Set last update even if errored. This prevent spam.
+      // Retry in (config.companyUpdateDelay / 4) seconds
+      setLastUpdateDate(Date.now() - (config.companyUpdateDelay - config.companyUpdateDelay / 4));
     }
   });
 };

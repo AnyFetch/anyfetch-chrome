@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Gmail',
   tests: {
     urls: [
       'https://mail.google.com/mail/u/0/#inbox',

@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+  name: 'Twitter',
   tests: {
     urls: [
       'https://twitter.com/r_ricard'

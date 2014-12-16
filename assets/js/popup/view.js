@@ -7,6 +7,7 @@ var config = require('../config/index.js');
 var templates = require('../../templates/templates.js');
 var errors = require('../helpers/errors.js');
 var search = require('./search.js');
+var gaHelper = require('../helpers/ga-helper.js');
 
 var renderDocument = function(doc) {
   var snippetTemplate = templates.snippet;
@@ -16,8 +17,9 @@ var renderDocument = function(doc) {
   var view = {
     snippet: Mustache.render(snippetTemplate, doc.data),
     actionUrl: doc.actions.show,
-    type: doc.document_type.name
-  };
+    documentType: doc.document_type.name,
+    providerName: doc.provider.client.name
+   };
   return Mustache.render(templates.listItem, view);
 };
 
@@ -91,4 +93,6 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
   window.anyfetchAssets.formatDates();
+  gaHelper.bindClickDocumentList();
+  gaHelper.bindClickApp();
 };
