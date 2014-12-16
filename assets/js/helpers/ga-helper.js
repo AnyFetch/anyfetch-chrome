@@ -26,6 +26,10 @@ module.exports.bindClickDocumentList = function() {
  */
 module.exports.bindClickApp = function() {
   var element = document.getElementById('see-all');
+  if(!element) {
+    return;
+  }
+
   element.addEventListener("click", function() {
     var ga = window.ga;
     ga('send', 'event', 'click', 'more-results', '', this.getAttribute('data-ga-count'));
