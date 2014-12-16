@@ -19,8 +19,7 @@ module.exports = function getCount(query, cb) {
     data: {
       search: query,
       limit: 0,
-      //fields: 'count'
-      // TODO: Enable this when active on production
+      fields: 'count'
     },
     headers: {
       'Authorization': 'Bearer ' + config.token

@@ -1,12 +1,12 @@
 {
   "name": "anyfetch-chrome",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "AnyFetch Chrome extension",
   "main": "dist/main.js",
   "scripts": {
     "postinstall": "node ./node_modules/.bin/bower install",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
-    "lint": "gulp lint"
+    "lint": "gulp lint && jscs assets/ res/ test/ views/"
   },
   "repository": {
     "type": "git",
@@ -72,6 +72,7 @@
     "zepto": "0.0.4"
   },
   "devDependencies": {
+    "jscs": "^1.8.1",
     "mocha": "^2.0.1",
     "should": "^4.3.0"
   }
