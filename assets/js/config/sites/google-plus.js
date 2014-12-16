@@ -8,12 +8,12 @@ module.exports = {
       'https://plus.google.com/u/0/communities/113734333929587843685'
     ],
     titles: {
-      'Matthieu Bacconnier - Google+': ['Matthieu Bacconnier'],
+      'Matthieu Bacconnier - Google+': ['Matthieu Bacconnier', undefined],
       'Matthieu Bacconnier (neamar) - Google+': ['Matthieu Bacconnier', 'neamar'],
     }
   },
   url: /plus\.google\.com\/.*(?:\+(.+)|(?:\d{21,}))/,
   context: {
-    title: /^(.+?)\s?(\(.*\))?\s-\sGoogle\+$/i
+    title: /^(.+?)\s?(?:\((.*)\))?\s-\sGoogle\+$/i
   }
 };
