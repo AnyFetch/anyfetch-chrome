@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log(token);
 
   chrome.runtime.sendMessage({
-    targetListener: 'oauth-response',
+    type: 'anyfetch::oauthResponse',
     token: token
   });
 });
