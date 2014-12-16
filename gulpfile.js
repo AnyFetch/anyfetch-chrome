@@ -94,10 +94,12 @@ gulp.task('package', ['lint', 'less', 'browserify', 'libs'], function() {
   var manifest = require('./manifest.json');
   manifest.version = npmPackageInfo.version;
   // Write result back to `manifest.json`
-  var output = JSON.stringify(manifest, null, 2);
+  var output = JSON.stringify(manifest, null, 2) + "\n";
   fs.writeFileSync('./manifest.json', output);
 
-  return gulp.src(paths.package, { base: '.' })
+  return gulp.src(paths.package, {
+    base: '.'
+  })
     .pipe(zip('anyfetch-chrome.zip'))
     .pipe(gulp.dest('./'));
 });

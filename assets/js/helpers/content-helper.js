@@ -1,18 +1,6 @@
 'use strict';
 
 /**
- * Removes useless things from the matched context
- */
-function removeGarbage(context) {
-  context = context.map(function(item) {
-    return item.replace(/<wbr>/gi, '')
-      .replace(/<\/wbr>/gi, '')
-      .replace(/&nbsp;/gi, '');
-  });
-  return context;
-}
-
-/**
  * Remove duplicates
  */
 function uniqContext(context) {
@@ -78,7 +66,6 @@ module.exports.getContextObject = function getContextObject(context) {
     console.warn(context, ' is not an array');
     return;
   }
-  context = removeGarbage(context);
   context = uniqContext(context);
   return context.map(function(item) {
     return {
