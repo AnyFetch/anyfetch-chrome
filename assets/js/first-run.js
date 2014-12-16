@@ -2,9 +2,9 @@
 
 require('zepto/zepto.min.js');
 var async = require('async/lib/async.js');
-var getStatus = require('./anyfetch/get-status.js');
 var config = require('./config/index.js');
 var oauthStart = require('./oauth/oauth-start.js');
+var checkToken = require('./helpers/check-token.js');
 
 var showById = function showById(id) {
   var ids = ['error', 'success', 'loader', 'index'];
@@ -76,19 +76,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadSettings(cb) {
       config.loadUserSettings(cb);
     },
-    function checkToken(cb) {
-      // token already stored ?
-      if(config.token) {
-        getStatus(function(err) {
-          if(err) {
-            return cb(null, false);
-          }
-          cb(null, true);
-        });
-      }
-      else {
-        cb(null, false);
-      }
+    function checkUserToken(cb) {
+      checkToken(config.token, function(err) {
+        if(err) {
+          return cb(null, false);
+        }
+        cb(null, true);
+      });
     },
     function registerHandler(ok, cb) {
       if(ok) {
