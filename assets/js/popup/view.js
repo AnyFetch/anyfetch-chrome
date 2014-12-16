@@ -93,6 +93,6 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
   window.anyfetchAssets.formatDates();
-  gaHelper.bindClick('.document-snippet > a', 'document-snippet');
-  gaHelper.bindClick('.see-all > a', 'see-more');
+  gaHelper.bindClickDocumentList();
+  gaHelper.bindClickApp();
 };

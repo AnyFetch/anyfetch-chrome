@@ -38,7 +38,7 @@ if(extensionId === 'igbnmifdfpgnbdhcnhiadcggoejocfpn') {
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
 
-  window.ga('create', 'UA-35597266-8', 'auto');
+  window.ga('create', 'UA-35597266-5', 'auto');
   // Required by the chrome extension (its protocol is chrome-extension:// so ti will wrongly guess the protocol)
   window.ga('set', 'checkProtocolTask', null);
   window.ga('set', 'forceSSL', true);

@@ -114,11 +114,11 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
-        ga('send', 'event', 'background', 'no results', site.name);
+        ga('send', 'event', 'search', 'background', site.name, 0);
         return cb();
       }
 
-      ga('send', 'event', 'background', 'results', site.name, count);
+      ga('send', 'event', 'search', 'background', site.name, count);
       // We have some results, so show a the blue icon instead of the gray one
       chrome.pageAction.setIcon({
         tabId: tab.id,

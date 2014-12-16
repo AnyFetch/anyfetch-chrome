@@ -12,7 +12,7 @@
   {{/timeSlices}}
 </ul>
 <div class="see-all">
-  <a href="{{appUrl}}/#/?q={{search}}" target="_blank">
+  <a id="see-all" href="{{appUrl}}/#/?q={{search}}" target="_blank" data-ga-count="{{totalCount}}">
     {{#hasMore}}
       See all ({{totalCount}} matches)
     {{/hasMore}}

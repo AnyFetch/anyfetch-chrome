@@ -66,7 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 500);
 
       detectContext(tab, site, cb);
-      ga('send', 'event', 'pageAction', 'click', site.name);
+      ga('send', 'pageview', {
+        title: site.name
+      });
+      ga('send', 'event', 'search', 'foreground', site.name);
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {
