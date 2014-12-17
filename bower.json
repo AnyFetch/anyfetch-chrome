@@ -4,7 +4,7 @@
   "description": "AnyFetch Chrome extension",
   "main": [
     "dist/background.js",
-    "dist/popup.js"
+    "dist/popover.js"
   ],
   "authors": [
     "Merlin Nimier-David <merlin.nimier@gmail.com>",

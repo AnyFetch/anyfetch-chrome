@@ -15,7 +15,7 @@ var paths = {
     all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
     entryPoints: [
       'assets/js/background.js',
-      'assets/js/popup.js',
+      'assets/js/popover.js',
       'assets/js/first-run.js',
       'assets/js/advanced-settings.js',
       'assets/js/settings.js',
