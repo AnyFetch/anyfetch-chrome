@@ -44,6 +44,10 @@ function removeForbiddenChars(context) {
   return context;
 }
 
+var removeUndefined = function removeUndefined(item) {
+  return item;
+};
+
 /**
  * Generate query with parenthesis and OR from contextOject
  */
@@ -66,6 +70,8 @@ module.exports.getContextObject = function getContextObject(context) {
     console.warn(context, ' is not an array');
     return;
   }
+  // Make sure we dont have any `undefined` value in the array
+  context = context.filter(removeUndefined);
   context = uniqContext(context);
   return context.map(function(item) {
     return {
