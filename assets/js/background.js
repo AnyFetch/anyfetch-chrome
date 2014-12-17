@@ -81,8 +81,8 @@ function managePageAction(tab) {
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
-          '19': '/res/icon19_grayscale.png',
-          '38': '/res/icon38_grayscale.png'
+          '19': '/images/icons/extension/page-action/icon19_grayscale.png',
+          '38': '/images/icons/extension/page-action/icon38_grayscale.png'
         }
       }, rarity.carry([context], cb));
     },
@@ -123,8 +123,8 @@ function managePageAction(tab) {
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
-          '19': '/res/icon19.png',
-          '38': '/res/icon38.png'
+          '19': '/images/icons/extension/page-action/icon19.png',
+          '38': '/images/icons/extension/page-action/icon38.png'
         }
       }, cb);
     }
@@ -145,7 +145,7 @@ function handleOnUpdated(tabId, changeInfo, tab) {
 chrome.runtime.onInstalled.addListener(function(details) {
   if(details.reason === "install") {
     // open first run page on install
-    chrome.tabs.create({url: 'views/first-run.html'});
+    chrome.tabs.create({url: '/first-run.html'});
   }
 });
 
