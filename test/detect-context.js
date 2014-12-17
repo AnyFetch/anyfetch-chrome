@@ -17,6 +17,13 @@ function testUrlsRegex(siteName) {
         url.should.match(site.url);
       });
     });
+    if(tests.nonMatchingUrls) {
+      tests.nonMatchingUrls.forEach(function(url) {
+        it('should not match "' + url + '"', function() {
+          url.should.not.match(site.url);
+        });
+      });
+    }
   });
 }
 

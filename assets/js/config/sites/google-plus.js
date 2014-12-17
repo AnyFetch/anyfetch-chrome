@@ -15,6 +15,6 @@ module.exports = {
   },
   url: /plus\.google\.com\/.*(?:\+(.+)|(?:\d{21,}))/,
   context: {
-    title: /^(.+?)\s?(?:\((.*)\))?\s-\sGoogle\+$/i
+    title: /^(.+?)\s?(?:\((.*)\))?(?:\s-\s.*)?\s-\sGoogle\+$/i
   }
 };
