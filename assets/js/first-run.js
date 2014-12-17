@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function checkUserToken(cb) {
       checkToken(config.token, function(err) {
-        cb(null, !!err);
+        cb(null, !err);
       });
     },
     function registerHandler(ok, cb) {
