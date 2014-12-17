@@ -29,7 +29,7 @@ _site/*
 bower_components/*
 
 # Compiled JS & CSS
-dist/*
+extension/*
 anyfetch-chrome.zip
 
 .env
