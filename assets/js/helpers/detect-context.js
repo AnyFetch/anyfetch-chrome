@@ -51,9 +51,12 @@ function getFromDOM(tab, site, cb) {
     }
     else {
       chrome.tabs.executeScript(tab.id, {
-        file: '/dist/advanced-detection.js'
-      }, function() {
-        requestContext(site, callCb);
+        file: '/js/advanced-detection.js'
+      }, function(results) {
+        if(results) {
+          return requestContext(site, callCb);
+        }
+        console.error('Failed to inject content script');
       });
     }
   });
