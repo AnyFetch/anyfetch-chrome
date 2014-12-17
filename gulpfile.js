@@ -4,6 +4,7 @@ var fs = require('fs');
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
+var jade = require('gulp-jade');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
@@ -12,7 +13,7 @@ var zip = require('gulp-zip');
 
 var paths = {
   js: {
-    all: ['gulpfile.js', 'assets/js/**', 'test/**/*.js'],
+    all: ['gulpfile.js', 'assets/js/**/*.js', 'test/**/*.js'],
     entryPoints: [
       'assets/js/background.js',
       'assets/js/popup.js',
@@ -22,42 +23,61 @@ var paths = {
       'assets/js/oauth-callback.js',
       'assets/js/content-script/advanced-detection.js',
       'assets/js/ga.js',
-    ]
+    ],
+    target: 'extension/js'
   },
-  libs: {
-    entryPoints: [
-      'bower_components/anyfetch-assets/dist/index-moment.min.js',
-    ]
-  },
+  libs: [
+    {
+      files: ['bower_components/anyfetch-assets/dist/index-moment.min.js'],
+      target: 'extension/js'
+    },
+    {
+      files: ['./images/**/*'],
+      target: 'extension/images'
+    }
+  ],
   less: {
     all: 'assets/less/**/*.less',
     entryPoints: [
       'assets/less/style.less',
       'assets/less/popover.less',
       'assets/less/settings.less',
-    ]
+    ],
+    target: 'extension/css'
+  },
+  jade: {
+    all: 'assets/jade/**/*.jade',
+    entryPoints: [
+      'assets/jade/popover.jade',
+      'assets/jade/background.jade',
+      'assets/jade/settings.jade',
+      'assets/jade/advanced-settings.jade',
+      'assets/jade/first-run.jade',
+      'assets/jade/oauth-callback.jade',
+    ],
+    target: 'extension/'
   },
   templates: {
-    all: 'assets/templates/**'
+    all: 'assets/templates/**/*'
   },
-  target: 'dist/',
-  // Files to be included in the final package
-  package: ['dist/**', 'res/**', 'views/**', 'manifest.json']
+  target: 'extension/',
+  package: 'extension/**/*'
 };
 
 // LESS compiling
 gulp.task('less', function() {
   return gulp.src(paths.less.entryPoints)
     .pipe(less())
-    .pipe(gulp.dest(paths.target));
+    .pipe(gulp.dest(paths.less.target));
 });
 
-// Libs
+// Libs (copy)
 gulp.task('libs', function() {
-  var p = gulp.src(paths.libs.entryPoints);
-  return p.pipe(gulp.dest(paths.target));
+  paths.libs.forEach(function(path) {
+    var p = gulp.src(path.files);
+    return p.pipe(gulp.dest(path.target));
+  });
 });
-
 
 // JS compiling
 // gulp-browserify seems to be a deprecated plugin. http://goo.gl/bz8n4L
@@ -76,7 +96,7 @@ gulp.task('browserify', function() {
       .pipe(rename(function(path) {
         path.dirname = '';
       }))
-      .pipe(gulp.dest(paths.target));
+      .pipe(gulp.dest(paths.js.target));
   });
 });
 
@@ -87,20 +107,34 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
-// Packaging the app as a zip for publishing
-gulp.task('package', ['lint', 'less', 'browserify', 'libs'], function() {
-  // Read version number from `package.json`
-  var npmPackageInfo = require('./package.json');
-  // Update Chrome extension version
-  var manifest = require('./manifest.json');
-  manifest.version = npmPackageInfo.version;
-  // Write result back to `manifest.json`
-  var output = JSON.stringify(manifest, null, 2) + "\n";
-  fs.writeFileSync('./manifest.json', output);
+// Jade view compiling
+gulp.task('jade', function() {
+  var locals = {};
 
-  return gulp.src(paths.package, {
-    base: '.'
-  })
+  gulp.src(paths.jade.entryPoints)
+    .pipe(jade({
+      locals: locals
+    }))
+    .pipe(gulp.dest(paths.jade.target));
+});
+
+// Manifest generation
+gulp.task('manifest', function() {
+  var manifestFilename = './assets/manifest.json';
+  var manifestFile = require(manifestFilename);
+  // Read version number from `package.json`
+  var packageFile = require('./package.json');
+
+  // Update manifest version
+  manifestFile.version = packageFile.version;
+  // Write it back to the file
+  fs.writeFileSync(manifestFilename, JSON.stringify(manifestFile, null, 2) + '\n');
+  gulp.src(manifestFilename).pipe(gulp.dest(paths.target));
+});
+
+// Packaging the app as a zip for publishing
+gulp.task('package', ['lint', 'less', 'browserify', 'libs', 'jade', 'manifest'], function() {
+  return gulp.src(paths.package)
     .pipe(zip('anyfetch-chrome.zip'))
     .pipe(gulp.dest('./'));
 });
@@ -110,8 +144,9 @@ gulp.task('watch', function() {
   gulp.watch(paths.js.all, ['lint', 'browserify']);
   gulp.watch(paths.templates.all, ['browserify']);
   gulp.watch(paths.less.all, ['less']);
+  gulp.watch(paths.jade.all, ['jade']);
 });
 
 // Run main tasks on launch
-gulp.task('default', ['lint', 'less', 'browserify', 'libs', 'watch'], function() {
+gulp.task('default', ['lint', 'less', 'browserify', 'libs', 'jade', 'manifest', 'watch'], function() {
 });
