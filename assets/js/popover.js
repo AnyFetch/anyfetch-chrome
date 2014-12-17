@@ -5,10 +5,10 @@ var async = require('async');
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
 var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
-var view = require('./popup/view.js');
+var view = require('./popover/view.js');
 var detectContext = require('./helpers/detect-context.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
-var search = require('./popup/search.js');
+var search = require('./popover/search.js');
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;

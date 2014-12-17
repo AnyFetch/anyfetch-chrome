@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  name: 'linkedIn',
+  name: 'LinkedIn',
   tests: {
     urls: [
       'https://www.linkedin.com/profile/view?id=246055775',

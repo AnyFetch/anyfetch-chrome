@@ -1,10 +1,10 @@
 {
   "name": "anyfetch-chrome",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "AnyFetch Chrome extension",
   "main": [
     "dist/background.js",
-    "dist/popup.js"
+    "dist/popover.js"
   ],
   "authors": [
     "Merlin Nimier-David <merlin.nimier@gmail.com>",

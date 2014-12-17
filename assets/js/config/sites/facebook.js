@@ -5,14 +5,20 @@ module.exports = {
   tests: {
     urls: [
       'https://www.facebook.com/saveman71',
-      'https://www.facebook.com/groups/552447494882281/'
+      'https://www.facebook.com/groups/552447494882281/',
+      'https://www.facebook.com/events/824796907543405/?sid_reminder=7532448463301115904'
+    ],
+    nonMatchingUrls: [
+      'https://www.facebook.com/notifications',
+      'https://www.facebook.com/settings',
+      'https://www.facebook.com/events/upcoming',
+      'https://www.facebook.com/messages/saveman71'
     ],
     titles: {
       'Antoine Bolvy': ['Antoine Bolvy'],
       '(42) Antoine Bolvy': ['Antoine Bolvy'],
     }
   },
-  // @see https://regex101.com/r/iL5iS0/1
   url: /facebook\.com\/(?:(?:groups|events)\/[0-9]{15}\/|(?!notifications|settings)[^\/]+$)/,
   context: {
     title: /^(?:\(\d+\)\s)?(.+)$/i

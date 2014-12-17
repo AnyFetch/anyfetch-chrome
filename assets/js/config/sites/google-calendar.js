@@ -7,10 +7,10 @@ module.exports = {
       'https://www.google.com/calendar/render',
       'https://www.google.com/calendar/render#g',
       'https://www.google.com/calendar/render#f%7Ceid-MjAxNF9CSVJUSERBWV8xZWYxY2IxNjhkYmI4ZWIzICNjb250YWN0c0B2-0-0-',
+      'https://www.google.fr/calendar/render'
     ]
   },
-  url: /google\.com\/calendar\/render/,
-
+  url: /google\.(?:\w+(?:\.\w+)?)\/calendar\/render/,
   context: {
     dom: [
       // Event title

@@ -8,6 +8,9 @@ module.exports = {
       'https://mail.google.com/mail/u/42/#contact/36ac30c08f01eff7',
       'https://mail.google.com/mail/#contact/36ac30c08f01eff7',
     ],
+    nonMatchingUrls: [
+      'https://mail.google.com/mail/u/0/#inbox'
+    ],
     titles: {
       'Matthieu Bacconnier - Gestionnaire de contact - foo@gmail.com - Gmail': ['Matthieu Bacconnier'],
       'I have a - in my name - Contact Manager - foo@gmail.com - Gmail': ['I have a - in my name'],
