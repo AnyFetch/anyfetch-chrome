@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    script(type="text/javascript", src="/js/first-run.js")
+    link(rel="stylesheet", type="text/css", href="/css/style.css")
+    title AnyFetch chrome extension
+  body.first-run
+    header.row.container
+      .col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4
+        img.logo(src="/images/icons/anyfetch_icon.svg", alt="AnyFetch Icon")
+        | &nbsp;Any
+        b Fetch
+    .vertical-align
+      .row.container
+        section#index.content.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4.hidden
+          h1 Welcome to AnyFetch for Google Chrome!
+          hr
+          p
+            | We need you to login with your AnyFetch account to continue. If you don't have one, don't worry, you can create one in seconds
+          hr
+          div
+            a#start-oauth.btn.btn-success.btn-block Login with my AnyFetch account
+            a(target="_blank", href="https://manager.anyfetch.com/") Register now
+        section#loader.content.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4.hidden
+          .spinner.large
+          hr
+          p Please complete the AnyFetch authentification to continue
+        section#error.content.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4.hidden
+          h3 Something bad happened
+          img.big-icon(src="/images/icons/cross.svg", alt="Red failed cross icon")
+          hr
+          p#error-message
+          hr
+          a#action.hidden(href="#") Retry ?
+        section#success.content.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4.hidden
+          h3 Done! What now?
+          img.big-icon(src="/images/icons/tick.svg", alt="Green Success tick icon")
+          hr
+          p The AnyFetch icon will appear when you're navigating on a supported site:
+          img.chrome-example(src="/images/chrome-example.png", alt="")
+          p
+            | Click it to view the current context
+            br
+            | (
+            em you may need to reload your tabs
+            | )
+          hr
+          a#close-tab(href="#") You can close this tab
+          | &nbsp;
+          | or access the
+          | &nbsp;
+          a#close-tab(href="/settings.html") options

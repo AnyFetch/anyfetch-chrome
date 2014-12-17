@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    link(rel="stylesheet", type="text/css", href="/css/style.css")
+    script(type="text/javascript", src="/js/advanced-settings.js")
+    title AnyFetch | Settings
+  body.settings
+    header.row.container
+      .col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4
+        img.logo(src="/images/icons/anyfetch_icon.svg", alt="AnyFetch Icon")
+        | &nbsp;Any
+        b Fetch
+    .vertical-align
+      .row.container
+        section#settings.content.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4.row
+          h1.text-left Advanced Settings
+          #settingsInputs
+          hr
+          .buttons.text-right
+            a(href="/settings.html", title="Back") Back to settings
+            | &nbsp;
+            button#save.btn.btn-success Save
+            | &nbsp;
+            button#reset.btn.btn-warning Reset to defaults
