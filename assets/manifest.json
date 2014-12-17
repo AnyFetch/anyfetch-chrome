@@ -4,10 +4,10 @@
   "description": "Find documents related to the current page with AnyFetch.",
   "version": "1.2.1",
   "icons": {
-    "16": "res/icon16.png",
-    "32": "res/icon32.png",
-    "48": "res/icon48.png",
-    "128": "res/icon128.png"
+    "16": "images/icons/extension/icon16.png",
+    "32": "images/icons/extension/icon32.png",
+    "48": "images/icons/extension/icon48.png",
+    "128": "images/icons/extension/icon128.png"
   },
   "permissions": [
     "declarativeContent",
@@ -17,21 +17,20 @@
     "http://*/"
   ],
   "web_accessible_resources": [
-    "views/provider-callback.html",
-    "views/oauth-callback.html"
+    "oauth-callback.html"
   ],
   "page_action": {
     "default_icon": {
-      "19": "res/icon19.png",
-      "38": "res/icon38.png"
+      "19": "images/icons/extension/page-action/icon19.png",
+      "38": "images/icons/extension/page-action/icon38.png"
     },
-    "default_popup": "views/popover.html",
+    "default_popup": "popover.html",
     "default_title": "AnyFetch"
   },
   "background": {
-    "page": "views/background.html",
+    "page": "background.html",
     "persistent": false
   },
   "content_security_policy": "script-src 'self' https://www.google-analytics.com; img-src *; object-src 'self'",
-  "options_page": "views/settings.html"
+  "options_page": "settings.html"
 }
