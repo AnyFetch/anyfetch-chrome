@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node ./node_modules/.bin/bower install",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
-    "lint": "gulp lint && jscs assets/ res/ test/ views/"
+    "lint": "gulp lint && jscs assets/ test/"
   },
   "repository": {
     "type": "git",
