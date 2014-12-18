@@ -20,7 +20,7 @@ var setLastUpdateDate = function(timestamp) {
 var postCompanyUpdate = function postCompanyUpdate(cb) {
   var options = {
     url: config.apiUrl + '/company/update',
-    method: 'POST'
+    type: 'POST'
   };
 
   call(options, cb);
