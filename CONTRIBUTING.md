@@ -6,13 +6,14 @@
 2. `npm install -g gulp`
 3. `gulp`
 
-The `gulp` command will automatically start watching for changes in you files and rebuild as necessary. Building compiles the LESS files to CSS and assemble the JavaScript modules into a single file using Browserify, and compiles the Jade views to the final HTML used by Chrome.
+The `gulp` command will automatically start watching for changes in your files and rebuild as necessary. Building compiles the LESS files to CSS and assemble the JavaScript modules into a single file using Browserify, and compiles the Jade views to the final HTML used by Chrome. Be careful, it can crash without notifications and lead to annoying bugs, in such case just restart it.
 
 In order to add a local, unpacked extension to Chrome, go to your Extension management page (`chrome://extensions/`). Activate the "Developer mode" and use the "Load unpacked extension" button then choose the generated `extension/` directory.
 
->Note: As Chrome loads the extension live from this directory, changes made in the `assets/` directory will reverberate in the browser as you reload a page from the extension with one exception: the background page being loaded once for each browsing session, you have to manually reload it by clicking the "Refresh (Ctrl + R)" link in the extension section of the extension management page.
+>Note: As Chrome loads the extension live from this directory, changes made in the `assets/` directory will reflect in the browser as you reload a page from the extension with one exception: the background page being loaded once for each browsing session, you have to manually reload it by clicking the "Refresh (Ctrl + R)" link in the extension section of the extension management page.
 
 ## File structure
+
 ```
 .
 ├── assets
