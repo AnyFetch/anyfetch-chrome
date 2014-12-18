@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node ./node_modules/.bin/bower install",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
-    "lint": "gulp lint && jscs assets/ res/ test/ views/"
+    "lint": "gulp lint && jscs assets/ test/"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,7 @@
     },
     {
       "name": "Merlin Nimier-David",
-      "email": "",
+      "email": "merlin.nimier@gmail.com",
       "url": "https://github.com/merlinND"
     },
     {
@@ -60,6 +60,7 @@
     "gulp": "^3.8.10",
     "gulp-jshint": "^1.9.0",
     "gulp-less": "^2.0.1",
+    "gulp-jade": "^0.10.0",
     "gulp-rename": "^1.2.0",
     "gulp-util": "^3.0.1",
     "gulp-zip": "^2.0.2",
