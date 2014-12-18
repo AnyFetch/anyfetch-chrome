@@ -1,9 +1,7 @@
 'use strict';
 
-require('zepto/zepto.min.js');
 var config = require('../config/index.js');
-
-var updateEndpoint = '/company/update';
+var call = require('./call.js');
 
 /**
  * Set the lastUpdated date to `date`,
@@ -19,26 +17,13 @@ var setLastUpdateDate = function(timestamp) {
  * Request the AnyFetch API to update the providers
  * of the user's company.
  */
-var postCompanyUpdate = function() {
-  var url = config.apiUrl + updateEndpoint;
+var postCompanyUpdate = function postCompanyUpdate(cb) {
+  var options = {
+    url: config.apiUrl + '/company/update',
+    type: 'POST'
+  };
 
-  $.ajax({
-    url: url,
-    type: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + config.token
-    },
-    success: function() {
-      console.log('Posted company update');
-      setLastUpdateDate(Date.now());
-    },
-    error: function() {
-      console.error('Failed to post company update');
-      // Set last update even if errored. This prevent spam.
-      // Retry in (config.companyUpdateDelay / 4) seconds
-      setLastUpdateDate(Date.now() - (config.companyUpdateDelay - config.companyUpdateDelay / 4));
-    }
-  });
+  call(options, cb);
 };
 
 module.exports = function postUpdateIfNecessary() {
@@ -49,7 +34,17 @@ module.exports = function postUpdateIfNecessary() {
     // Post only if enough time has passed since the last update
     var lastUpdated = new Date(items.lastUpdated);
     if((Date.now() - lastUpdated) > config.companyUpdateDelay) {
-      postCompanyUpdate();
+      postCompanyUpdate(function(err) {
+        if(err) {
+          console.error('Failed to post company update');
+          // Set last update even if errored. This prevent spam.
+          // Retry in (config.companyUpdateDelay / 4) seconds
+          setLastUpdateDate(Date.now() - (config.companyUpdateDelay - config.companyUpdateDelay / 4));
+          return;
+        }
+        console.log('Posted company update');
+        setLastUpdateDate(Date.now());
+      });
     }
   });
 };
