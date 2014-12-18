@@ -1,9 +1,8 @@
 'use strict';
 
-require('zepto/zepto.min.js');
 var config = require('../config/index.js');
+var call = require('./call.js');
 
-var documentsEndpoint = '/documents';
 
 /**
  * Request the AnyFetch API for the number of documents matching `query`.
@@ -12,26 +11,16 @@ var documentsEndpoint = '/documents';
  *   count Number of documents matching `query`
  */
 module.exports = function getCount(query, cb) {
-  var url = config.apiUrl + documentsEndpoint;
-
-  $.ajax({
-    url: url,
-    data: {
+  var options = {
+    url: config.apiUrl + '/documents',
+    qs: {
       search: query,
       limit: 0,
       fields: 'count'
     },
-    headers: {
-      'Authorization': 'Bearer ' + config.token
-    },
-    success: function(res) {
-      if(res && ('count' in res)) {
-        return cb(null, res.count);
-      }
-      cb(new Error(res.responseJSON || res.responseText));
-    },
-    error: function(res) {
-      cb(new Error(res.responseJSON || res.responseText));
-    }
+  };
+
+  call(options, function(err, body) {
+    cb(err, body && body.count);
   });
 };
