@@ -13,7 +13,6 @@ module.exports = function getUserEmail(cb) {
   };
 
   call(options, function(err, body) {
-    console.log(body);
     cb(err, body && body.user_email);
   });
 };

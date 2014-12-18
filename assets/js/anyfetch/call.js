@@ -13,7 +13,7 @@ module.exports = function call(options, cb) {
   options.json = true;
   request(options, function(err, res, body) {
     if(res.status >= 400) {
-      cb(new Error(body.code + ': ' + body.message));
+      return cb(new Error(body.code + ': ' + body.message));
     }
     cb(err, body);
   });
