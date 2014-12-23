@@ -4,7 +4,6 @@ var async = require('async');
 
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
-var postUpdateIfNecessary = require('./anyfetch/post-update-if-necessary.js');
 var view = require('./popover/view.js');
 var detectContext = require('./helpers/detect-context.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadSettings(cb) {
       config.loadUserSettings(cb);
     },
-    function init(cb) {
+    function getCurrentTab(cb) {
       if(!config.token) {
         errors.showSetupAccountError();
         return;
@@ -33,11 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ga('set', '&uid', config.email);
       }
 
-      // Post update
-      postUpdateIfNecessary();
-      cb();
-    },
-    function getCurrentTab(cb) {
       // Detect context for the current tab
       chrome.tabs.query({
         active: true,
