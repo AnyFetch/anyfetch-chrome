@@ -81,12 +81,6 @@ var configuration = {
 
   /** Number of results to load for a query */
   resultsCountLimit: 10,
-
-  /**
-   * Minimum delay between two calls to `POST /user/update`
-   * for a single user (in milliseconds).
-   */
-  userUpdateDelay: 30 * 60 * 1000
 };
 
 module.exports = configuration;
