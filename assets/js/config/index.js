@@ -83,10 +83,10 @@ var configuration = {
   resultsCountLimit: 10,
 
   /**
-   * Minimum delay between two calls to `POST /company/update`
-   * for a single company (in milliseconds).
+   * Minimum delay between two calls to `POST /user/update`
+   * for a single user (in milliseconds).
    */
-  companyUpdateDelay: 30 * 60 * 1000
+  userUpdateDelay: 30 * 60 * 1000
 };
 
 module.exports = configuration;

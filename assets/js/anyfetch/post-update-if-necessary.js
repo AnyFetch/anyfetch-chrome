@@ -15,11 +15,11 @@ var setLastUpdateDate = function(timestamp) {
 
 /**
  * Request the AnyFetch API to update the providers
- * of the user's company.
+ * of the user.
  */
-var postCompanyUpdate = function postCompanyUpdate(cb) {
+var postUserUpdate = function postUserUpdate(cb) {
   var options = {
-    url: config.apiUrl + '/company/update',
+    url: config.apiUrl + '/user/update',
     type: 'POST'
   };
 
@@ -33,16 +33,16 @@ module.exports = function postUpdateIfNecessary() {
   }, function(items) {
     // Post only if enough time has passed since the last update
     var lastUpdated = new Date(items.lastUpdated);
-    if((Date.now() - lastUpdated) > config.companyUpdateDelay) {
-      postCompanyUpdate(function(err) {
+    if((Date.now() - lastUpdated) > config.userUpdateDelay) {
+      postUserUpdate(function(err) {
         if(err) {
-          console.error('Failed to post company update');
+          console.error('Failed to post user update');
           // Set last update even if errored. This prevent spam.
-          // Retry in (config.companyUpdateDelay / 4) seconds
-          setLastUpdateDate(Date.now() - (config.companyUpdateDelay - config.companyUpdateDelay / 4));
+          // Retry in (config.userUpdateDelay / 4) seconds
+          setLastUpdateDate(Date.now() - (config.userUpdateDelay - config.userUpdateDelay / 4));
           return;
         }
-        console.log('Posted company update');
+        console.log('Posted user update');
         setLastUpdateDate(Date.now());
       });
     }
