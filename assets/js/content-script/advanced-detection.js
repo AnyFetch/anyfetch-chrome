@@ -1,5 +1,5 @@
 'use strict';
-/* This file is injected in the page to find dom element that match the configuration */
+/* This file is injected in the page to find the DOM element which matches the configuration */
 
 var turnObjToArray = function(obj) {
   return [].map.call(obj, function(element) {
@@ -34,7 +34,7 @@ function getContext(rules) {
   rules.forEach(function(rule) {
     var value;
     if(Array.isArray(rule)) {
-      // If the rule is an array of rule, we keep the first found
+      // If the rule is an array of rules, we keep the first found
       for(var i = 0; i < rule.length; i += 1) {
         value = getValue(rule[i]);
         if(value.length) {
