@@ -28,17 +28,10 @@ var showById = function showById(id) {
   toShow.classList.remove('hidden');
 };
 
-var showSuccess = function showSuccess() {
+var showSuccess = function showSuccess(message) {
+  message = message || 'You are now logged in!';
   showById('success');
-  var close = document.getElementById('close-tab');
-  close.addEventListener('click', function() {
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    }, function(tabs) {
-      chrome.tabs.remove(tabs[0].id);
-    });
-  });
+  document.getElementById('success-message').innerHTML = message;
 };
 
 var showError = function showError(err) {
@@ -53,7 +46,7 @@ var showError = function showError(err) {
     });
   }
   else {
-    message.innerHTML('Error: ' + err.toString);
+    message.innerHTML = 'Error: ' + err.toString;
   }
 };
 
@@ -64,10 +57,10 @@ var finalHandler = function finalHandler(err) {
   showError(err);
 };
 
-var oauthButtonHandler = function oauthButtonHandler() {
+var oauthButtonHandler = function oauthButtonHandler(cb) {
   document.getElementById('start-oauth').addEventListener('click', function() {
     showById('loader');
-    oauthStart(finalHandler);
+    oauthStart(cb);
   });
 };
 
@@ -83,11 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function registerHandler(ok, cb) {
       if(ok) {
-        showSuccess();
-        return cb();
+        showSuccess('You are already logged in!');
+        return;
       }
       showById('index');
-      oauthButtonHandler();
+      oauthButtonHandler(cb);
     }
   ], finalHandler);
 });
