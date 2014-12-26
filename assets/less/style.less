@@ -2,6 +2,7 @@
 @import "../../bower_components/bootstrap/less/bootstrap.less";
 @import "spinner.less";
 @import "variables.less";
+@import "animations.less";
 
 * {
   -moz-box-sizing: border-box;
@@ -73,6 +74,7 @@ header {
       margin-bottom: 30px;
       font-size: 1.5em;
     }
+    -webkit-animation: fadein .1s;
   }
 
   #success, #state, #error, #loader, #index {
@@ -81,7 +83,7 @@ header {
 }
 
 img.big-icon {
-  width: 40%;
-  margin-bottom: 40px;
-  margin-top: 20px;
+  width: 20%;
+  margin: 30px 0;
+  -webkit-animation: popin .5s;
 }
