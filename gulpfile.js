@@ -53,6 +53,7 @@ var paths = {
       'assets/jade/settings.jade',
       'assets/jade/advanced-settings.jade',
       'assets/jade/first-run.jade',
+      'assets/jade/how-to-use.jade',
       'assets/jade/oauth-callback.jade',
     ],
     target: 'extension/'
