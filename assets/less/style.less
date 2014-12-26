@@ -1,8 +1,8 @@
 @charset "utf-8";
 @import "../../bower_components/bootstrap/less/bootstrap.less";
 @import "spinner.less";
-
-@brand-primary: #26AAE0; // AnyFetch Blue
+@import "variables.less";
+@import "animations.less";
 
 * {
   -moz-box-sizing: border-box;
@@ -27,7 +27,6 @@ body {
 
 .vertical-align {
   display: table-row;
-  // text-align: center;
   vertical-align: middle;
 }
 
@@ -75,15 +74,7 @@ header {
       margin-bottom: 30px;
       font-size: 1.5em;
     }
-    visibility: visible;
-    opacity: 1;
-    transition: opacity .1s linear;
-  }
-
-  section.section-invisible {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s .1s, opacity .1s linear;
+    -webkit-animation: fadein .1s;
   }
 
   #success, #state, #error, #loader, #index {
@@ -92,7 +83,7 @@ header {
 }
 
 img.big-icon {
-  width: 40%;
-  margin-bottom: 40px;
-  margin-top: 20px;
+  width: 20%;
+  margin: 30px 0;
+  -webkit-animation: popin .5s;
 }
