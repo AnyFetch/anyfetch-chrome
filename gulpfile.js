@@ -18,6 +18,7 @@ var paths = {
       'assets/js/background.js',
       'assets/js/popover.js',
       'assets/js/first-run.js',
+      'assets/js/how-to-use.js',
       'assets/js/advanced-settings.js',
       'assets/js/settings.js',
       'assets/js/oauth-callback.js',
