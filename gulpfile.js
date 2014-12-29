@@ -66,10 +66,17 @@ var paths = {
   package: 'extension/**/*'
 };
 
+var swallowError = function swallowError(error) {
+  // If you want details of the error in the console
+  console.log(error.toString());
+  this.emit('end');
+};
+
 // LESS compiling
 gulp.task('less', function() {
   return gulp.src(paths.less.entryPoints)
     .pipe(less())
+    .on('error', swallowError)
     .pipe(gulp.dest(paths.less.target));
 });
 
@@ -93,6 +100,7 @@ gulp.task('browserify', function() {
 
     return bundler
       .bundle()
+      .on('error', swallowError)
       .pipe(source(file))
       .pipe(buffer())
       .pipe(rename(function(path) {
@@ -117,6 +125,7 @@ gulp.task('jade', function() {
     .pipe(jade({
       locals: locals
     }))
+    .on('error', swallowError)
     .pipe(gulp.dest(paths.jade.target));
 });
 
