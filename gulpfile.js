@@ -114,7 +114,8 @@ gulp.task('browserify', function() {
 gulp.task('lint', function() {
   return gulp.src(paths.js.all)
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 // Jade view compiling
