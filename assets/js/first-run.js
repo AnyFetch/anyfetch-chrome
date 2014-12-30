@@ -6,19 +6,6 @@ var config = require('./config/index.js');
 var oauthStart = require('./oauth/oauth-start.js');
 var checkToken = require('./helpers/check-token.js');
 
-var showPageAction = function() {
-  chrome.tabs.getCurrent(function(tab) {
-    if(!tab) {
-      return;
-    }
-    chrome.pageAction.setPopup({
-      tabId: tab.id,
-      popup: '/tutorial.html'
-    });
-    chrome.pageAction.show(tab.id);
-  });
-};
-
 var showById = function showById(id) {
   var ids = ['error', 'success', 'loader', 'index'];
   var element;
