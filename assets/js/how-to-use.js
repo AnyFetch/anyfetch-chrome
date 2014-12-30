@@ -1,11 +1,5 @@
 'use strict';
 
-require('zepto/zepto.min.js');
-var async = require('async/lib/async.js');
-var config = require('./config/index.js');
-var oauthStart = require('./oauth/oauth-start.js');
-var checkToken = require('./helpers/check-token.js');
-
 var goTo = function goTo(position) {
   var next = document.getElementById('next');
   var prev = document.getElementById('prev');
