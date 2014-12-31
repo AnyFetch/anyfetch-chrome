@@ -18,11 +18,13 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
     return cb(null, []);
   }
   detectContext(tab, site, function(err, context) {
+    if(err) {
+      return cb(err);
+    }
     if(context.length) {
       return cb(null, context);
     }
     else {
-      console.log('Retry: attempt ' + current + ' failed');
       setTimeout(function() {
         // Update tab object, may have changed
         chrome.tabs.get(tab.id, function(tab) {
@@ -68,13 +70,13 @@ function managePageAction(tab) {
     function(cb) {
       site = getSiteFromTab(config.supportedSites, tab);
       if(!site) {
-        return cb('No site for ' + tab.url);
+        return cb(true);
       }
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
       if(!context.length) {
-        return;
+        return cb(true);
       }
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
       chrome.pageAction.setIcon({
@@ -111,8 +113,13 @@ function managePageAction(tab) {
     function showBlue(count, cb) {
       if(!count) {
         ga('send', 'event', 'search', 'background', site.name, 0);
-        return cb();
+        return cb(true);
       }
+
+      chrome.pageAction.setTitle({
+        tabId: tab.id,
+        title: 'Show context for ' + site.name
+      });
 
       ga('send', 'event', 'search', 'background', site.name, count);
       // We have some results, so show a the blue icon instead of the gray one
@@ -124,7 +131,11 @@ function managePageAction(tab) {
         }
       }, cb);
     }
-  ]);
+  ], function(err) {
+    if(err && err instanceof Error) {
+      console.warn(err);
+    }
+  });
 }
 
 /**

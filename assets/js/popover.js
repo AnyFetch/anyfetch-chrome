@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(timeout) {
       clearTimeout(timeout);
     }
-    if(err) {
+    if(err instanceof Error) {
       if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
         errors.showSetupAccountError(err);
       }
