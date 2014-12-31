@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    script(type="text/javascript", src="/js/how-to-use.js")
+    link(rel="stylesheet", type="text/css", href="/css/style.css")
+    title AnyFetch chrome extension
+  body.how-to-use
+    header.row.container
+      .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+        img.logo(src="/images/icons/anyfetch_icon.svg", alt="AnyFetch Icon")
+        | &nbsp;Any
+        b Fetch
+    .vertical-align
+      .row.container
+        section.content.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+          h1 How to use the extension
+          ol.steps#steps
+            li.active(data-position=1)
+              p The extension will detect important websites, and figure out what you may be looking for.
+            li(data-position=2)
+              p When the extension finds something, the AnyFetch icon will appear in your navigation bar:
+              img.chrome-example(src="/images/chrome-example.png", alt="")
+              p.text-center Click to view the results!
+            li(data-position=3)
+              p You can try it now on:
+              ul.websites-examples
+                li
+                  img.favicon(src="/images/icons/sites/linkedin.png", alt="LinkedIn")
+                  | A LinkedIn profile:&nbsp;
+                  a(href="https://www.linkedin.com/profile/view" target="_blank") try here
+                li
+                  img.favicon(src="/images/icons/sites/facebook.png", alt="Facebook")
+                  | A facebook friend
+                li
+                  img.favicon(src="/images/icons/sites/gmail.png", alt="Gmail")
+                  | An email in Gmail
+                li
+                  img.favicon(src="/images/icons/sites/google.png", alt="Google")
+                  | A Google search:&nbsp;
+                  a(href="https://www.google.com/search?q=email" target="_blank") try here
+          a#prev.nav-link.pull-left.hidden(href="#") « Previous
+          a#next.nav-link.pull-right(href="#") Next »
+          a#end.nav-link.pull-right.hidden(href="#") I'm ready, close this!
+          .clearfix

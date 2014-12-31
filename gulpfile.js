@@ -18,6 +18,7 @@ var paths = {
       'assets/js/background.js',
       'assets/js/popover.js',
       'assets/js/first-run.js',
+      'assets/js/how-to-use.js',
       'assets/js/advanced-settings.js',
       'assets/js/settings.js',
       'assets/js/oauth-callback.js',
@@ -53,6 +54,7 @@ var paths = {
       'assets/jade/settings.jade',
       'assets/jade/advanced-settings.jade',
       'assets/jade/first-run.jade',
+      'assets/jade/how-to-use.jade',
       'assets/jade/oauth-callback.jade',
     ],
     target: 'extension/'
@@ -64,10 +66,17 @@ var paths = {
   package: 'extension/**/*'
 };
 
+var swallowError = function swallowError(error) {
+  // If you want details of the error in the console
+  console.log(error.toString());
+  this.emit('end');
+};
+
 // LESS compiling
 gulp.task('less', function() {
   return gulp.src(paths.less.entryPoints)
     .pipe(less())
+    .on('error', swallowError)
     .pipe(gulp.dest(paths.less.target));
 });
 
@@ -91,6 +100,7 @@ gulp.task('browserify', function() {
 
     return bundler
       .bundle()
+      .on('error', swallowError)
       .pipe(source(file))
       .pipe(buffer())
       .pipe(rename(function(path) {
@@ -104,7 +114,8 @@ gulp.task('browserify', function() {
 gulp.task('lint', function() {
   return gulp.src(paths.js.all)
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 // Jade view compiling
@@ -115,6 +126,7 @@ gulp.task('jade', function() {
     .pipe(jade({
       locals: locals
     }))
+    .on('error', swallowError)
     .pipe(gulp.dest(paths.jade.target));
 });
 
