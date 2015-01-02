@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function updateIcon(documentCount, cb) {
       // Force update the icon. Should not be useful, but in some rare cases the context detector enters a race condition with the page loading, and results could appear over a grey icon.
-      tabFunctions.activateExtension(currentTab.id, documentCount.length);
+      tabFunctions.activateExtension(currentTab.id, documentCount > 0);
 
       cb();
     },

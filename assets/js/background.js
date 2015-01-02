@@ -81,14 +81,9 @@ function managePageAction(tab) {
         return cb(true);
       }
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
-      chrome.pageAction.setIcon({
-        tabId: tab.id,
-        path: {
-          '19': '/images/icons/extension/page-action/icon19_grayscale.png',
-          '38': '/images/icons/extension/page-action/icon38_grayscale.png'
-        }
-      }, rarity.carry([context], cb));
+      tabFunctions.activateExtension(tab.id, false);
 
+      cb(null, context);
     },
     function loadSettings(context, cb) {
       chrome.pageAction.show(tab.id);
@@ -126,13 +121,9 @@ function managePageAction(tab) {
 
       ga('send', 'event', 'search', 'background', site.name, count);
       // We have some results, let's show the blue icon instead of the gray one
-      chrome.pageAction.setIcon({
-        tabId: tab.id,
-        path: {
-          '19': '/images/icons/extension/page-action/icon19.png',
-          '38': '/images/icons/extension/page-action/icon38.png'
-        }
-      }, cb);
+      tabFunctions.activateExtension(tab.id, true);
+
+      cb();
     }
   ], function(err) {
     if(err && err instanceof Error) {
