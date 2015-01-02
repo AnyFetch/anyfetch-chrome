@@ -8,6 +8,8 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
+var tabFunctions = require('./tab');
+
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -86,6 +88,7 @@ function managePageAction(tab) {
           '38': '/images/icons/extension/page-action/icon38_grayscale.png'
         }
       }, rarity.carry([context], cb));
+
     },
     function loadSettings(context, cb) {
       chrome.pageAction.show(tab.id);
