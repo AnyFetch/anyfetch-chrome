@@ -6,7 +6,6 @@
  */
 module.exports.activateExtension = function(tabId, activate) {
   // Force cast to boolean
-
   activate = !!activate;
 
   var iconsSet = {
