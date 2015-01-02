@@ -50,7 +50,7 @@ function managePageAction(tab) {
   }
   var ga = window.ga;
   var site;
-  chrome.pageAction.hide(tab.id);
+  tabFunctions.hideExtension(tab.id);
   if(chrome.runtime.lastError) {
     // lost the tab, might happen sometimes
     return;
@@ -86,7 +86,7 @@ function managePageAction(tab) {
       cb(null, context);
     },
     function loadSettings(context, cb) {
-      chrome.pageAction.show(tab.id);
+      tabFunctions.showExtension(tab.id);
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function filterContext(context, cb) {
@@ -114,10 +114,7 @@ function managePageAction(tab) {
         return cb(true);
       }
 
-      chrome.pageAction.setTitle({
-        tabId: tab.id,
-        title: 'Show context for ' + site.name
-      });
+      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
       ga('send', 'event', 'search', 'background', site.name, count);
       // We have some results, let's show the blue icon instead of the gray one

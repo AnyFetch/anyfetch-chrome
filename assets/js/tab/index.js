@@ -25,3 +25,29 @@ module.exports.activateExtension = function(tabId, activate) {
     path: iconsSet[activate]
   });
 };
+
+
+/**
+ * Hide the extension from this tab
+ */
+module.exports.hideExtension = function(tabId) {
+  chrome.pageAction.hide(tabId);
+};
+
+
+/**
+ * Show the extension on this tab.
+ * Customize the icon with `activateExtension()`
+ */
+module.exports.showExtension = function(tabId) {
+  chrome.pageAction.show(tabId);
+};
+
+
+module.exports.setTitle = function(tabId, title) {
+  chrome.pageAction.setTitle({
+    tabId: tabId,
+    title: title
+  });
+};
+
