@@ -87,15 +87,22 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function updateIcon(documentCount, cb) {
       // Force update the icon. Should not be useful, but in some rare cases the context detector enters a race condition with the page loading, and results could appear over a grey icon.
+      var iconSet = {
+        '19': '/images/icons/extension/page-action/icon19_grayscale.png',
+        '38': '/images/icons/extension/page-action/icon38_grayscale.png'
+      };
+
       if(documentCount > 0) {
-        chrome.pageAction.setIcon({
-          tabId: currentTab.id,
-          path: {
-            '19': '/images/icons/extension/page-action/icon19.png',
-            '38': '/images/icons/extension/page-action/icon38.png'
-          }
-        });
+        iconSet = {
+          '19': '/images/icons/extension/page-action/icon19.png',
+          '38': '/images/icons/extension/page-action/icon38.png'
+        };
       }
+
+      chrome.pageAction.setIcon({
+        tabId: currentTab.id,
+        path: iconSet
+      });
 
       cb();
     },
