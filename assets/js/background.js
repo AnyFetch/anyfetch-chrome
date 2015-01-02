@@ -8,6 +8,8 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
+var tabFunctions = require('./tab');
+
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
   if(!cb) {
@@ -48,7 +50,7 @@ function managePageAction(tab) {
   }
   var ga = window.ga;
   var site;
-  chrome.pageAction.hide(tab.id);
+  tabFunctions.hideExtension(tab.id);
   if(chrome.runtime.lastError) {
     // lost the tab, might happen sometimes
     return;
@@ -79,16 +81,12 @@ function managePageAction(tab) {
         return cb(true);
       }
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
-      chrome.pageAction.setIcon({
-        tabId: tab.id,
-        path: {
-          '19': '/images/icons/extension/page-action/icon19_grayscale.png',
-          '38': '/images/icons/extension/page-action/icon38_grayscale.png'
-        }
-      }, rarity.carry([context], cb));
+      tabFunctions.activateExtension(tab.id, false);
+
+      cb(null, context);
     },
     function loadSettings(context, cb) {
-      chrome.pageAction.show(tab.id);
+      tabFunctions.showExtension(tab.id);
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function filterContext(context, cb) {
@@ -116,20 +114,13 @@ function managePageAction(tab) {
         return cb(true);
       }
 
-      chrome.pageAction.setTitle({
-        tabId: tab.id,
-        title: 'Show context for ' + site.name
-      });
+      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
       ga('send', 'event', 'search', 'background', site.name, count);
-      // We have some results, so show a the blue icon instead of the gray one
-      chrome.pageAction.setIcon({
-        tabId: tab.id,
-        path: {
-          '19': '/images/icons/extension/page-action/icon19.png',
-          '38': '/images/icons/extension/page-action/icon38.png'
-        }
-      }, cb);
+      // We have some results, let's show the blue icon instead of the gray one
+      tabFunctions.activateExtension(tab.id, true);
+
+      cb();
     }
   ], function(err) {
     if(err && err instanceof Error) {
