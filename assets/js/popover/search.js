@@ -32,6 +32,6 @@ module.exports = function(context, cb) {
       return cb(err);
     }
     displayResults(search, documents, totalCount);
-    cb(null);
+    cb(null, totalCount);
   });
 };

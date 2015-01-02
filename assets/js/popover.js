@@ -12,6 +12,7 @@ var search = require('./popover/search.js');
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
   var ga = window.ga;
+  var currentTab = null;
 
   // TODO: cache results
   // TODO: add "Still indexing" warning (use GET / for server time and GET /provider for last hydrater status)
@@ -44,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     },
     function getContext(tab, cb) {
-      var site = getSiteFromTab(config.supportedSites, tab);
+      currentTab = tab;
+      var site = getSiteFromTab(config.supportedSites, currentTab);
       if(!site) {
         return cb(new Error('No sites matched for the current tab'));
       }
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
       }, 500);
 
-      detectContext(tab, site, cb);
+      detectContext(currentTab, site, cb);
       ga('send', 'pageview', {
         title: site.name
       });
@@ -82,7 +84,21 @@ document.addEventListener('DOMContentLoaded', function() {
       view.showContext(context);
 
       search(context, cb);
-    }
+    },
+    function updateIcon(documentCount, cb) {
+      // Force update the icon. Should not be useful, but in some rare cases the context detector enters a race condition with the page loading, and results could appear over a grey icon.
+      if(documentCount > 0) {
+        chrome.pageAction.setIcon({
+          tabId: currentTab.id,
+          path: {
+            '19': '/images/icons/extension/page-action/icon19.png',
+            '38': '/images/icons/extension/page-action/icon38.png'
+          }
+        });
+      }
+
+      cb();
+    },
   ], function(err) {
     if(timeout) {
       clearTimeout(timeout);

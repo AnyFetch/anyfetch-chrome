@@ -86,6 +86,7 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
     appUrl: config.appUrl,
     managerUrl: config.managerUrl
   };
+
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
   window.anyfetchAssets.formatDates();

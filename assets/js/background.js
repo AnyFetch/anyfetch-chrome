@@ -122,7 +122,7 @@ function managePageAction(tab) {
       });
 
       ga('send', 'event', 'search', 'background', site.name, count);
-      // We have some results, so show a the blue icon instead of the gray one
+      // We have some results, let's show the blue icon instead of the gray one
       chrome.pageAction.setIcon({
         tabId: tab.id,
         path: {
