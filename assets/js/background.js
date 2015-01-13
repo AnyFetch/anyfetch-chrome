@@ -120,12 +120,13 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
+        mixpanel.people.increment(site.name);
         return cb(true);
       }
 
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
-      mixpanel.people.increment(site.name);
+      mixpanel.people.increment(site.name + ' with results');
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
