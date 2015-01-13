@@ -8,14 +8,21 @@ module.exports.bindClickDocumentList = function() {
   var elements = document.querySelectorAll('.document-snippet > a');
   for(var i = 0; i < elements.length; i += 1) {
     elements[i].addEventListener("click", function() {
-      var ga = window.ga;
+      var mixpanel = window.mixpanel;
       var attributes = this.attributes;
+
+      var props = {};
       for(var j = 0; j < attributes.length; j += 1) {
         var attr = attributes[j];
-        if(attr.name.indexOf('data-ga-') === 0) {
-          ga('send', 'event', 'click', attr.name.substring('data-ga-'.length), attr.value);
+        if(attr.name.indexOf('data-analytics-') === 0) {
+          props[attr.name.substring('data-analytics-'.length)] = attr.value;
         }
       }
+
+      mixpanel.track(
+        "Document Click",
+        props
+      );
     }, false);
   }
 };
@@ -31,7 +38,12 @@ module.exports.bindClickApp = function() {
   }
 
   element.addEventListener("click", function() {
-    var ga = window.ga;
-    ga('send', 'event', 'click', 'more-results', '', this.getAttribute('data-ga-count'));
+    var mixpanel = window.mixpanel;
+    mixpanel.track(
+      "Leaving to app",
+      {
+        count: this.getAttribute('data-analytics-count')
+      }
+    );
   }, false);
 };

@@ -23,7 +23,7 @@ var paths = {
       'assets/js/settings.js',
       'assets/js/oauth-callback.js',
       'assets/js/content-script/advanced-detection.js',
-      'assets/js/ga.js',
+      'assets/js/mixpanel.js',
     ],
     target: 'extension/js'
   },

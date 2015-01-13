@@ -1,7 +1,7 @@
 'use strict';
 
 var config = require('../config/index.js');
-var getUserEmail = require('../anyfetch/get-user-email.js');
+var saveUserData = require('../anyfetch/save-user-data.js');
 
 /*
  * Start oauth flow with remote server
@@ -21,12 +21,10 @@ module.exports = function(cb) {
         sendResponse();
         chrome.tabs.remove(sender.tab && sender.tab.id);
         chrome.storage.sync.set({token: request.token}, cb);
-        getUserEmail(function(err, email) {
+        saveUserData(function(err) {
           if(err) {
             console.error(err);
-            return;
           }
-          chrome.storage.sync.set({email: email}, cb);
         });
       }
     }
