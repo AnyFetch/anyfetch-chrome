@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 500);
 
       detectContext(currentTab, site, cb);
-      // mixpanel('send', 'pageview', {
-      //   title: site.name
-      // });
-      // // TODO: Do that after the search, and report the result count (maybe the query)
-      // mixpanel('send', 'event', 'search', 'foreground', site.name);
+      mixpanel.track(
+        "Foreground Search",
+        {
+          "Site": site.name
+        });
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {

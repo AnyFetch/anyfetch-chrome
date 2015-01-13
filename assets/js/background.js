@@ -94,7 +94,7 @@ function managePageAction(tab) {
         return cb(new Error('No token'));
       }
       if(config.email) {
-        mixpanel;
+        console.log(new Date(), mixpanel);
         // mixpanel('set', '&uid', config.email);
       }
 
