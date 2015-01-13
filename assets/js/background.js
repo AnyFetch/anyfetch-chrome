@@ -120,7 +120,7 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
-        mixpanel.people.increment(site.name);
+        mixpanel.people.increment(site.name + " without results");
         return cb(true);
       }
 

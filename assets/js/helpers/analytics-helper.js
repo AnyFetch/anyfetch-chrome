@@ -14,12 +14,11 @@ module.exports.bindClickDocumentList = function() {
       var props = {};
       for(var j = 0; j < attributes.length; j += 1) {
         var attr = attributes[j];
-        if(attr.name.indexOf('data-mixpanel-') === 0) {
-          props[attr.name.substring('data-mixpanel-'.length)] = attr.value;
+        if(attr.name.indexOf('data-analytics-') === 0) {
+          props[attr.name.substring('data-analytics-'.length)] = attr.value;
         }
       }
 
-      console.log(props);
       mixpanel.track(
         "Document Click",
         props
@@ -40,6 +39,11 @@ module.exports.bindClickApp = function() {
 
   element.addEventListener("click", function() {
     var mixpanel = window.mixpanel;
-    mixpanel('send', 'event', 'click', 'more-results', '', this.getAttribute('data-mixpanel-count'));
+    mixpanel.track(
+      "Leaving to app",
+      {
+        count: this.getAttribute('data-analytics-count')
+      }
+    );
   }, false);
 };
