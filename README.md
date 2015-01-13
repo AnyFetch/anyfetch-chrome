@@ -5,9 +5,9 @@ AnyFetch Chrome extension
 
 # Get it on the Chrome Web Store!
 
-The app is available [right there](https://chrome.google.com/webstore/detail/anyfetch/igbnmifdfpgnbdhcnhiadcggoejocfpn).
+The app is available [right here](https://chrome.google.com/webstore/detail/anyfetch/igbnmifdfpgnbdhcnhiadcggoejocfpn).
 
 ![AnyFetch Chrome extension](images/screenshot.png)
 
 # Contributing
-See [the contributing guide](CONTRIBUTING.md)
+See [the contributing guide](CONTRIBUTING.md) for development information.
