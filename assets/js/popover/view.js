@@ -7,7 +7,7 @@ var config = require('../config/index.js');
 var templates = require('../../templates/templates.js');
 var errors = require('../helpers/errors.js');
 var search = require('./search.js');
-var gaHelper = require('../helpers/ga-helper.js');
+var analyticsHelper = require('../helpers/analytics-helper.js');
 
 var renderDocument = function(doc) {
   var view = {
@@ -90,6 +90,6 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
   var resultsHtml = Mustache.render(templates.results, view);
   resultsDisplay.html(resultsHtml);
   window.anyfetchAssets.formatDates();
-  gaHelper.bindClickDocumentList();
-  gaHelper.bindClickApp();
+  analyticsHelper.bindClickDocumentList();
+  analyticsHelper.bindClickApp();
 };

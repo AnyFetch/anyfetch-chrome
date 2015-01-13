@@ -13,7 +13,7 @@ var tabFunctions = require('./tab');
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
-  var ga = window.ga;
+  var mixpanel = window.mixpanel;
   var currentTab = null;
 
   // TODO: cache results
@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       if(config.email) {
-        ga('set', '&uid', config.email);
+        mixpanel;
+        // mixpanel('set', '&uid', config.email);
       }
 
       // Detect context for the current tab
@@ -64,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 500);
 
       detectContext(currentTab, site, cb);
-      ga('send', 'pageview', {
-        title: site.name
-      });
-      // TODO: Do that after the search, and report the result count (maybe the query)
-      ga('send', 'event', 'search', 'foreground', site.name);
+      // mixpanel('send', 'pageview', {
+      //   title: site.name
+      // });
+      // // TODO: Do that after the search, and report the result count (maybe the query)
+      // mixpanel('send', 'event', 'search', 'foreground', site.name);
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {

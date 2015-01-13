@@ -48,7 +48,7 @@ function managePageAction(tab) {
   if(!tab || !tab.id) {
     return;
   }
-  var ga = window.ga;
+  var mixpanel = window.mixpanel;
   var site;
   tabFunctions.hideExtension(tab.id);
   if(chrome.runtime.lastError) {
@@ -94,7 +94,8 @@ function managePageAction(tab) {
         return cb(new Error('No token'));
       }
       if(config.email) {
-        ga('set', '&uid', config.email);
+        mixpanel;
+        // mixpanel('set', '&uid', config.email);
       }
 
       context.forEach(function(item) {
@@ -110,13 +111,13 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
-        ga('send', 'event', 'search', 'background', site.name, 0);
+        // mixpanel('send', 'event', 'search', 'background', site.name, 0);
         return cb(true);
       }
 
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
-      ga('send', 'event', 'search', 'background', site.name, count);
+      // mixpanel('send', 'event', 'search', 'background', site.name, count);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
