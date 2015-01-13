@@ -10,13 +10,20 @@ module.exports.bindClickDocumentList = function() {
     elements[i].addEventListener("click", function() {
       var mixpanel = window.mixpanel;
       var attributes = this.attributes;
+
+      var props = {};
       for(var j = 0; j < attributes.length; j += 1) {
         var attr = attributes[j];
         if(attr.name.indexOf('data-mixpanel-') === 0) {
-          mixpanel;
-          // mixpanel('send', 'event', 'click', attr.name.substring('data-mixpanel-'.length), attr.value);
+          props[attr.name.substring('data-mixpanel-'.length)] = attr.value;
         }
       }
+
+      console.log(props);
+      mixpanel.track(
+        "Document Click",
+        props
+      );
     }, false);
   }
 };
