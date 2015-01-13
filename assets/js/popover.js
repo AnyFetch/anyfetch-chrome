@@ -9,7 +9,7 @@ var detectContext = require('./helpers/detect-context.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var search = require('./popover/search.js');
 var tabFunctions = require('./tab');
-
+var saveUserData = require('./anyfetch/save-user-data.js');
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
@@ -26,15 +26,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadSettings(cb) {
       config.loadUserSettings(cb);
     },
+    function ensureUserLoaded(cb) {
+      // Ensure we have all data
+      if(!config.userId) {
+        console.log("Missing some user data, updating.");
+        return saveUserData(cb);
+      }
+
+      cb();
+    },
     function getCurrentTab(cb) {
       if(!config.token) {
         errors.showSetupAccountError();
         return;
       }
-      if(config.email) {
-        mixpanel;
-        // mixpanel('set', '&uid', config.email);
-      }
+
+      mixpanel.identify(config.userId);
+      mixpanel.people.set({
+        "$last_login": new Date(),
+      });
 
       // Detect context for the current tab
       chrome.tabs.query({
@@ -54,6 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return cb(new Error('No sites matched for the current tab'));
       }
 
+      mixpanel.track(
+        "Foreground Search",
+        {
+          "Site": site.name
+        }
+      );
+
       timeout = setTimeout(function() {
         view.showSpinner("Searching...");
         timeout = setTimeout(function() {
@@ -65,11 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 500);
 
       detectContext(currentTab, site, cb);
-      mixpanel.track(
-        "Foreground Search",
-        {
-          "Site": site.name
-        });
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {

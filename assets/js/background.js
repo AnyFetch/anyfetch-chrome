@@ -9,6 +9,7 @@ var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
+var saveUserData = require('./anyfetch/save-user-data.js');
 
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
@@ -89,14 +90,22 @@ function managePageAction(tab) {
       tabFunctions.showExtension(tab.id);
       config.loadUserSettings(rarity.carry([context], cb));
     },
+    function ensureUserLoaded(context, cb) {
+      // Ensure we have all data
+      if(!config.userId) {
+        console.log("Missing some user data, updating.");
+        return saveUserData(rarity.carry([context], cb));
+      }
+
+      cb(null, context);
+    },
     function filterContext(context, cb) {
       if(!config.token) {
         return cb(new Error('No token'));
       }
-      if(config.email) {
-        console.log(new Date(), mixpanel);
-        // mixpanel('set', '&uid', config.email);
-      }
+
+      // Store who we are on mixpanel
+      mixpanel.identify(config.userId);
 
       context.forEach(function(item) {
         if(config.blacklist[item.name]) {
@@ -111,13 +120,12 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       if(!count) {
-        // mixpanel('send', 'event', 'search', 'background', site.name, 0);
         return cb(true);
       }
 
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
-      // mixpanel('send', 'event', 'search', 'background', site.name, count);
+      mixpanel.people.increment(site.name);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
