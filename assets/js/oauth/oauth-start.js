@@ -21,16 +21,10 @@ module.exports = function(cb) {
         sendResponse();
         chrome.tabs.remove(sender.tab && sender.tab.id);
         chrome.storage.sync.set({token: request.token}, cb);
-        saveUserData(function(err, body) {
+        saveUserData(function(err) {
           if(err) {
             console.error(err);
-            return;
           }
-          chrome.storage.sync.set({
-            email: body.user_email,
-            userId: body.user_id,
-            companyId: body.company_id,
-          }, cb);
         });
       }
     }
