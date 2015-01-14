@@ -119,14 +119,22 @@ function managePageAction(tab) {
       getCount(query, cb);
     },
     function showBlue(count, cb) {
+      var increment = {};
+      increment[site.name] = 1;
+
       if(!count) {
-        mixpanel.people.increment(site.name + " without results");
+        increment[site.name + " without results"] = 1;
+        increment["without results"] = 1;
+
+        mixpanel.people.increment(increment);
         return cb(true);
       }
 
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
-      mixpanel.people.increment(site.name + ' with results');
+      increment[site.name + " with results"] = 1;
+      increment["with results"] = 1;
+      mixpanel.people.increment(increment);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
