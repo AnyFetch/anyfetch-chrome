@@ -9,6 +9,9 @@ var turnObjToArray = function(obj) {
 
 function getValue(rule) {
   var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
+
+  // For each matching node,
+  // Find content removing empty and filtered values
   nodes = nodes.reduce(function(acc, node) {
     var value = '';
     if(rule.target === 'textContent') {
@@ -19,6 +22,10 @@ function getValue(rule) {
     }
     else {
       value = node.getAttribute(rule.target);
+    }
+
+    if(rule.filter && !new RegExp(rule.filter).test(value)) {
+      value = null;
     }
 
     if(value) {
