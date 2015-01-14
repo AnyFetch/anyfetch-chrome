@@ -120,6 +120,7 @@ function managePageAction(tab) {
     },
     function showBlue(count, cb) {
       var increment = {};
+      increment['background view'] = 1;
       increment[site.name] = 1;
 
       if(!count) {

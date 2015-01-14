@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       );
 
+      var increment = {};
+      increment[site.name + " context view"] = 1;
+      increment["context view"] = 1;
+      mixpanel.people.increment(increment);
+
       timeout = setTimeout(function() {
         view.showSpinner("Searching...");
         timeout = setTimeout(function() {
