@@ -12,7 +12,6 @@ var supportedSites = require('./sites.js');
 var loadUserSettings = function(cb) {
   var config = this;
   var toLoad = Object.keys(config.settings);
-  toLoad = toLoad.concat(['blacklist']);
   toLoad = toLoad.concat(config.whitelist);
 
   chrome.storage.sync.get(toLoad, function(userValues) {
@@ -31,7 +30,7 @@ var loadUserSettings = function(cb) {
 
 var configuration = {
   // Items not to be displayed in settings, but to be stored on Chrome sync
-  whitelist: ['userId', 'email', 'companyId'],
+  whitelist: ['userId', 'email', 'companyId', 'blacklist'],
 
   blacklist: {},
 
