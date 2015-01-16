@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       mixpanel.identify(config.userId);
       mixpanel.people.set({
-        "$last_login": new Date(),
+        "lastContext": new Date(),
       });
 
       // Detect context for the current tab

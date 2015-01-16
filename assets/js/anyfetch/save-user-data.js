@@ -24,6 +24,7 @@ module.exports = function saveUserData(cb) {
       "$name": config.email,
       "userId": config.userId,
       "companyId": config.companyId,
+      "last_login": new Date(),
     });
 
     // Only set created once
