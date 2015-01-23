@@ -67,7 +67,7 @@ var updateBlacklist = function(userEmail, cb) {
 };
 
 module.exports = {
-  getWords:getWords,
+  getWords: getWords,
   getAccounts: getAccounts,
   updateBlacklist: updateBlacklist
 };
