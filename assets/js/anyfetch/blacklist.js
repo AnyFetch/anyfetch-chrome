@@ -5,6 +5,9 @@ var validator = require('validator');
 var config = require('../config/index.js');
 var call = require('./call.js');
 
+/*
+ * Convert account email into first name and last name. ex: alice.bob@gmail.com into "alice bob"
+ */
 var getWords = function(accounts) {
   var formattedAccounts = [];
   accounts.forEach(function(account) {
@@ -59,8 +62,7 @@ var updateBlacklist = function(userEmail, cb) {
     getWords(accounts).forEach(function(word) {
       config.blacklist[word] = true;
     });
-    chrome.storage.sync.set({blacklist: config.blacklist});
-    cb();
+    chrome.storage.sync.set({blacklist: config.blacklist}, cb);
   });
 };
 

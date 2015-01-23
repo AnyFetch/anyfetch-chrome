@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var sinon = require('sinon');
 var blacklist = require('../assets/js/anyfetch/blacklist');
 var call = require('../assets/js/anyfetch/call');
