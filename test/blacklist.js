@@ -5,7 +5,7 @@ var sinon = require('sinon');
 var blacklist = require('../assets/js/anyfetch/blacklist');
 var call = require('../assets/js/anyfetch/call');
 
-describe('Add names and accouts to blacklist:', function() {
+describe('Add names and accounts to blacklist:', function() {
   describe('getWords', function() {
     it('should transform accounts into blacklisted words', function(done) {
       var accounts = [
@@ -16,7 +16,7 @@ describe('Add names and accouts to blacklist:', function() {
         'lol-rolf.mdr@anyfetch.com',
         '',
       ];
-      blacklist.getWords(accounts).should.be.eql([
+      blacklist.getWords(accounts).should.eql([
         'lol.mdr@anyfetch.com',
         'lol mdr',
         'lolisbetterthanmdr',
@@ -38,7 +38,7 @@ describe('Add names and accouts to blacklist:', function() {
         cb(null, require('./provider-response.json'));
       });
       blacklist.getAccounts('randomUser@anyfetch.com', function(err, accounts) {
-        accounts.should.be.eql([
+        accounts.should.eql([
           'randomUser@anyfetch.com',
           'anyfetch.test2@gmail.com',
           'hugo.duroux@gmail.com',
