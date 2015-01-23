@@ -106,6 +106,12 @@ function managePageAction(tab) {
 
       // Store who we are on mixpanel
       mixpanel.identify(config.userId);
+      mixpanel.register({
+        "email": config.email,
+        "userId": config.userId,
+        "companyId": config.companyId,
+      });
+
 
       context.forEach(function(item) {
         if(config.blacklist[item.name]) {
