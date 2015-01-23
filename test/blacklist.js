@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var should = require('should');
 var sinon = require('sinon');
@@ -47,7 +47,7 @@ describe('Add names and accouts to blacklist:', function() {
         ]);
         stub.restore();
         done();
-      })
+      });
     });
   });
 });

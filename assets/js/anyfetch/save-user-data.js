@@ -3,7 +3,7 @@
 var async = require('async');
 var config = require('../config/index.js');
 var call = require('./call.js');
-var updateBlacklist = require('./updateBlacklist');
+var updateBlacklist = require('./blacklist').updateBlacklist;
 
 /**
  * Request the AnyFetch API for the user email, by calling the root endpoint, and save the result on chrome storage.

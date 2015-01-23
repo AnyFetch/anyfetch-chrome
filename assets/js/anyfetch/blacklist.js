@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var async = require('async');
 var validator = require('validator');
@@ -27,7 +27,7 @@ var getWords = function(accounts) {
 
     // Push the formatted name
     formattedAccounts.push(account);
-  })
+  });
   return formattedAccounts;
 };
 
@@ -42,11 +42,10 @@ var getAccounts = function(userEmail, cb) {
     function getAccountNames(body, cb) {
       var accountNames = [userEmail];
       body.forEach(function(provider) {
-        console.log(provider)
         if(provider.account_name) {
           accountNames.push(provider.account_name);
         }
-      })
+      });
       cb(null, accountNames);
     }
   ], cb);
@@ -59,14 +58,14 @@ var updateBlacklist = function(userEmail, cb) {
     }
     getWords(accounts).forEach(function(word) {
       config.blacklist[word] = true;
-    })
+    });
     chrome.storage.sync.set({blacklist: config.blacklist});
     cb();
-  })
+  });
 };
 
 module.exports = {
   getWords:getWords,
   getAccounts: getAccounts,
   updateBlacklist: updateBlacklist
-}
+};
