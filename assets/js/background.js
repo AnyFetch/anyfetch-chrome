@@ -110,6 +110,7 @@ function managePageAction(tab) {
         "email": config.email,
         "userId": config.userId,
         "companyId": config.companyId,
+        "App Version": chrome.runtime.getManifest().version
       });
 
 
