@@ -12,5 +12,5 @@ module.exports = function getStatus(cb) {
     url: config.apiUrl + '/status',
   };
 
-  call(options, cb);
+  call.httpRequest(options, cb);
 };

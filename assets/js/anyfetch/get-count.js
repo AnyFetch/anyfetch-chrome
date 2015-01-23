@@ -29,7 +29,7 @@ module.exports = function getCount(query, cb) {
       },
     };
 
-    call(options, function(err, body) {
+    call.httpRequest(options, function(err, body) {
       if(!err) {
         lastQuery = query;
         lastResponse = body;

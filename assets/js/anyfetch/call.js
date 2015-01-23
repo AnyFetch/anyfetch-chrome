@@ -1,9 +1,10 @@
 'use strict';
 
-require('zepto/zepto.min.js');
 var config = require('../config/index.js');
 
-module.exports = function call(options, cb) {
+module.exports.httpRequest = function httpRequest(options, cb) {
+  // We require zepto here cause it crashes our test suite. In tests, we mock this function so there is no problem.
+  require('zepto/zepto.min.js');
   if(!config.token) {
     return cb(new Error('No token in config object while trying to call AnyFetch API'));
   }

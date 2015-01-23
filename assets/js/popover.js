@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function filterContext(context, cb) {
       context.forEach(function(item) {
-        if(config.blacklist[item.name]) {
+        if(config.blacklist[item.name.toLowerCase()]) {
           item.active = false;
         }
       });
