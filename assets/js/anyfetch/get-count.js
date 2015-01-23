@@ -3,6 +3,11 @@
 var config = require('../config/index.js');
 var call = require('./call.js');
 
+/**
+ * Caching the last query and the last response to avoid calling the api multiple times with the same query
+ */
+var lastQuery;
+var lastResponse;
 
 /**
  * Request the AnyFetch API for the number of documents matching `query`.
@@ -11,16 +16,25 @@ var call = require('./call.js');
  *   count Number of documents matching `query`
  */
 module.exports = function getCount(query, cb) {
-  var options = {
-    url: config.apiUrl + '/documents',
-    data: {
-      search: query,
-      limit: 0,
-      fields: 'count'
-    },
-  };
+  if(query === lastQuery) {
+    return cb(null, lastResponse && lastResponse.count);
+  }
+  else {
+    var options = {
+      url: config.apiUrl + '/documents',
+      data: {
+        search: query,
+        limit: 0,
+        fields: 'count'
+      },
+    };
 
-  call(options, function(err, body) {
-    cb(err, body && body.count);
-  });
+    call(options, function(err, body) {
+      if(!err) {
+        lastQuery = query;
+        lastResponse = body;
+      }
+      cb(err, body && body.count);
+    });
+  }
 };
