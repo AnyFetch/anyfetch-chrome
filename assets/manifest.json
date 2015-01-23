@@ -3,7 +3,7 @@
   "name": "AnyFetch Instant Context",
   "short_name": "AnyFetch",
   "description": "Find documents related to the current page with AnyFetch.",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "icons": {
     "16": "images/icons/extension/icon16.png",
     "32": "images/icons/extension/icon32.png",
@@ -33,5 +33,6 @@
     "persistent": false
   },
   "content_security_policy": "script-src 'self' https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js; object-src 'self'",
-  "options_page": "settings.html"
+  "options_page": "settings.html",
+  "minimum_chrome_version" : "22.0.0.0"
 }
