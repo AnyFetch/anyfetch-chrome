@@ -68,6 +68,8 @@
     "moment": "^2.8.4",
     "mustache": "^0.8.2",
     "rarity": "^2.1.1",
+    "sinon": "^1.12.2",
+    "validator": "^3.27.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "zepto": "0.0.4"

@@ -1,9 +1,9 @@
 'use strict';
 
-require('zepto/zepto.min.js');
 var config = require('../config/index.js');
 
-module.exports = function call(options, cb) {
+module.exports.httpRequest = function httpRequest(options, cb) {
+  require('zepto/zepto.min.js');
   if(!config.token) {
     return cb(new Error('No token in config object while trying to call AnyFetch API'));
   }

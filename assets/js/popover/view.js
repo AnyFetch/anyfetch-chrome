@@ -24,11 +24,11 @@ var toggleContext = function(toToggle, context) {
     if(item.name === toToggle) {
       var newState = !item.active;
       context[index].active = newState;
-      if(config.blacklist[item.name] && newState) {
-        delete config.blacklist[item.name];
+      if(config.blacklist[item.name.toLowerCase()] && newState) {
+        delete config.blacklist[item.name.toLowerCase()];
       }
       else if(!newState) {
-        config.blacklist[item.name] = true;
+        config.blacklist[item.name.toLowerCase()] = true;
       }
       chrome.storage.sync.set({blacklist: config.blacklist});
       return true;

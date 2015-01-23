@@ -1,7 +1,9 @@
 'use strict';
 
+var async = require('async');
 var config = require('../config/index.js');
 var call = require('./call.js');
+var updateBlacklist = require('./updateBlacklist');
 
 /**
  * Request the AnyFetch API for the user email, by calling the root endpoint, and save the result on chrome storage.
@@ -12,7 +14,7 @@ module.exports = function saveUserData(cb) {
     url: config.apiUrl + '/',
   };
 
-  call(options, function(err, body) {
+  call.httpRequest(options, function(err, body) {
     // Store on config
     config.email = body.user_email;
     config.userId = body.user_id;
@@ -32,12 +34,18 @@ module.exports = function saveUserData(cb) {
       "$created": new Date()
     });
 
-    // Store on storage
-    chrome.storage.sync.set({
-      email: body.user_email,
-      userId: body.user_id,
-      companyId: body.company_id,
-    }, cb);
+    async.waterfall([
+      function saveData(cb) {
+        chrome.storage.sync.set({
+          email: body.user_email,
+          userId: body.user_id,
+          companyId: body.company_id,
+        }, cb);
+      },
+      function saveBlacklist(cb) {
+        updateBlacklist(body.user_email, cb);
+      }
+    ], cb);
   });
 };
 

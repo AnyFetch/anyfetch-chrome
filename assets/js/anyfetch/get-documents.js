@@ -23,7 +23,7 @@ module.exports = function getDocuments(query, cb) {
     },
   };
 
-  call(options, function(err, body) {
+  call.httpRequest(options, function(err, body) {
     cb(err, body && body.data, body && body.count);
   });
 };
