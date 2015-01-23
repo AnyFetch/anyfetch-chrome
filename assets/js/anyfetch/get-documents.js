@@ -4,6 +4,13 @@ require('zepto/zepto.min.js');
 var config = require('../config/index.js');
 var call = require('./call.js');
 
+
+/**
+ * Caching the last query and le tast response to avoid calling multiple times api with the same query.
+ */
+var lastQuery;
+var lastResponse;
+
 /**
  * Request the AnyFetch API for documents matching `query`.
  * Only the first config.resultsCountLimit matches will be returned by the API.
@@ -13,17 +20,26 @@ var call = require('./call.js');
  *   totalCount The total number of matches (may be superior to `documents.length`)
  */
 module.exports = function getDocuments(query, cb) {
-  var options = {
-    url: config.apiUrl + '/documents',
-    data: {
-      search: query,
-      limit: config.resultsCountLimit,
-      sort: '-modificationDate',
-      render_templates: true
-    },
-  };
+  if(query === lastQuery) {
+    cb(null, lastResponse && lastResponse.data, lastResponse && lastResponse.count)
+  }
+  else {
+    var options = {
+      url: config.apiUrl + '/documents',
+      data: {
+        search: query,
+        limit: config.resultsCountLimit,
+        sort: '-modificationDate',
+        render_templates: true
+      },
+    };
 
-  call(options, function(err, body) {
-    cb(err, body && body.data, body && body.count);
-  });
+    call(options, function(err, body) {
+      if(!err) {
+        lastQuery = query;
+        lastResponse = body;
+      }
+      cb(err, body && body.data, body && body.count);
+    });
+  }
 };
