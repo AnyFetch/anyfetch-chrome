@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
       mixpanel.people.set({
         "lastContext": new Date(),
       });
+      mixpanel.people.increment({
+        "ContextCount": 1
+      });
 
       // Detect context for the current tab
       chrome.tabs.query({
