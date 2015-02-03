@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
       config.loadUserSettings(cb);
     },
     function ensureUserLoaded(cb) {
-      // Ensure we have all data
-      if(!config.userId) {
+      // Ensure we have all data (and we're logged too)
+      if(!config.userId && config.token) {
         console.log("Missing some user data, updating.");
         return saveUserData(cb);
       }

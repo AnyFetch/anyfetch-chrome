@@ -9,7 +9,6 @@ function getParam(name) {
 
 document.addEventListener('DOMContentLoaded', function() {
   var token = getParam('token');
-  console.log(token);
 
   chrome.runtime.sendMessage({
     type: 'anyfetch::oauthResponse',

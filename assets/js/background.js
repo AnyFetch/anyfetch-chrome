@@ -92,7 +92,7 @@ function managePageAction(tab) {
     },
     function ensureUserLoaded(context, cb) {
       // Ensure we have all data
-      if(!config.userId) {
+      if(!config.userId && config.logged) {
         console.log("Missing some user data, updating.");
         return saveUserData(rarity.carry([context], cb));
       }
