@@ -33,7 +33,7 @@
     "page": "background.html",
     "persistent": false
   },
-  "content_security_policy": "script-src 'self' https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js; object-src 'self' default-src http://localhost:4000",
   "options_page": "settings.html",
   "minimum_chrome_version": "22.0.0.0"
 }
