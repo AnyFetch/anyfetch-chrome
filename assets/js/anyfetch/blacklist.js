@@ -60,7 +60,7 @@ var updateBlacklist = function(userEmail, cb) {
       return cb(err);
     }
     getWords(accounts).forEach(function(word) {
-      config.blacklist[word] = true;
+      config.blacklist[word.toLowerCase()] = true;
     });
     chrome.storage.sync.set({blacklist: config.blacklist}, cb);
   });
@@ -71,8 +71,8 @@ var updateBlacklist = function(userEmail, cb) {
  * Takes an array for input and remove blacklisted items
  */
 var filterQuery = function(context) {
-  console.log(Object.keys(config.blacklist));
   context.forEach(function(item) {
+    // Remove items in blacklist
     if(config.blacklist[item.name.toLowerCase()]) {
       item.active = false;
     }
