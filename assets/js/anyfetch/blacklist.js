@@ -49,19 +49,26 @@ var getAccounts = function(userEmail, cb) {
           accountNames.push(provider.account_name);
         }
       });
-      cb(null, accountNames);
+      cb(null, accountNames, body);
     }
   ], cb);
 };
 
 var updateBlacklist = function(userEmail, cb) {
-  getAccounts(userEmail, function(err, accounts) {
+  getAccounts(userEmail, function(err, accounts, providers) {
     if(err) {
       return cb(err);
     }
     getWords(accounts).forEach(function(word) {
       config.blacklist[word] = true;
     });
+
+    // Only count item with at least one document
+    var realProviders = providers.filter(function(provider) {
+      return provider.document_count > 0;
+    });
+
+    config.providerCount = realProviders.length;
     chrome.storage.sync.set({blacklist: config.blacklist}, cb);
   });
 };

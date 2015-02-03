@@ -28,11 +28,19 @@ module.exports.displayNotLogged = function notLoggedNotification(site) {
 };
 
 
+var lastClickedOnNoProviders = new Date(0);
+
 /**
  * Display a notification explaining you're not logged yet,
  * Clicking on it will open the authentication page.
  */
 module.exports.displayNoProviders = function noProvidersNotification() {
+  if(new Date() - lastClickedOnNoProviders < 1000 * 60 * 15) {
+    // Don't display notification again if user already clicked on it
+    console.log("Cooldown for marketplace notification.");
+    return;
+  }
+
   var notificationId = "no-providers";
   var options = {
     type: "basic",
@@ -45,6 +53,7 @@ module.exports.displayNoProviders = function noProvidersNotification() {
 
   chrome.notifications.onClicked.addListener(function(_notificationId) {
     if(notificationId === _notificationId) {
+      lastClickedOnNoProviders = new Date();
       chrome.tabs.create({url: 'https://manager.anyfetch.com/marketplace'});
     }
   });

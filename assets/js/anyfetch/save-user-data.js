@@ -11,18 +11,14 @@ var updateBlacklist = require('./blacklist').updateBlacklist;
  */
 module.exports = function saveUserData(cb) {
   var options = {
-    url: config.apiUrl + '/batch?pages=/&pages=%2Fdocuments%3Ffields%3Dfacets.providers',
+    url: config.apiUrl + '/',
   };
 
-  call.httpRequest(options, function(err, body) {
-    var indexPage = body['/'];
-    var providers = body['/documents?fields=facets.providers'].facets.providers;
-
+  call.httpRequest(options, function(err, indexPage) {
     // Store on config
     config.email = indexPage.user_email;
     config.userId = indexPage.user_id;
     config.companyId = indexPage.company_id;
-    config.providerCount = providers.length;
 
     // Send to mixpanel
     window.mixpanel.people.set({

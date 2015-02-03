@@ -103,8 +103,6 @@ function managePageAction(tab) {
         return;
       }
 
-      console.log("COUNT", config.providerCount);
-
       // Do we know everything about the user?
       // * Maybe we don't know the userId (first run), in which case we'll retrieve it
       // * Maybe the user had no Providers connected on last run, in which case we'll update our list.
@@ -116,6 +114,11 @@ function managePageAction(tab) {
       cb(null, context);
     },
     function filterContext(context, cb) {
+      if(!config.providerCount) {
+        notificationHandler.displayNoProviders();
+        return;
+      }
+
       // Identify the user (stored as super properties, no http call yet)
       mixpanel.identify(config.userId);
       mixpanel.register({
