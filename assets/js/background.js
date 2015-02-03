@@ -114,6 +114,7 @@ function managePageAction(tab) {
       cb(null, context);
     },
     function filterContext(context, cb) {
+      // User is logged in, but has no content yet.
       if(!config.providerCount) {
         notificationHandler.displayNoProviders();
         return;

@@ -45,7 +45,7 @@ module.exports = function saveUserData(cb) {
         }, cb);
       },
       function saveBlacklist(cb) {
-        updateBlacklist(indexPage.user_email, cb);
+        updateBlacklist(config.email, cb);
       }
     ], cb);
   });

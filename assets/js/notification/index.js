@@ -22,6 +22,7 @@ module.exports.displayNotLogged = function notLoggedNotification(site) {
     }
   });
 
+  // Remove from notification center
   setTimeout(function() {
     chrome.notifications.clear(notificationId, function() {});
   }, 10000);
@@ -58,6 +59,7 @@ module.exports.displayNoProviders = function noProvidersNotification() {
     }
   });
 
+  // Remove from notification center
   setTimeout(function() {
     chrome.notifications.clear(notificationId, function() {});
   }, 10000);
