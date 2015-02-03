@@ -11,14 +11,18 @@ var updateBlacklist = require('./blacklist').updateBlacklist;
  */
 module.exports = function saveUserData(cb) {
   var options = {
-    url: config.apiUrl + '/',
+    url: config.apiUrl + '/batch?pages=/&pages=%2Fdocuments%3Ffields%3Dfacets.providers',
   };
 
   call.httpRequest(options, function(err, body) {
+    var indexPage = body['/'];
+    var providers = body['/documents?fields=facets.providers'].facets.providers;
+
     // Store on config
-    config.email = body.user_email;
-    config.userId = body.user_id;
-    config.companyId = body.company_id;
+    config.email = indexPage.user_email;
+    config.userId = indexPage.user_id;
+    config.companyId = indexPage.company_id;
+    config.providerCount = providers.length;
 
     // Send to mixpanel
     window.mixpanel.people.set({
@@ -27,6 +31,7 @@ module.exports = function saveUserData(cb) {
       "userId": config.userId,
       "companyId": config.companyId,
       "$last_login": new Date(),
+      "App Version": chrome.runtime.getManifest().version
     });
 
     // Only set created once
@@ -37,13 +42,14 @@ module.exports = function saveUserData(cb) {
     async.waterfall([
       function saveData(cb) {
         chrome.storage.sync.set({
-          email: body.user_email,
-          userId: body.user_id,
-          companyId: body.company_id,
+          email: config.email,
+          userId: config.userId,
+          companyId: config.companyId,
+          providerCount: config.providerCount
         }, cb);
       },
       function saveBlacklist(cb) {
-        updateBlacklist(body.user_email, cb);
+        updateBlacklist(indexPage.user_email, cb);
       }
     ], cb);
   });

@@ -73,20 +73,25 @@ function managePageAction(tab) {
     },
     function(cb) {
       site = getSiteFromTab(config.supportedSites, tab);
-      if(!site) {
-        return cb(true);
-      }
 
-      if(!config.token) {
-        notificationHandler.displayNotLogged(site)
+      // Unsupported website, skip.
+      if(!site) {
         return;
       }
 
+      // Use is not logged, display a notification and skip
+      if(!config.token) {
+        notificationHandler.displayNotLogged(site);
+        return;
+      }
+
+      // Everything looks fine (logged and supported website), retrieve context
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
+      // Empty context, skip.
       if(!context.length) {
-        return cb(true);
+        return;
       }
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
       tabFunctions.activateExtension(tab.id, false);
@@ -98,7 +103,9 @@ function managePageAction(tab) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
-      // Ensure we have all data
+      // Do we know everything about the user?
+      // * Maybe we don't know the userId (first run), in which case we'll retrieve it
+      // * Maybe the user had no Providers connected on last run, in which case we'll update our list.
       if(!config.userId && config.token) {
         console.log("Missing some user data, updating.");
         return saveUserData(rarity.carry([context], cb));
@@ -107,11 +114,7 @@ function managePageAction(tab) {
       cb(null, context);
     },
     function filterContext(context, cb) {
-      if(!config.token) {
-        return cb(new Error('No token'));
-      }
-
-      // Store who we are on mixpanel
+      // Identify the user (stored as super properties, no http call yet)
       mixpanel.identify(config.userId);
       mixpanel.register({
         "email": config.email,
@@ -120,12 +123,13 @@ function managePageAction(tab) {
         "App Version": chrome.runtime.getManifest().version
       });
 
-
+      // Remove blacklisted items
       context.forEach(function(item) {
         if(config.blacklist[item.name]) {
           item.active = false;
         }
       });
+
       cb(null, context);
     },
     function getDocumentCount(context, cb) {
@@ -142,21 +146,21 @@ function managePageAction(tab) {
         increment["without results"] = 1;
 
         mixpanel.people.increment(increment);
-        return cb(true);
+        return;
       }
-
-      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
       increment[site.name + " with results"] = 1;
       increment["with results"] = 1;
       mixpanel.people.increment(increment);
+
+      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
       cb();
     }
   ], function(err) {
-    if(err && err instanceof Error) {
+    if(err) {
       console.warn(err);
     }
   });
