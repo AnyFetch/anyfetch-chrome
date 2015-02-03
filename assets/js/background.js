@@ -79,12 +79,6 @@ function managePageAction(tab) {
         return;
       }
 
-      // Use is not logged, display a notification and skip
-      if(!config.token) {
-        notificationHandler.displayNotLogged(site);
-        return;
-      }
-
       // Everything looks fine (logged and supported website), retrieve context
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
@@ -103,11 +97,19 @@ function managePageAction(tab) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
+      // User is not logged, display a notification and skip
+      if(!config.token) {
+        notificationHandler.displayNotLogged(site);
+        return;
+      }
+
+      console.log("COUNT", config.providerCount);
+
       // Do we know everything about the user?
       // * Maybe we don't know the userId (first run), in which case we'll retrieve it
       // * Maybe the user had no Providers connected on last run, in which case we'll update our list.
-      if(!config.userId && config.token) {
-        console.log("Missing some user data, updating.");
+      if(!config.userId || !config.providerCount) {
+        console.log("Missing some user data, updating. Current userId: " + config.userId + ". Current providerCount: " + config.providerCount);
         return saveUserData(rarity.carry([context], cb));
       }
 
