@@ -28,6 +28,10 @@ function getValue(rule) {
       value = null;
     }
 
+    if(rule.selected === false) {
+      value = "~" + value.trim();
+    }
+
     if(value) {
       acc.push(value.trim());
     }

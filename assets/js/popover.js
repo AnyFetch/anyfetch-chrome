@@ -10,6 +10,8 @@ var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var search = require('./popover/search.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
+var blacklist = require('./anyfetch/blacklist.js');
+
 
 document.addEventListener('DOMContentLoaded', function() {
   var timeout = null;
@@ -92,11 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
       detectContext(currentTab, site, cb);
     },
     function filterContext(context, cb) {
-      context.forEach(function(item) {
-        if(config.blacklist[item.name.toLowerCase()]) {
-          item.active = false;
-        }
-      });
+      context = blacklist.filterQuery(context);
+
       cb(null, context);
     },
     function showContextAndSearch(context, cb) {

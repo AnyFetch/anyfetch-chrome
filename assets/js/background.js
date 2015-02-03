@@ -10,6 +10,7 @@ var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
+var blacklist = require('./anyfetch/blacklist.js');
 
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
@@ -99,7 +100,7 @@ function managePageAction(tab) {
 
       cb(null, context);
     },
-    function filterContext(context, cb) {
+    function setupTracking(context, cb) {
       if(!config.token) {
         return cb(new Error('No token'));
       }
@@ -113,15 +114,10 @@ function managePageAction(tab) {
         "App Version": chrome.runtime.getManifest().version
       });
 
-
-      context.forEach(function(item) {
-        if(config.blacklist[item.name]) {
-          item.active = false;
-        }
-      });
       cb(null, context);
     },
     function getDocumentCount(context, cb) {
+      context = blacklist.filterQuery(context);
       var query = generateQuery(context);
       getCount(query, cb);
     },
