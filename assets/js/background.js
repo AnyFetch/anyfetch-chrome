@@ -75,6 +75,30 @@ function managePageAction(tab) {
       if(!site) {
         return cb(true);
       }
+
+      if(!config.token) {
+        var notificationId = "not_logged-" + site.name;
+        var options = {
+          type: "basic",
+          title: "Setup AnyFetch!",
+          message: "Click to sign-in and start using AnyFetch on " + site.name + "!",
+          iconUrl: "/images/icons/extension/icon128.png",
+          isClickable: true,
+        };
+        chrome.notifications.create(notificationId, options, function() {});
+
+        chrome.notifications.onClicked.addListener(function(_notificationId) {
+          if(notificationId === _notificationId) {
+            chrome.tabs.create({url: '/first-run.html'});
+          }
+        });
+
+        setTimeout(function() {
+          chrome.notifications.clear(notificationId, function() {});
+        }, 10000);
+        return;
+      }
+
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
@@ -92,7 +116,7 @@ function managePageAction(tab) {
     },
     function ensureUserLoaded(context, cb) {
       // Ensure we have all data
-      if(!config.userId && config.logged) {
+      if(!config.userId && config.token) {
         console.log("Missing some user data, updating.");
         return saveUserData(rarity.carry([context], cb));
       }
