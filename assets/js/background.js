@@ -10,6 +10,7 @@ var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
+var notificationHandler = require('./notification/index.js');
 
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
@@ -77,25 +78,7 @@ function managePageAction(tab) {
       }
 
       if(!config.token) {
-        var notificationId = "not_logged-" + site.name;
-        var options = {
-          type: "basic",
-          title: "Setup AnyFetch!",
-          message: "Click to sign-in and start using AnyFetch on " + site.name + "!",
-          iconUrl: "/images/icons/extension/icon128.png",
-          isClickable: true,
-        };
-        chrome.notifications.create(notificationId, options, function() {});
-
-        chrome.notifications.onClicked.addListener(function(_notificationId) {
-          if(notificationId === _notificationId) {
-            chrome.tabs.create({url: '/first-run.html'});
-          }
-        });
-
-        setTimeout(function() {
-          chrome.notifications.clear(notificationId, function() {});
-        }, 10000);
+        notificationHandler.displayNotLogged(site)
         return;
       }
 
