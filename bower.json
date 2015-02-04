@@ -1,6 +1,6 @@
 {
   "name": "anyfetch-chrome",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "AnyFetch Chrome extension",
   "main": [
     "dist/background.js",
