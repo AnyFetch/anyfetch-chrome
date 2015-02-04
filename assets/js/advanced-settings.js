@@ -4,6 +4,7 @@ var Mustache = require('mustache');
 var templates = require('../templates/templates.js');
 var config = require('./config/index.js');
 
+
 var insertFields = function(descriptors) {
   var inputs = '';
   for(var id in descriptors) {
@@ -16,11 +17,13 @@ var insertFields = function(descriptors) {
   document.getElementById('settingsInputs').innerHTML = inputs;
 };
 
+
 var displayValues = function(values) {
   Object.keys(values).forEach(function(id) {
     document.getElementById(id).value = values[id];
   });
 };
+
 
 /**
  * Load the current setting values
@@ -30,6 +33,7 @@ var loadSettings = function() {
   // Fill in the overrided values only
   chrome.storage.sync.get(Object.keys(config.settings), displayValues);
 };
+
 
 var saveSettings = function(event) {
   var newValues = {};
@@ -53,7 +57,8 @@ var saveSettings = function(event) {
   });
 };
 
-/** Reset all settings do their default value */
+
+/** Reset all settings to their default value */
 var resetSettings = function() {
   chrome.storage.sync.clear(function() {
     var newValues = {};
@@ -63,6 +68,7 @@ var resetSettings = function() {
     displayValues(newValues);
   });
 };
+
 
 document.addEventListener('DOMContentLoaded', function() {
   insertFields(config.settings);

@@ -14,11 +14,11 @@ module.exports = function saveUserData(cb) {
     url: config.apiUrl + '/',
   };
 
-  call.httpRequest(options, function(err, body) {
+  call.httpRequest(options, function(err, indexPage) {
     // Store on config
-    config.email = body.user_email;
-    config.userId = body.user_id;
-    config.companyId = body.company_id;
+    config.email = indexPage.user_email;
+    config.userId = indexPage.user_id;
+    config.companyId = indexPage.company_id;
 
     // Send to mixpanel
     window.mixpanel.people.set({
@@ -27,6 +27,7 @@ module.exports = function saveUserData(cb) {
       "userId": config.userId,
       "companyId": config.companyId,
       "$last_login": new Date(),
+      "App Version": chrome.runtime.getManifest().version
     });
 
     // Only set created once
@@ -37,13 +38,14 @@ module.exports = function saveUserData(cb) {
     async.waterfall([
       function saveData(cb) {
         chrome.storage.sync.set({
-          email: body.user_email,
-          userId: body.user_id,
-          companyId: body.company_id,
+          email: config.email,
+          userId: config.userId,
+          companyId: config.companyId,
+          providerCount: config.providerCount
         }, cb);
       },
       function saveBlacklist(cb) {
-        updateBlacklist(body.user_email, cb);
+        updateBlacklist(config.email, cb);
       }
     ], cb);
   });

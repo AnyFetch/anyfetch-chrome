@@ -11,6 +11,7 @@ var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
 var blacklist = require('./anyfetch/blacklist.js');
+var notificationHandler = require('./notification/index.js');
 
 
 function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
@@ -73,14 +74,19 @@ function managePageAction(tab) {
     },
     function(cb) {
       site = getSiteFromTab(config.supportedSites, tab);
+
+      // Unsupported website, skip.
       if(!site) {
-        return cb(true);
+        return;
       }
+
+      // Everything looks fine (logged and supported website), retrieve context
       detectContextWithRetry(tab, site, 2, 1000, cb);
     },
     function setIcon(context, cb) {
+      // Empty context, skip.
       if(!context.length) {
-        return cb(true);
+        return;
       }
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
       tabFunctions.activateExtension(tab.id, false);
@@ -92,20 +98,30 @@ function managePageAction(tab) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
-      // Ensure we have all data
-      if(!config.userId) {
-        console.log("Missing some user data, updating.");
+      // User is not logged, display a notification and skip
+      if(!config.token) {
+        notificationHandler.displayNotLogged(site);
+        return;
+      }
+
+      // Do we know everything about the user?
+      // * Maybe we don't know the userId (first run), in which case we'll retrieve it
+      // * Maybe the user had no Providers connected on last run, in which case we'll update our list.
+      if(!config.userId || !config.providerCount) {
+        console.log("Missing some user data, updating. Current userId: " + config.userId + ". Current providerCount: " + config.providerCount);
         return saveUserData(rarity.carry([context], cb));
       }
 
       cb(null, context);
     },
     function setupTracking(context, cb) {
-      if(!config.token) {
-        return cb(new Error('No token'));
+      // User is logged in, but has no content yet.
+      if(!config.providerCount) {
+        notificationHandler.displayNoProviders();
+        return;
       }
 
-      // Store who we are on mixpanel
+      // Identify the user (stored as super properties, no http call yet)
       mixpanel.identify(config.userId);
       mixpanel.register({
         "email": config.email,
@@ -131,21 +147,21 @@ function managePageAction(tab) {
         increment["without results"] = 1;
 
         mixpanel.people.increment(increment);
-        return cb(true);
+        return;
       }
-
-      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
 
       increment[site.name + " with results"] = 1;
       increment["with results"] = 1;
       mixpanel.people.increment(increment);
+
+      tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
       cb();
     }
   ], function(err) {
-    if(err && err instanceof Error) {
+    if(err) {
       console.warn(err);
     }
   });

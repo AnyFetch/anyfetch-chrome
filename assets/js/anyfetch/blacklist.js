@@ -38,30 +38,33 @@ var getAccounts = function(userEmail, cb) {
   async.waterfall([
     function getProviders(cb) {
       var options = {
-        url: config.apiUrl + '/providers',
+        url: config.apiUrl + '/documents?fields=facets.providers',
       };
       call.httpRequest(options, cb);
     },
     function getAccountNames(body, cb) {
       var accountNames = [userEmail];
-      body.forEach(function(provider) {
+      var providers = body.facets.providers;
+      providers.forEach(function(provider) {
         if(provider.account_name) {
           accountNames.push(provider.account_name);
         }
       });
-      cb(null, accountNames);
+      cb(null, accountNames, providers);
     }
   ], cb);
 };
 
 var updateBlacklist = function(userEmail, cb) {
-  getAccounts(userEmail, function(err, accounts) {
+  getAccounts(userEmail, function(err, accounts, providers) {
     if(err) {
       return cb(err);
     }
     getWords(accounts).forEach(function(word) {
       config.blacklist[word.toLowerCase()] = true;
     });
+
+    config.providerCount = providers.length;
     chrome.storage.sync.set({blacklist: config.blacklist}, cb);
   });
 };
