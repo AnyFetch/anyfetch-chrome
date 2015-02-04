@@ -17,7 +17,8 @@ module.exports = {
       // Subject
       {
         target: 'textContent',
-        selector: 'div[role="main"] table[role="presentation"] > tr > td > div > div > div > div > h2'
+        selector: 'div[role="main"] table[role="presentation"] > tr > td > div > div > div > div > h2',
+        selected: false,
       },
       // Sender
       {

@@ -61,7 +61,7 @@ var updateBlacklist = function(userEmail, cb) {
       return cb(err);
     }
     getWords(accounts).forEach(function(word) {
-      config.blacklist[word] = true;
+      config.blacklist[word.toLowerCase()] = true;
     });
 
     config.providerCount = providers.length;
@@ -69,8 +69,30 @@ var updateBlacklist = function(userEmail, cb) {
   });
 };
 
+
+/**
+ * Takes an array for input and remove blacklisted items
+ */
+var filterQuery = function(context) {
+  context.forEach(function(item) {
+    // Remove items in blacklist
+    if(config.blacklist[item.name.toLowerCase()]) {
+      item.active = false;
+    }
+
+    // Items starting with "~" should be disabled by default
+    if(item.name[0] === "~") {
+      item.active = false;
+      item.name = item.name.substr(1);
+    }
+  });
+
+  return context;
+};
+
 module.exports = {
   getWords: getWords,
   getAccounts: getAccounts,
-  updateBlacklist: updateBlacklist
+  updateBlacklist: updateBlacklist,
+  filterQuery: filterQuery,
 };

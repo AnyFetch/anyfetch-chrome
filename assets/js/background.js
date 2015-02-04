@@ -10,6 +10,7 @@ var getCount = require('./anyfetch/get-count.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
+var blacklist = require('./anyfetch/blacklist.js');
 var notificationHandler = require('./notification/index.js');
 
 
@@ -113,7 +114,7 @@ function managePageAction(tab) {
 
       cb(null, context);
     },
-    function filterContext(context, cb) {
+    function setupTracking(context, cb) {
       // User is logged in, but has no content yet.
       if(!config.providerCount) {
         notificationHandler.displayNoProviders();
@@ -129,16 +130,10 @@ function managePageAction(tab) {
         "App Version": chrome.runtime.getManifest().version
       });
 
-      // Remove blacklisted items
-      context.forEach(function(item) {
-        if(config.blacklist[item.name]) {
-          item.active = false;
-        }
-      });
-
       cb(null, context);
     },
     function getDocumentCount(context, cb) {
+      context = blacklist.filterQuery(context);
       var query = generateQuery(context);
       getCount(query, cb);
     },
