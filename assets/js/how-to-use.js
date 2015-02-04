@@ -69,7 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+window.mixpanel.identify(config.userId);
 window.mixpanel.track_links("a.btn", "Open marketplace", {
     email: config.email,
     origin: "how to use"
+});
+window.mixpanel.track("How to use", {
+    email: config.email,
+    step: 1
 });
