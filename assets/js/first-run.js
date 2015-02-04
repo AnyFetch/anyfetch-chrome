@@ -1,6 +1,8 @@
 'use strict';
 
 require('zepto/zepto.min.js');
+require('./mixpanel');
+
 var async = require('async/lib/async.js');
 var config = require('./config/index.js');
 var oauthStart = require('./oauth/oauth-start.js');
@@ -32,6 +34,11 @@ var showSuccess = function showSuccess(message) {
   message = message || 'You are now logged in!';
   showById('success');
   document.getElementById('success-message').innerHTML = message;
+
+  window.mixpanel.identify(config.userId);
+  window.mixpanel.track("Login", {
+    email: config.email,
+  });
 };
 
 var showError = function showError(err) {

@@ -1,5 +1,6 @@
 "use strict";
-
+var config = require('../config/');
+require('../mixpanel.js');
 
 /**
  * Display a notification explaining you're not logged yet,
@@ -56,6 +57,11 @@ module.exports.displayNoProviders = function noProvidersNotification() {
     if(notificationId === _notificationId) {
       lastClickedOnNoProviders = new Date();
       chrome.tabs.create({url: 'https://manager.anyfetch.com/marketplace'});
+
+      window.mixpanel.track(config.userId, "Open marketplace", {
+        email: config.email,
+        origin: "notification"
+      });
     }
   });
 

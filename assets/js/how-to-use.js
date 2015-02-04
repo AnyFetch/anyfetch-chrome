@@ -1,9 +1,12 @@
 'use strict';
+require('./mixpanel');
+var config = require('./config');
 
 var goTo = function goTo(position) {
   var next = document.getElementById('next');
   var prev = document.getElementById('prev');
   var end = document.getElementById('end');
+
 
   var steps = document.querySelector('#steps');
   var current = document.querySelector('#steps > .active');
@@ -28,6 +31,12 @@ var goTo = function goTo(position) {
   else {
     prev.classList.remove('hidden');
   }
+
+  window.mixpanel.identify(config.userId);
+  window.mixpanel.track("How to use", {
+    email: config.email,
+    step: position
+  });
 };
 
 var goToRelative = function goToRelative(relativePos) {
@@ -57,4 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
       window.close();
     });
   }
+});
+
+
+window.mixpanel.track_links("a.btn", "Open marketplace", {
+    email: config.email,
+    origin: "how to use"
 });
