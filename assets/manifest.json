@@ -12,6 +12,7 @@
   },
   "permissions": [
     "declarativeContent",
+    "notifications",
     "tabs",
     "storage",
     "https://*/",
