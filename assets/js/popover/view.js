@@ -14,7 +14,7 @@ var renderDocument = function(doc) {
     snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,
     documentType: doc.document_type.name,
-    providerName: doc.provider.client.name
+    providerName: doc.provider.client ?  doc.provider.client.name : ''
    };
   return Mustache.render(templates.listItem, view);
 };
