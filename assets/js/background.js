@@ -46,13 +46,9 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
 
 /**
  * Show pageAction when tab URL matches supportedSites.url regex
- *
- * @param bool initial Is true when we don't want to show a notification when user is not signed in.
- *                     Useful on the first ever detection, while the user is signing in.
  */
-function managePageAction(tab, initial) {
+function managePageAction(tab) {
   // Force cast to boolean
-  initial = !!initial;
   if(!tab || !tab.id) {
     return;
   }
@@ -103,12 +99,9 @@ function managePageAction(tab, initial) {
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
-      // User is not logged, skip
+      // User is not logged, display a notification and skip
       if(!config.token) {
-        // Show notification to encourage user to sign in (if it was not disabled expressly).
-        if(!initial) {
-          notificationHandler.displayNotLogged(site);
-        }
+        notificationHandler.displayNotLogged(site);
         return;
       }
 
@@ -186,12 +179,11 @@ function handleOnUpdated(tabId, changeInfo, tab) {
 
 /**
  * Search each tab for a context, and update icon with managePageAction
- * @param {bool} initial This will be passed to managePageAction, see managePageAction to know what it does
  */
-function refreshTabs(initial) {
+function refreshTabs() {
   chrome.tabs.query({}, function(tabs) {
     tabs.forEach(function(tab) {
-      managePageAction(tab, initial);
+      managePageAction(tab);
     });
   });
 }
@@ -203,7 +195,6 @@ chrome.runtime.onInstalled.addListener(function(details) {
   if(details.reason === "install") {
     // open first run page on install
     chrome.tabs.create({url: '/first-run.html'});
-    refreshTabs(true);
   }
 });
 
