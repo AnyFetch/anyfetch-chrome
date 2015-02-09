@@ -48,7 +48,7 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  *
  * @param bool initial Is true when we don't want to show a notification when user is not signed in.
- *                     Useful if for the first ever detection, while the user is signing in.
+ *                     Useful on the first ever detection, while the user is signing in.
  */
 function managePageAction(tab, initial) {
   // Force cast to boolean
@@ -185,7 +185,7 @@ function handleOnUpdated(tabId, changeInfo, tab) {
 }
 
 /**
- * Searches each tab for a context, and update icon with managePageAction
+ * Search each tab for a context, and update icon with managePageAction
  * @param {bool} initial This will be passed to managePageAction, see managePageAction to know what it does
  */
 function refreshTabs(initial) {
@@ -209,3 +209,15 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 // listen for tabs url changes
 chrome.tabs.onUpdated.addListener(handleOnUpdated);
+
+/**
+ * Message handler for inter instance messaging
+ */
+var messageHandler = function messageHandler(request, sender, sendResponse) {
+  // Reload contexts on successful login message from login page
+  if(request.type === 'anyfetch::loginSuccessful') {
+    refreshTabs();
+    sendResponse();
+  }
+};
+chrome.runtime.onMessage.addListener(messageHandler);

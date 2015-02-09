@@ -39,6 +39,10 @@ var showSuccess = function showSuccess(message) {
   window.mixpanel.track("Login", {
     email: config.email,
   });
+  // The background page will catch this and reload contexts which might have some results
+  chrome.runtime.sendMessage({
+    type: 'anyfetch::loginSuccessful',
+  });
 };
 
 var showError = function showError(err) {
