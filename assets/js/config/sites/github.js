@@ -19,11 +19,12 @@ module.exports = {
     ],
     titles: {
       'Neamar (Matthieu Bacconnier)': ['Neamar', 'Matthieu Bacconnier'],
+      'Neamar (Matthieu Bacconnier) · GitHub': ['Neamar', 'Matthieu Bacconnier'], // Title has this form when not signed in
       'hard(test) (Harder ( Test)': ['hard(test)', 'Harder ( Test']
     }
   },
   url: /github\.com\/(?!notifications|blog|explore|showcases|trending|stars|new)[^\/]+\/?$/,
   context: {
-    title: /^(.+?)\s\((.+)\)$/i
+    title: /^(.+?)\s\((.+)\)(?:\s·\sGitHub)?$/i
   }
 };
