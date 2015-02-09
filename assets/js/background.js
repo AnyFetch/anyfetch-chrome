@@ -51,9 +51,8 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  *                     Useful if for the first ever detection, while the user is signing in.
  */
 function managePageAction(tab, initial) {
-  if(!initial) {
-    initial = false;
-  }
+  // Force cast to boolean
+  initial = !!initial;
   if(!tab || !tab.id) {
     return;
   }
