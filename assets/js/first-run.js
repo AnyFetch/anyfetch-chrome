@@ -41,7 +41,7 @@ var showSuccess = function showSuccess(message) {
   });
   // The background page will catch this and reload contexts which might have some results
   chrome.runtime.sendMessage({
-    type: 'anyfetch::loginSuccessful',
+    type: 'anyfetch::backgroundLoginSuccessful',
   });
 };
 

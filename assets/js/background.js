@@ -282,14 +282,6 @@ var toggleContextItem = function toggleContextItem(request, sender, sendResponse
 
 
 /**
- * Reload contexts on successful login message from login page
- */
-var loginSuccessful = function loginSuccessful(request, sender, sendResponse) {
-  refreshTabs();
-  sendResponse();
-};
-
-/**
  * Search each tab for a context, and update icon with managePageAction
  */
 function refreshTabs() {
@@ -299,6 +291,14 @@ function refreshTabs() {
     });
   });
 }
+
+/**
+ * Reload contexts on successful login message from login page
+ */
+var loginSuccessful = function loginSuccessful(request, sender, sendResponse) {
+  refreshTabs();
+  sendResponse();
+};
 
 /**
  * When the extension is installed or upgraded
