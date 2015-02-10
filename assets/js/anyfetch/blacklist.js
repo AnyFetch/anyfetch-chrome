@@ -71,7 +71,7 @@ var updateBlacklist = function(userEmail, cb) {
 
 
 /**
- * Takes an array for input and remove blacklisted items
+ * Takes an array for input and deactivate blacklisted items
  */
 var filterQuery = function(context) {
   context.forEach(function(item) {

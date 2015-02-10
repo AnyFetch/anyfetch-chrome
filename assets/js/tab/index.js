@@ -43,6 +43,9 @@ module.exports.showExtension = function(tabId) {
 };
 
 
+/**
+ * set the pageAction's title for the target tab
+ */
 module.exports.setTitle = function(tabId, title) {
   chrome.pageAction.setTitle({
     tabId: tabId,
