@@ -26,11 +26,16 @@ var loadUserSettings = function(cb) {
     });
     cb();
   });
+
+  config.loaded = true;
 };
 
 var configuration = {
   // Items not to be displayed in settings, but to be stored on Chrome sync
   innerSettings: ['userId', 'email', 'companyId', 'blacklist'],
+
+  // Used to know if settings are already loaded from Chrome Storage API
+  loaded: false,
 
   blacklist: {},
 

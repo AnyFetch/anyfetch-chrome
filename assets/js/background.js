@@ -95,6 +95,9 @@ function managePageAction(tab) {
     },
     function loadSettings(context, cb) {
       tabFunctions.showExtension(tab.id);
+      if(config.loaded) {
+        return cb(null, context);
+      }
       config.loadUserSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
