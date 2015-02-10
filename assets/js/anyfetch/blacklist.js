@@ -65,7 +65,7 @@ var updateBlacklist = function(userEmail, cb) {
     });
 
     config.providerCount = providers.length;
-    chrome.storage.sync.set({blacklist: config.blacklist}, cb);
+    chrome.storage.sync.set({blacklist: config.blacklist, providerCount: config.providerCount}, cb);
   });
 };
 
