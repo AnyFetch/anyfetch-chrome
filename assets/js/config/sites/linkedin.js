@@ -19,5 +19,10 @@ module.exports = {
         selector: '#name-container span.full-name'
       }
     ]
+  },
+  injection: {
+    target: '#aux',
+    type: 'append',
+    path: '/popover.html'
   }
 };

@@ -66,12 +66,29 @@ function getContext(rules) {
   return values;
 }
 
+function inject(site, cb) {
+  console.log('message');
+  if(!site.injection) {
+    return cb();
+  }
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute("src", chrome.extension.getURL(site.injection.path));
+  document.querySelectorAll(site.injection.target)[0].appendChild(iframe);
+  cb();
+}
+
 var messageHandler = function messageHandler(request, sender, sendResponse) {
   if(request.type === 'anyfetch::ping') {
     sendResponse({type: 'anyfetch::pong'});
   }
   else if(request.type === 'anyfetch::contextRequest') {
     sendResponse({type: 'context', context: getContext(request.site.context.dom)});
+  }
+  else if(request.type === 'anyfetch::injectRequest') {
+    console.log('message');
+    inject(request.site, function() {
+      sendResponse({type: 'anyfetch::injected'});
+    });
   }
 };
 

@@ -19,4 +19,9 @@ module.exports = {
   context: {
     title: /^(.+)\s-\s/i,
   },
+  injection: {
+    target: '#rhs',
+    type: 'append',
+    path: '/popover.html'
+  }
 };

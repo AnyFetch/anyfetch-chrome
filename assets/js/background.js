@@ -161,6 +161,9 @@ function managePageAction(tab) {
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
+      // Inject if needed
+      tabFunctions.inject(tab.id, site);
+
       cb();
     }
   ], function(err) {
