@@ -7,6 +7,7 @@ var config = require('./config/index.js');
 var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
+var getDocuments = require('./anyfetch/get-documents.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
@@ -193,3 +194,105 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 // listen for tabs url changes
 chrome.tabs.onUpdated.addListener(handleOnUpdated);
+
+var findContext = function findContext(request, sender, sendResponse) {
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function(tabs) {
+    var tab = tabs[0];
+    var site = getSiteFromTab(config.supportedSites, tab);
+    // Unsupported website, skip.
+    if(!site) {
+      console.warn('Unsupported');
+      return;
+    }
+    // Retrieve context from tab
+    detectContextWithRetry(tab, site, 2, 1000, function(err, context) {
+      if(err) {
+        console.warn(err);
+        return;
+      }
+      sendResponse({
+        site: site,
+        context: blacklist.filterQuery(context)
+      });
+      return;
+    });
+  });
+  return true;
+};
+
+
+var getResults = function getResults(request, sender, sendResponse) {
+  var context = request.context;
+  if(!context.length) {
+    return;
+  }
+
+  var query = generateQuery(context);
+  var payload = {
+    query: query,
+    check: request.check
+  };
+
+  async.waterfall([
+    function loadSettings(cb) {
+      if(config.loaded) {
+        return cb(null);
+      }
+      config.loadUserSettings(cb);
+    },
+    function search(cb) {
+      getDocuments(query, cb);
+    },
+    function respond(documents, count, cb) {
+      payload.count = count;
+      payload.documents = documents;
+      sendResponse(payload);
+      cb(null);
+    }
+  ], function(err) {
+    if(err) {
+      console.warn(err);
+    }
+  });
+
+  return true;
+};
+
+
+var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
+  request.context.some(function(item, index, context) {
+    if(item.name === request.name) {
+      var newState = !item.active;
+      context[index].active = newState;
+      if(config.blacklist[item.name.toLowerCase()] && newState) {
+        delete config.blacklist[item.name.toLowerCase()];
+      }
+      else if(!newState) {
+        config.blacklist[item.name.toLowerCase()] = true;
+      }
+      return true;
+    }
+    return false;
+  });
+
+  chrome.storage.sync.set({blacklist: config.blacklist});
+  sendResponse({context: request.context});
+  return false;
+};
+
+
+chrome.runtime.onMessage.addListener(function messageHandler(request, sender, sendResponse) {
+  console.log(arguments);
+  var handlers = {
+    'anyfetch::backgroundFindContext': findContext,
+    'anyfetch::backgroundGetResults': getResults,
+    'anyfetch::backgroundToggleContextItem': toggleContextItem,
+  };
+  if(request.type && handlers[request.type]) {
+    return handlers[request.type](request, sender, sendResponse);
+  }
+  return false;
+});

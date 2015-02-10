@@ -6,68 +6,62 @@ var Mustache = require('mustache');
 var config = require('../config/index.js');
 var templates = require('../../templates/templates.js');
 var errors = require('../helpers/errors.js');
-var search = require('./search.js');
+var sliceInTime = require('../helpers/slice-in-time.js');
 var analyticsHelper = require('../helpers/analytics-helper.js');
+
+
+module.exports.showSpinner = function showSpinner(message) {
+  var resultsDisplay = $('#results');
+  var resultsHtml = Mustache.render(templates.spinner, {message: message});
+  resultsDisplay.html(resultsHtml);
+};
+
+var Spinner = function() {
+  this.timeout = null;
+};
+
+Spinner.prototype.start = function() {
+  var self = this;
+  if(self.timeout) {
+    clearTimeout(self.timeout);
+  }
+  self.timeout = setTimeout(function() {
+    module.exports.showSpinner("Searching...");
+    self.timeout = setTimeout(function() {
+      module.exports.showSpinner("Still searching...");
+      self.timeout = setTimeout(function() {
+        module.exports.showSpinner("Still waiting, but something is not right.");
+      }, 10000);
+    }, 1000);
+  }, 250);
+};
+
+Spinner.prototype.stop = function() {
+  console.log('stop');
+  if(this.timeout) {
+    clearTimeout(this.timeout);
+  }
+  this.timeout = null;
+};
+
+module.exports.spinner = new Spinner();
 
 var renderDocument = function(doc) {
   var view = {
     snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,
     documentType: doc.document_type.name,
-    providerName: doc.provider.client.name
+    providerName: doc.provider.client ? doc.provider.client.name : 'No provider name'
    };
   return Mustache.render(templates.listItem, view);
 };
 
-var toggleContext = function(toToggle, context) {
-  context.some(function(item, index, context) {
-    if(item.name === toToggle) {
-      var newState = !item.active;
-      context[index].active = newState;
-      if(config.blacklist[item.name.toLowerCase()] && newState) {
-        delete config.blacklist[item.name.toLowerCase()];
-      }
-      else if(!newState) {
-        config.blacklist[item.name.toLowerCase()] = true;
-      }
-      chrome.storage.sync.set({blacklist: config.blacklist});
-      return true;
-    }
-    return false;
-  });
-  search(context);
-  module.exports.showContext(context);
-};
-
-module.exports.showContext = function(context) {
-  var contextDisplay = $('#context');
-  var viewContext = context.map(function(item) {
-    return {
-      name: item.name,
-      inactive: !item.active,
-    };
-  });
-  var view = {
-    context: viewContext,
-  };
-  var resultsHtml = Mustache.render(templates.context, view);
-  contextDisplay.html(resultsHtml);
-  $('#context .context-selection .context-item > span').on('click', function(e) {
-    toggleContext(e && e.target && e.target.textContent, context);
-  });
-};
-
-module.exports.showSpinner = function(message) {
-  var resultsDisplay = $('#results');
-  var resultsHtml = Mustache.render(templates.spinner, {message: message});
-  resultsDisplay.html(resultsHtml);
-};
-
-module.exports.showResults = function(search, timeSlices, totalCount) {
+module.exports.setSearchResults = function setSearchResults(results) {
   var resultsDisplay = $('#results');
   errors.clear();
 
   // Render each document
+  var timeSlices = sliceInTime(results.documents);
   var count = 0;
   timeSlices.forEach(function(slice) {
     slice.documents = slice.documents.map(renderDocument);
@@ -77,11 +71,11 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
 
   // Render the overall results view (containing the list of documents)
   var view = {
-    search: search,
+    query: results.query,
     timeSlices: timeSlices,
 
-    totalCount: totalCount,
-    hasMore: (count < totalCount),
+    totalCount: results.count,
+    hasMore: (count < results.count),
 
     appUrl: config.appUrl,
     managerUrl: config.managerUrl
@@ -92,4 +86,45 @@ module.exports.showResults = function(search, timeSlices, totalCount) {
   window.anyfetchAssets.formatDates();
   analyticsHelper.bindClickDocumentList();
   analyticsHelper.bindClickApp();
+};
+
+var check = null;
+module.exports.search = function search(context, cb) {
+  if(!cb) {
+    cb = function() {};
+  }
+  check = new Date().getTime();
+  var spinner = module.exports.spinner;
+  spinner.start();
+
+  chrome.runtime.sendMessage({
+    type: 'anyfetch::backgroundGetResults',
+    context: context,
+    check: check
+  }, function(response) {
+    spinner.stop();
+    if(response.check === check) {
+      module.exports.setSearchResults(response);
+    }
+    cb(null);
+  });
+};
+
+module.exports.setContext = function setContext(context) {
+  var contextDisplay = $('#context');
+  var view = {
+    context: context,
+  };
+  var resultsHtml = Mustache.render(templates.context, view);
+  contextDisplay.html(resultsHtml);
+  $('#context .context-selection .context-item > span').on('click', function(e) {
+    chrome.runtime.sendMessage({
+      type: 'anyfetch::backgroundToggleContextItem',
+      name: e && e.target && e.target.textContent,
+      context: context
+    }, function(response) {
+      setContext(response.context);
+      module.exports.search(response.context);
+    });
+  });
 };
