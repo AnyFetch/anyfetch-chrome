@@ -157,6 +157,7 @@ gulp.task('watch', function() {
   gulp.watch(paths.templates.all, ['browserify']);
   gulp.watch(paths.less.all, ['less']);
   gulp.watch(paths.jade.all, ['jade']);
+  gulp.watch('assets/manifest.json', ['manifest']);
 });
 
 // Run main tasks on launch
