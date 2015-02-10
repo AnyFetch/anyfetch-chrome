@@ -19,7 +19,8 @@
     "http://*/"
   ],
   "web_accessible_resources": [
-    "oauth-callback.html"
+    "oauth-callback.html",
+    "popover.html"
   ],
   "page_action": {
     "default_icon": {
