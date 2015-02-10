@@ -22,7 +22,7 @@ module.exports = {
   },
   injection: {
     target: '#aux',
-    type: 'append',
+    type: 'prepend',
     path: '/popover.html'
   }
 };

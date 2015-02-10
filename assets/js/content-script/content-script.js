@@ -66,15 +66,29 @@ function getContext(rules) {
   return values;
 }
 
-function inject(site, cb) {
-  console.log('message');
-  if(!site.injection) {
-    return cb();
+function inject(site) {
+  var injectionMethods = {
+    prepend: function(target, elem) {
+      target.parentNode.insertBefore(elem, target.firstChild);
+    },
+    append: function(target, elem) {
+      target.appendChild(elem);
+    },
+    replace: function(target, elem) {
+      target.innerHTML = elem;
+    }
+  };
+
+  if(!site.injection || !injectionMethods[site.injection.type]) {
+    console.log('injection abort');
+    return;
   }
+
   var iframe = document.createElement('iframe');
-  iframe.setAttribute("src", chrome.extension.getURL(site.injection.path));
-  document.querySelectorAll(site.injection.target)[0].appendChild(iframe);
-  cb();
+  var target = document.querySelectorAll(site.injection.target)[0];
+  iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));
+  iframe.setAttribute('frameBorder', 0);
+  injectionMethods[site.injection.type](target, iframe);
 }
 
 var messageHandler = function messageHandler(request, sender, sendResponse) {
@@ -85,10 +99,8 @@ var messageHandler = function messageHandler(request, sender, sendResponse) {
     sendResponse({type: 'context', context: getContext(request.site.context.dom)});
   }
   else if(request.type === 'anyfetch::injectRequest') {
-    console.log('message');
-    inject(request.site, function() {
-      sendResponse({type: 'anyfetch::injected'});
-    });
+    inject(request.site);
+    sendResponse({type: 'anyfetch::injected'});
   }
 };
 

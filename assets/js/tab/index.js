@@ -1,5 +1,7 @@
 "use strict";
 
+var injectScript = require('../helpers/content-script.js').injectScript;
+
 
 /**
  * Enable or disable (blue / grey) the anyfetch extension icon on specifed tabId

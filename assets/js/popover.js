@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       cb();
     },
-    function getCurrentTab(cb) {
+    function getContext(cb) {
       if(!config.token) {
         errors.showSetupAccountError();
         return;

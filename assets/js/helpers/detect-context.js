@@ -1,6 +1,7 @@
 "use strict";
 
 var getContextObject = require('./content-helper.js').getContextObject;
+var injectScript = require('./content-script.js').injectScript;
 
 
 /**
@@ -44,21 +45,11 @@ function getFromDOM(tab, site, cb) {
     });
   };
 
-  // Query the tab to know if we already injected the content script
-  chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::ping'}, function(response) {
-    if(response && response.type === 'anyfetch::pong') {
-      requestContext(site, callCb);
+  injectScript(tab.id, '/js/content-script.js', function(err) {
+    if(err) {
+      return console.warn(err);
     }
-    else {
-      chrome.tabs.executeScript(tab.id, {
-        file: '/js/advanced-detection.js'
-      }, function(results) {
-        if(results) {
-          return requestContext(site, callCb);
-        }
-        console.error('Failed to inject content script');
-      });
-    }
+    requestContext(site, callCb);
   });
 }
 
