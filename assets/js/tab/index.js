@@ -60,11 +60,15 @@ module.exports.setTitle = function(tabId, title) {
  * @param {site} site The detected site associated with the tab (required)
  */
 module.exports.inject = function(tabId, site) {
-  console.log(site);
   if(site.injection) {
-    chrome.tabs.sendMessage(tabId, {
-      type: 'anyfetch::injectRequest',
-      site: site
+    injectScript(tabId, '/js/content-script.js', function(err) {
+      if(err) {
+        return console.warn(err);
+      }
+      chrome.tabs.sendMessage(tabId, {
+        type: 'anyfetch::injectRequest',
+        site: site
+      });
     });
   }
 };
