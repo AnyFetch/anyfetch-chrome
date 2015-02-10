@@ -49,6 +49,7 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  */
 function managePageAction(tab) {
+  // Force cast to boolean
   if(!tab || !tab.id) {
     return;
   }
@@ -183,18 +184,9 @@ function handleOnUpdated(tabId, changeInfo, tab) {
   }
 }
 
-
-// When the extension is installed or upgraded
-chrome.runtime.onInstalled.addListener(function(details) {
-  if(details.reason === "install") {
-    // open first run page on install
-    chrome.tabs.create({url: '/first-run.html'});
-  }
-});
-
-// listen for tabs url changes
-chrome.tabs.onUpdated.addListener(handleOnUpdated);
-
+/**
+ * Message listenener for context requests
+ */
 var findContext = function findContext(request, sender, sendResponse) {
   chrome.tabs.query({
     active: true,
@@ -224,6 +216,9 @@ var findContext = function findContext(request, sender, sendResponse) {
 };
 
 
+/**
+ * Message listenener for search requests
+ */
 var getResults = function getResults(request, sender, sendResponse) {
   var context = request.context;
   if(!context.length) {
@@ -261,7 +256,9 @@ var getResults = function getResults(request, sender, sendResponse) {
   return true;
 };
 
-
+/**
+ * Message listenener for toggle context requests
+ */
 var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
   request.context.some(function(item, index, context) {
     if(item.name === request.name) {
@@ -284,12 +281,50 @@ var toggleContextItem = function toggleContextItem(request, sender, sendResponse
 };
 
 
+/**
+ * Reload contexts on successful login message from login page
+ */
+var loginSuccessful = function loginSuccessful(request, sender, sendResponse) {
+  refreshTabs();
+  sendResponse();
+};
+
+/**
+ * Search each tab for a context, and update icon with managePageAction
+ */
+function refreshTabs() {
+  chrome.tabs.query({}, function(tabs) {
+    tabs.forEach(function(tab) {
+      managePageAction(tab);
+    });
+  });
+}
+
+/**
+ * When the extension is installed or upgraded
+ */
+chrome.runtime.onInstalled.addListener(function(details) {
+  if(details.reason === "install") {
+    // open first run page on install
+    chrome.tabs.create({url: '/first-run.html'});
+  }
+});
+
+/**
+ * Listen for tabs url changes
+ */
+chrome.tabs.onUpdated.addListener(handleOnUpdated);
+
+/**
+ * Message handler for inter instance messaging
+ */
 chrome.runtime.onMessage.addListener(function messageHandler(request, sender, sendResponse) {
   console.log(arguments);
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
     'anyfetch::backgroundToggleContextItem': toggleContextItem,
+    'anyfetch::backgroundLoginSuccessful': loginSuccessful
   };
   if(request.type && handlers[request.type]) {
     return handlers[request.type](request, sender, sendResponse);
