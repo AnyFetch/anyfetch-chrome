@@ -48,6 +48,7 @@ function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
  * Show pageAction when tab URL matches supportedSites.url regex
  */
 function managePageAction(tab) {
+  // Force cast to boolean
   if(!tab || !tab.id) {
     return;
   }
@@ -176,8 +177,20 @@ function handleOnUpdated(tabId, changeInfo, tab) {
   }
 }
 
+/**
+ * Search each tab for a context, and update icon with managePageAction
+ */
+function refreshTabs() {
+  chrome.tabs.query({}, function(tabs) {
+    tabs.forEach(function(tab) {
+      managePageAction(tab);
+    });
+  });
+}
 
-// When the extension is installed or upgraded
+/**
+ * When the extension is installed or upgraded
+ */
 chrome.runtime.onInstalled.addListener(function(details) {
   if(details.reason === "install") {
     // open first run page on install
@@ -187,3 +200,15 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 // listen for tabs url changes
 chrome.tabs.onUpdated.addListener(handleOnUpdated);
+
+/**
+ * Message handler for inter instance messaging
+ */
+var messageHandler = function messageHandler(request, sender, sendResponse) {
+  // Reload contexts on successful login message from login page
+  if(request.type === 'anyfetch::loginSuccessful') {
+    refreshTabs();
+    sendResponse();
+  }
+};
+chrome.runtime.onMessage.addListener(messageHandler);
