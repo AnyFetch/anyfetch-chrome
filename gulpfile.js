@@ -35,6 +35,10 @@ var paths = {
     {
       files: ['./images/**/*'],
       target: 'extension/images'
+    },
+    {
+      files: ['bower_components/anyfetch-assets/images/document-types/**/*'],
+      target: 'extension/images/document-types/'
     }
   ],
   less: {
