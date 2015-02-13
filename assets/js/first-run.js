@@ -68,10 +68,14 @@ var finalHandler = function finalHandler(err) {
   showError(err);
 };
 
-var oauthButtonHandler = function oauthButtonHandler(cb) {
+var buttonHandler = function oauthButtonHandler(cb) {
   document.getElementById('start-oauth').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb);
+    oauthStart(cb, '/init/connect');
+  });
+  document.getElementById('start-register').addEventListener('click', function() {
+    showById('loader');
+    oauthStart(cb, '/init/register');
   });
 };
 
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       showById('index');
-      oauthButtonHandler(cb);
+      buttonHandler(cb);
     }
   ], finalHandler);
 });
