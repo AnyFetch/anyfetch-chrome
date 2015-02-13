@@ -4,7 +4,6 @@ require('zepto/zepto.min.js');
 var async = require('async/lib/async.js');
 var config = require('./config/index.js');
 var oauthStart = require('./oauth/oauth-start.js');
-var registerStart = require('./register/register-start.js');
 var checkToken = require('./helpers/check-token.js');
 
 var showById = function showById(id) {
