@@ -30,7 +30,6 @@ module.exports = function(cb) {
     }
   );
 
-  config.serverUrl = 'http://localhost:8000';
   chrome.windows.create({
     url: config.serverUrl + '/init/register',
     type: 'popup',
