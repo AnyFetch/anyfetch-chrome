@@ -8,43 +8,7 @@ var templates = require('../../templates/templates.js');
 var errors = require('../helpers/errors.js');
 var sliceInTime = require('../helpers/slice-in-time.js');
 var analyticsHelper = require('../helpers/analytics-helper.js');
-
-
-module.exports.showSpinner = function showSpinner(message) {
-  var resultsDisplay = $('#results');
-  var resultsHtml = Mustache.render(templates.spinner, {message: message});
-  resultsDisplay.html(resultsHtml);
-};
-
-var Spinner = function() {
-  this.timeout = null;
-};
-
-Spinner.prototype.start = function() {
-  var self = this;
-  if(self.timeout) {
-    clearTimeout(self.timeout);
-  }
-  self.timeout = setTimeout(function() {
-    module.exports.showSpinner("Searching...");
-    self.timeout = setTimeout(function() {
-      module.exports.showSpinner("Still searching...");
-      self.timeout = setTimeout(function() {
-        module.exports.showSpinner("Still waiting, but something is not right.");
-      }, 10000);
-    }, 1000);
-  }, 250);
-};
-
-Spinner.prototype.stop = function() {
-  console.log('stop');
-  if(this.timeout) {
-    clearTimeout(this.timeout);
-  }
-  this.timeout = null;
-};
-
-module.exports.spinner = new Spinner();
+var spinner = require('./spinner.js');
 
 var renderDocument = function(doc) {
   var view = {
@@ -94,7 +58,6 @@ module.exports.search = function search(context, cb) {
     cb = function() {};
   }
   check = new Date().getTime();
-  var spinner = module.exports.spinner;
   spinner.start();
 
   chrome.runtime.sendMessage({

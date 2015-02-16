@@ -5,11 +5,11 @@ var async = require('async');
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
 var view = require('./popover/view.js');
+var spinner = require('./popover/spinner.js');
 var saveUserData = require('./anyfetch/save-user-data.js');
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  var spinner = view.spinner;
   spinner.start();
   var mixpanel = window.mixpanel;
 
