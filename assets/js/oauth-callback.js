@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.runtime.sendMessage({
     type: 'anyfetch::backgroundSetToken',
     token: token
-  }, function(response) {
-    if(!response) {
-      console.err(chrome.runtime.lastError);
+  }, function() {
+    if(chrome.runtime.lastError) {
+      console.error(chrome.runtime.lastError);
       return;
     }
     chrome.runtime.sendMessage({

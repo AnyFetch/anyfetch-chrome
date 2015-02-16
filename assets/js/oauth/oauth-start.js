@@ -11,16 +11,6 @@ module.exports = function(cb, url) {
   }
   var success = false;
 
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      if(request.type === 'anyfetch::frontLoginSuccessful') {
-        success = true;
-        sendResponse();
-        cb(null);
-      }
-    }
-  );
-
   chrome.windows.create({
     url: config.store.serverUrl + url,
     type: 'popup',
@@ -32,5 +22,18 @@ module.exports = function(cb, url) {
         cb(new Error('Canceled by user'));
       }
     });
+
+    chrome.runtime.onMessage.addListener(
+      function(request, sender, sendResponse) {
+        if(request.type === 'anyfetch::frontLoginSuccessful') {
+          success = true;
+          sendResponse();
+          if(sender.tab) {
+            chrome.tabs.remove(sender.tab.id);
+          }
+          cb(null);
+        }
+      }
+    );
   });
 };
