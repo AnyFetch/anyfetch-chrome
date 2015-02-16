@@ -7,7 +7,7 @@ var saveUserData = require('../anyfetch/save-user-data.js');
  * Start oauth flow with remote server
  * config must be loaded
  */
-module.exports = function(cb) {
+module.exports = function(cb, url) {
   if(!cb) {
     cb = function() {};
   }
@@ -31,7 +31,7 @@ module.exports = function(cb) {
   );
 
   chrome.windows.create({
-    url: config.serverUrl + '/init/connect',
+    url: config.serverUrl + url,
     type: 'popup',
     width: 800,
     height: 800

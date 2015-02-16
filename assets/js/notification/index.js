@@ -47,7 +47,7 @@ module.exports.displayNoProviders = function noProvidersNotification() {
   var options = {
     type: "basic",
     title: "Add accounts to your AnyFetch!",
-    message: "Before getting results, you'll need to connect your accounts. Click here!",
+    message: "Click here to finish the setup.",
     iconUrl: "/images/icons/extension/icon128.png",
     isClickable: true,
   };
