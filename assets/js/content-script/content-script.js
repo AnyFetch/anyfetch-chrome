@@ -80,7 +80,7 @@ function inject(site) {
   };
 
   if(!site.injection || !injectionMethods[site.injection.type]) {
-    console.log('injection abort');
+    console.warn('Injection aborted (no injection methods documented)');
     return;
   }
 

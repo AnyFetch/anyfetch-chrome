@@ -44,7 +44,7 @@ module.exports = {
     ]
   },
   injection: {
-    selector: 'div[role="main"] div[role="presentation"]',
+    selector: 'div[role="main"] div[role="complementary"]',
     type: 'prepend',
     path: '/popover.html'
   }

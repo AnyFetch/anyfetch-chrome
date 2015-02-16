@@ -163,7 +163,7 @@ function managePageAction(tab) {
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
 
-      // Inject if needed
+      // Inject iframe if needed
       tabFunctions.inject(tab.id, site);
 
       cb();
@@ -185,7 +185,9 @@ function handleOnUpdated(tabId, changeInfo, tab) {
 }
 
 /**
- * Message listenener for context requests
+ * Message listener for context requests
+ * We return true to tell Chrome this listener is asynchronous or false to close the message channel
+ * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var findContext = function findContext(request, sender, sendResponse) {
   chrome.tabs.query({
@@ -197,19 +199,19 @@ var findContext = function findContext(request, sender, sendResponse) {
     // Unsupported website, skip.
     if(!site) {
       console.warn('Unsupported');
-      return;
+      return false;
     }
     // Retrieve context from tab
     detectContextWithRetry(tab, site, 2, 1000, function(err, context) {
       if(err) {
         console.warn(err);
-        return;
+        return false;
       }
       sendResponse({
         site: site,
         context: blacklist.filterQuery(context)
       });
-      return;
+      return false;
     });
   });
   return true;
@@ -217,12 +219,14 @@ var findContext = function findContext(request, sender, sendResponse) {
 
 
 /**
- * Message listenener for search requests
+ * Message listener for search requests
+ * We return true to tell Chrome this listener is asynchronous or false to close the message channel
+ * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var getResults = function getResults(request, sender, sendResponse) {
   var context = request.context;
   if(!context.length) {
-    return;
+    return false;
   }
 
   var query = generateQuery(context);
@@ -257,7 +261,9 @@ var getResults = function getResults(request, sender, sendResponse) {
 };
 
 /**
- * Message listenener for toggle context requests
+ * Message listener for toggle context requests
+ * We return true to tell Chrome this listener is asynchronous or false to close the message channel
+ * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
   request.context.some(function(item, index, context) {
@@ -319,7 +325,6 @@ chrome.tabs.onUpdated.addListener(handleOnUpdated);
  * Message handler for inter instance messaging
  */
 chrome.runtime.onMessage.addListener(function messageHandler(request, sender, sendResponse) {
-  console.log(arguments);
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
