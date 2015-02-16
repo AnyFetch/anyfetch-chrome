@@ -233,7 +233,9 @@ var getResults = function getResults(request, sender, sendResponse) {
   };
 
   async.waterfall([
-    config.store.loadSettings,
+    function(cb) {
+      config.store.loadSettings(cb);
+    },
     function search(cb) {
       getDocuments(query, cb);
     },
