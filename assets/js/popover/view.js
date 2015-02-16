@@ -52,12 +52,12 @@ module.exports.setSearchResults = function setSearchResults(results) {
   analyticsHelper.bindClickApp();
 };
 
-var check = null;
 module.exports.search = function search(context, cb) {
   if(!cb) {
     cb = function() {};
   }
-  check = new Date().getTime();
+  // We store the last request time, so we can filter out old request in the callback
+  var check = new Date().getTime();
   spinner.start();
 
   chrome.runtime.sendMessage({
@@ -65,8 +65,9 @@ module.exports.search = function search(context, cb) {
     context: context,
     check: check
   }, function(response) {
-    spinner.stop();
+    // Let's ignore old requests
     if(response.check === check) {
+      spinner.stop();
       module.exports.setSearchResults(response);
     }
     cb(null);
