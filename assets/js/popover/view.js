@@ -41,8 +41,8 @@ module.exports.setSearchResults = function setSearchResults(results) {
     totalCount: results.count,
     hasMore: (count < results.count),
 
-    appUrl: config.appUrl,
-    managerUrl: config.managerUrl
+    appUrl: config.store.appUrl,
+    managerUrl: config.store.managerUrl
   };
 
   var resultsHtml = Mustache.render(templates.results, view);

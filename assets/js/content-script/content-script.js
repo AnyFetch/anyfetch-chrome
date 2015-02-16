@@ -66,7 +66,18 @@ function getContext(rules) {
   return values;
 }
 
-function inject(site) {
+/**
+ * Message listener used to check if the content script is injected
+ */
+var ping = function ping(request, sender, sendResponse) {
+  sendResponse();
+};
+
+/**
+ * Message listener for injection requests
+ */
+var inject = function inject(request, sender, sendResponse) {
+  var site = request.site;
   var injectionMethods = {
     prepend: function(target, elem) {
       target.parentNode.insertBefore(elem, target.firstChild);
@@ -89,19 +100,29 @@ function inject(site) {
   iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));
   iframe.setAttribute('frameBorder', 0);
   injectionMethods[site.injection.type](target, iframe);
-}
-
-var messageHandler = function messageHandler(request, sender, sendResponse) {
-  if(request.type === 'anyfetch::ping') {
-    sendResponse({type: 'anyfetch::pong'});
-  }
-  else if(request.type === 'anyfetch::contextRequest') {
-    sendResponse({type: 'context', context: getContext(request.site.context.dom)});
-  }
-  else if(request.type === 'anyfetch::injectRequest') {
-    inject(request.site);
-    sendResponse({type: 'anyfetch::injected'});
-  }
+  sendResponse();
 };
 
-chrome.runtime.onMessage.addListener(messageHandler);
+/**
+ * Message listener for context requests
+ */
+var getContext = function getContext(request, sender, sendResponse) {
+  sendResponse({context: getContext(request.site.context.dom)});
+};
+
+
+/**
+ * Message handler for inter instance messaging
+ */
+chrome.runtime.onMessage.addListener(function messageHandler(request, sender, sendResponse) {
+  var handlers = {
+    'anyfetch::csPing': ping,
+    'anyfetch::csGetContext': getContext,
+    'anyfetch::csInject': inject,
+  };
+  if(request.type && handlers[request.type]) {
+    // return to chrome while explicitly casting to boolean
+    return !!handlers[request.type](request, sender, sendResponse);
+  }
+  return false;
+});

@@ -14,7 +14,7 @@ var call = require('./call.js');
  */
 module.exports = function getDocuments(query, cb) {
   var options = {
-    url: config.apiUrl + '/documents',
+    url: config.store.apiUrl + '/documents',
     data: {
       search: query,
       limit: config.resultsCountLimit,

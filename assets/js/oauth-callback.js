@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var token = getParam('token');
 
   chrome.runtime.sendMessage({
-    type: 'anyfetch::oauthResponse',
+    type: 'anyfetch::backgroundSetToken',
     token: token
+  }, function(response) {
+    if(!response) {
+      console.err(chrome.runtime.lastError);
+      return;
+    }
+    chrome.runtime.sendMessage({
+      type: 'anyfetch::frontLoginSuccessful'
+    });
   });
 });

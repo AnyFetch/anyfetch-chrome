@@ -22,29 +22,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // We need to wait on `chrome.storage` to load the user's settings
     // before doing anything else
     function loadSettings(cb) {
-      config.loadUserSettings(cb);
+      config.store.loadSettings(cb);
     },
     function ensureUserLoaded(cb) {
       // Ensure we have all data (and we're logged too)
-      if(!config.userId && config.token) {
-        console.log("Missing some user data, updating.");
+      if(!config.store.userId && config.store.token) {
+        console.log('Missing some user data, updating.');
         return saveUserData(cb);
       }
 
       cb();
     },
     function getContext(cb) {
-      if(!config.token) {
+      if(!config.store.token) {
         errors.showSetupAccountError();
         return;
       }
 
-      mixpanel.identify(config.userId);
+      mixpanel.identify(config.store.userId);
       mixpanel.people.set({
-        "lastContext": new Date(),
+        'lastContext': new Date(),
       });
       mixpanel.people.increment({
-        "ContextCount": 1
+        'ContextCount': 1
       });
 
       chrome.runtime.sendMessage({
@@ -61,15 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       mixpanel.track(
-        popup ? "Foreground Search" : "Injected Search",
+        popup ? 'Foreground Search' : 'Injected Search',
         {
-          "Site": site.name
+          'Site': site.name
         }
       );
 
       var increment = {};
-      increment[site.name + " context view"] = 1;
-      increment["context view"] = 1;
+      increment[site.name + ' context view'] = 1;
+      increment['context view'] = 1;
       mixpanel.people.increment(increment);
 
       chrome.runtime.sendMessage({

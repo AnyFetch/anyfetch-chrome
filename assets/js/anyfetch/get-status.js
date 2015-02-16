@@ -9,7 +9,7 @@ var call = require('./call.js');
  */
 module.exports = function getStatus(cb) {
   var options = {
-    url: config.apiUrl + '/status',
+    url: config.store.apiUrl + '/status',
   };
 
   call.httpRequest(options, cb);

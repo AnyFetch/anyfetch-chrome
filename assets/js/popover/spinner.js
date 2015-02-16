@@ -5,11 +5,11 @@ var Mustache = require('mustache');
 
 var templates = require('../../templates/templates.js');
 
-var Spinner = function() {
+var Spinner = function Spinner() {
   this.timeout = null;
 };
 
-Spinner.prototype.show = function(message) {
+Spinner.prototype.show = function show(message) {
   var resultsDisplay = $('#results');
   var resultsHtml = Mustache.render(templates.spinner, {
     message: message
@@ -17,7 +17,7 @@ Spinner.prototype.show = function(message) {
   resultsDisplay.html(resultsHtml);
 };
 
-Spinner.prototype.start = function() {
+Spinner.prototype.start = function start() {
   var self = this;
   if(self.timeout) {
     clearTimeout(self.timeout);
@@ -33,7 +33,7 @@ Spinner.prototype.start = function() {
   }, 250);
 };
 
-Spinner.prototype.stop = function() {
+Spinner.prototype.stop = function stop() {
   if(this.timeout) {
     clearTimeout(this.timeout);
   }

@@ -8,3 +8,4 @@
 
 
 window.mixpanel.init("23a6e4491fcec3c8b4f85bbd074cd9cb");
+window.mixpanel.register({"$ignore": "true"});

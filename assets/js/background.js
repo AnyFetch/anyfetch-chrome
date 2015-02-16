@@ -97,14 +97,11 @@ function managePageAction(tab) {
     },
     function loadSettings(context, cb) {
       tabFunctions.showExtension(tab.id);
-      if(config.loaded) {
-        return cb(null, context);
-      }
-      config.loadUserSettings(rarity.carry([context], cb));
+      config.store.loadSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
       // User is not logged, display a notification and skip
-      if(!config.token) {
+      if(!config.store.token) {
         notificationHandler.displayNotLogged(site);
         return;
       }
@@ -112,8 +109,8 @@ function managePageAction(tab) {
       // Do we know everything about the user?
       // * Maybe we don't know the userId (first run), in which case we'll retrieve it
       // * Maybe the user had no Providers connected on last run, in which case we'll update our list.
-      if(!config.userId || !config.providerCount) {
-        console.log("Missing some user data, updating. Current userId: " + config.userId + ". Current providerCount: " + config.providerCount);
+      if(!config.store.userId || !config.store.providerCount) {
+        console.log('Missing some user data, updating. Current userId: ' + config.store.userId + '. Current providerCount: ' + config.store.providerCount);
         return saveUserData(rarity.carry([context], cb));
       }
 
@@ -121,18 +118,18 @@ function managePageAction(tab) {
     },
     function setupTracking(context, cb) {
       // User is logged in, but has no content yet.
-      if(!config.providerCount) {
+      if(!config.store.providerCount) {
         notificationHandler.displayNoProviders();
         return;
       }
 
       // Identify the user (stored as super properties, no http call yet)
-      mixpanel.identify(config.userId);
+      mixpanel.identify(config.store.userId);
       mixpanel.register({
-        "email": config.email,
-        "userId": config.userId,
-        "companyId": config.companyId,
-        "App Version": chrome.runtime.getManifest().version
+        'email': config.store.email,
+        'userId': config.store.userId,
+        'companyId': config.store.companyId,
+        'App Version': chrome.runtime.getManifest().version
       });
 
       cb(null, context);
@@ -148,15 +145,15 @@ function managePageAction(tab) {
       increment[site.name] = 1;
 
       if(!count) {
-        increment[site.name + " without results"] = 1;
-        increment["without results"] = 1;
+        increment[site.name + ' without results'] = 1;
+        increment['without results'] = 1;
 
         mixpanel.people.increment(increment);
         return;
       }
 
-      increment[site.name + " with results"] = 1;
-      increment["with results"] = 1;
+      increment[site.name + ' with results'] = 1;
+      increment['with results'] = 1;
       mixpanel.people.increment(increment);
 
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
@@ -236,12 +233,7 @@ var getResults = function getResults(request, sender, sendResponse) {
   };
 
   async.waterfall([
-    function loadSettings(cb) {
-      if(config.loaded) {
-        return cb(null);
-      }
-      config.loadUserSettings(cb);
-    },
+    config.store.loadSettings,
     function search(cb) {
       getDocuments(query, cb);
     },
@@ -270,18 +262,18 @@ var toggleContextItem = function toggleContextItem(request, sender, sendResponse
     if(item.name === request.name) {
       var newState = !item.active;
       context[index].active = newState;
-      if(config.blacklist[item.name.toLowerCase()] && newState) {
-        delete config.blacklist[item.name.toLowerCase()];
+      if(config.store.blacklist[item.name.toLowerCase()] && newState) {
+        delete config.store.blacklist[item.name.toLowerCase()];
       }
       else if(!newState) {
-        config.blacklist[item.name.toLowerCase()] = true;
+        config.store.blacklist[item.name.toLowerCase()] = true;
       }
       return true;
     }
     return false;
   });
 
-  chrome.storage.sync.set({blacklist: config.blacklist});
+  chrome.storage.sync.set({blacklist: config.store.blacklist});
   sendResponse({context: request.context});
   return false;
 };
@@ -299,18 +291,28 @@ function refreshTabs() {
 }
 
 /**
- * Reload contexts on successful login message from login page
+ * Message listener to set the token in chrome's storage
+ * We return true to tell Chrome this listener is asynchronous
+ * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
-var loginSuccessful = function loginSuccessful(request, sender, sendResponse) {
-  refreshTabs();
-  sendResponse();
+var setToken = function setToken(request, sender, sendResponse) {
+  chrome.storage.sync.set({token: request.token}, function() {
+    saveUserData(function(err) {
+      if(err) {
+        console.error(err);
+      }
+      refreshTabs();
+      sendResponse();
+    });
+  });
+  return true;
 };
 
 /**
  * When the extension is installed or upgraded
  */
 chrome.runtime.onInstalled.addListener(function(details) {
-  if(details.reason === "install") {
+  if(details.reason === 'install') {
     // open first run page on install
     chrome.tabs.create({url: '/first-run.html'});
   }
@@ -329,10 +331,11 @@ chrome.runtime.onMessage.addListener(function messageHandler(request, sender, se
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
     'anyfetch::backgroundToggleContextItem': toggleContextItem,
-    'anyfetch::backgroundLoginSuccessful': loginSuccessful
+    'anyfetch::backgroundSetToken': setToken
   };
   if(request.type && handlers[request.type]) {
-    return handlers[request.type](request, sender, sendResponse);
+    // return to chrome while explicitly casting to boolean
+    return !!handlers[request.type](request, sender, sendResponse);
   }
   return false;
 });

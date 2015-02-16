@@ -1,11 +1,9 @@
 'use strict';
 
 var config = require('../config/index.js');
-var saveUserData = require('../anyfetch/save-user-data.js');
 
 /*
  * Start oauth flow with remote server
- * config must be loaded
  */
 module.exports = function(cb, url) {
   if(!cb) {
@@ -15,23 +13,16 @@ module.exports = function(cb, url) {
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if(request.type === 'anyfetch::oauthResponse') {
+      if(request.type === 'anyfetch::frontLoginSuccessful') {
         success = true;
-        config.token = request.token;
         sendResponse();
-        chrome.tabs.remove(sender.tab && sender.tab.id);
-        chrome.storage.sync.set({token: request.token}, cb);
-        saveUserData(function(err) {
-          if(err) {
-            console.error(err);
-          }
-        });
+        cb(null);
       }
     }
   );
 
   chrome.windows.create({
-    url: config.serverUrl + url,
+    url: config.store.serverUrl + url,
     type: 'popup',
     width: 800,
     height: 800

@@ -35,9 +35,9 @@ var showSuccess = function showSuccess(message) {
   showById('success');
   document.getElementById('success-message').innerHTML = message;
 
-  window.mixpanel.identify(config.userId);
-  window.mixpanel.track("Login", {
-    email: config.email,
+  window.mixpanel.identify(config.store.userId);
+  window.mixpanel.track('Login', {
+    email: config.store.email,
   });
   // The background page will catch this and reload contexts which might have some results
   chrome.runtime.sendMessage({
@@ -82,10 +82,10 @@ var buttonHandler = function oauthButtonHandler(cb) {
 document.addEventListener('DOMContentLoaded', function() {
   async.waterfall([
     function loadSettings(cb) {
-      config.loadUserSettings(cb);
+      config.store.loadSettings(cb);
     },
     function checkUserToken(cb) {
-      checkToken(config.token, function(err) {
+      checkToken(config.store.token, function(err) {
         cb(null, !err);
       });
     },

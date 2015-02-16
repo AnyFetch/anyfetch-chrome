@@ -1,94 +1,66 @@
 'use strict';
 
 var supportedSites = require('./sites.js');
+var Store = require('./store.js');
 
-/**
- * Asynchronously load the user settings
- * and update `this` (the config object) adequately.
- * Default values are taken from `this.settings`.
- * Each setting is stored as a first-level property.
- * @param {Function} cb()
- */
-var loadUserSettings = function(cb) {
-  var config = this;
-  var toLoad = Object.keys(config.settings);
-  toLoad = toLoad.concat(config.innerSettings);
-
-  chrome.storage.sync.get(toLoad, function(userValues) {
-    toLoad.forEach(function(key) {
-      var userValue = userValues[key];
-      if(userValue || userValue === false) {
-        config[key] = userValue;
-      }
-      else if(config.settings[key]) {
-        config[key] = config.settings[key].default;
-      }
-    });
-    cb();
-  });
-
-  config.loaded = true;
-};
-
-var configuration = {
-  // Items not to be displayed in settings, but to be stored on Chrome sync
-  innerSettings: ['userId', 'email', 'companyId', 'blacklist'],
-
-  // Used to know if settings are already loaded from Chrome Storage API
-  loaded: false,
-
-  blacklist: {},
+var Config = function Config() {
+  /**
+   * Defaults values for settings, these are mandatory and used to know
+   * which settings are saved to chrome's storage.
+   */
+  this.defaults = {
+    userId: '',
+    email: '',
+    companyId: '',
+    providerCount: 0,
+    blacklist: [],
+    token: '',
+    apiUrl: 'https://api.anyfetch.com',
+    managerUrl: 'https://manager.anyfetch.com',
+    serverUrl: 'https://anyfetch-chrome.herokuapp.com',
+    appUrl: 'https://app.anyfetch.com',
+  };
 
   /**
-   * Setting name => default value
+   * Settings to be displayed on the advanced settings page
    */
-  settings: {
+  this.settings = {
     token: {
       placeholder: '64 hexadecimal characters',
-      default: '',
       label: 'Token'
     },
     apiUrl: {
-      placeholder: 'https://api.anyfetch.com',
-      default: 'https://api.anyfetch.com',
+      placeholder: 'An URL of an instance of the AnyFetch API',
       label: 'AnyFetch API URL'
     },
     managerUrl: {
-      placeholder: 'https://manager.anyfetch.com',
-      default: 'https://manager.anyfetch.com',
+      placeholder: 'An URL to the AnyFetch Manager',
       label: 'Anyfetch manager URL'
     },
     serverUrl: {
-      placeholder: 'https://anyfetch-chrome.herokuapp.com',
-      default: 'https://anyfetch-chrome.herokuapp.com',
+      placeholder: 'An URL to the AnyFetch Chrome authentification server',
       label: 'AnyFetch Chrome Server URL'
     },
     appUrl: {
-      placeholder: 'https://app.anyfetch.com',
-      default: 'https://app.anyfetch.com',
+      placeholder: 'An URL to the AnyFetch App',
       label: 'AnyFetch app URL'
-    },
-    email: {
-      placeholder: 'Your email',
-      default: '',
-      label: 'Email'
-    },
-  },
+    }
+  };
 
   /**
-   * Due to the asynchronous nature of the `chrome.storage` API,
-   * this function must be called before reading the properties
-   * of this config object.
+   * Interface with chrome.storage
    */
-  loadUserSettings: loadUserSettings,
+  this.store = new Store(Object.keys(this.defaults), this.defaults);
 
   /**
    * Static list of supported sites. Includes their method of detection (regexes)
    */
-  supportedSites: supportedSites,
+  this.supportedSites = supportedSites;
 
-  /** Number of results to load for a query */
-  resultsCountLimit: 10,
+  /**
+   * Number of results to load for a query
+   */
+  this.resultsCountLimit = 10;
 };
 
-module.exports = configuration;
+module.exports = new Config();

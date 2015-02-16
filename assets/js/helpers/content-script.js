@@ -8,8 +8,8 @@
  */
 module.exports.injectScript = function injectScript(tabId, path, cb) {
   // Query the tab to know if we already injected the content script
-  chrome.tabs.sendMessage(tabId, {type: 'anyfetch::ping'}, function(response) {
-    if(response && response.type === 'anyfetch::pong') {
+  chrome.tabs.sendMessage(tabId, {type: 'anyfetch::csPing'}, function(response) {
+    if(response) {
       return cb();
     }
     else {

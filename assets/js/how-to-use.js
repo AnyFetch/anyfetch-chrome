@@ -32,9 +32,9 @@ var goTo = function goTo(position) {
     prev.classList.remove('hidden');
   }
 
-  window.mixpanel.identify(config.userId);
+  window.mixpanel.identify(config.store.userId);
   window.mixpanel.track("How to use", {
-    email: config.email,
+    email: config.store.email,
     step: position
   });
 };
@@ -69,12 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-window.mixpanel.identify(config.userId);
+window.mixpanel.identify(config.store.userId);
 window.mixpanel.track_links("a.btn", "Open marketplace", {
-    email: config.email,
+    email: config.store.email,
     origin: "how to use"
 });
 window.mixpanel.track("How to use", {
-    email: config.email,
+    email: config.store.email,
     step: 1
 });

@@ -21,7 +21,7 @@ module.exports = function getCount(query, cb) {
   }
   else {
     var options = {
-      url: config.apiUrl + '/documents',
+      url: config.store.apiUrl + '/documents',
       data: {
         search: query,
         limit: 0,

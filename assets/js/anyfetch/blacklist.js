@@ -11,7 +11,7 @@ var call = require('./call.js');
 var getWords = function(accounts) {
   var formattedAccounts = [];
   accounts.forEach(function(account) {
-    if(account === "") {
+    if(account === '') {
       return;
     }
     account = account.toLowerCase();
@@ -38,7 +38,7 @@ var getAccounts = function(userEmail, cb) {
   async.waterfall([
     function getProviders(cb) {
       var options = {
-        url: config.apiUrl + '/documents?fields=facets.providers',
+        url: config.store.apiUrl + '/documents?fields=facets.providers',
       };
       call.httpRequest(options, cb);
     },
@@ -61,11 +61,11 @@ var updateBlacklist = function(userEmail, cb) {
       return cb(err);
     }
     getWords(accounts).forEach(function(word) {
-      config.blacklist[word.toLowerCase()] = true;
+      config.store.blacklist[word.toLowerCase()] = true;
     });
 
-    config.providerCount = providers.length;
-    chrome.storage.sync.set({blacklist: config.blacklist, providerCount: config.providerCount}, cb);
+    config.store.providerCount = providers.length;
+    chrome.storage.sync.set({blacklist: config.store.blacklist, providerCount: config.store.providerCount}, cb);
   });
 };
 
@@ -76,12 +76,12 @@ var updateBlacklist = function(userEmail, cb) {
 var filterQuery = function(context) {
   context.forEach(function(item) {
     // Remove items in blacklist
-    if(config.blacklist[item.name.toLowerCase()]) {
+    if(config.store.blacklist[item.name.toLowerCase()]) {
       item.active = false;
     }
 
-    // Items starting with "~" should be disabled by default
-    if(item.name[0] === "~") {
+    // Items starting with '~' should be disabled by default
+    if(item.name[0] === '~') {
       item.active = false;
       item.name = item.name.substr(1);
     }
