@@ -65,8 +65,11 @@ function managePageAction(tab) {
         return;
       }
 
-      // Everything looks fine (logged and supported website), retrieve context
-      detectContextWithRetry(tab, site, 2, 1000, cb);
+      // Inject iframe if needed
+      tabFunctions.inject(tab.id, site);
+
+      // Everything looks fine (supported website), retrieve context
+      detectContextWithRetry(tab, site, 4, 500, cb);
     },
     function setIcon(context, cb) {
       // Empty context, skip.
@@ -142,9 +145,6 @@ function managePageAction(tab) {
       tabFunctions.setTitle(tab.id, 'Show context for ' + site.name);
       // We have some results, let's show the blue icon instead of the gray one
       tabFunctions.activateExtension(tab.id, true);
-
-      // Inject iframe if needed
-      tabFunctions.inject(tab.id, site);
 
       cb();
     }
