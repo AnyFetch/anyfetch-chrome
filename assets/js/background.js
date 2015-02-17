@@ -170,30 +170,42 @@ function handleOnUpdated(tabId, changeInfo, tab) {
  * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var findContext = function findContext(request, sender, sendResponse) {
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, function(tabs) {
-    var tab = tabs[0];
-    var site = getSiteFromTab(config.supportedSites, tab);
-    // Unsupported website, skip.
-    if(!site) {
-      console.warn('Unsupported');
-      return false;
-    }
-    // Retrieve context from tab
-    detectContextWithRetry(tab, site, 2, 1000, function(err, context) {
-      if(err) {
-        console.warn(err);
-        return false;
+  var site = null;
+  async.waterfall([
+    function getTab(cb) {
+      // If sent by a content script (injection)
+      if(sender && sender.tab) {
+        return cb(null, sender.tab);
       }
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function(tabs) {
+        if(!chrome.runtime.lastError && tabs && tabs[0]) {
+          return cb(null, tabs[0]);
+        }
+        return cb(chrome.runtime.lastError || new Error('Lost the tab'));
+      });
+    },
+    function callDetectContext(tab, cb) {
+      site = getSiteFromTab(config.supportedSites, tab);
+
+      // Unsupported website, skip.
+      if(!site) {
+        return;
+      }
+
+      // Everything looks fine (supported website), retrieve context
+      detectContextWithRetry(tab, site, 4, 500, cb);
+    },
+    function callSendResponse(context, cb) {
       sendResponse({
         site: site,
         context: blacklist.filterQuery(context)
       });
-      return false;
-    });
-  });
+      cb();
+    }
+  ]);
   return true;
 };
 
