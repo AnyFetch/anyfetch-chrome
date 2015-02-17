@@ -137,10 +137,9 @@ gulp.task('jade', function() {
 // Manifest generation
 gulp.task('manifest', function() {
   var manifestFilename = './assets/manifest.json';
-  var manifestFile = require(manifestFilename);
+  var manifestFile = JSON.parse(fs.readFileSync(manifestFilename, 'utf8'));
   // Read version number from `package.json`
   var packageFile = require('./package.json');
-
   // Update manifest version
   manifestFile.version = packageFile.version;
   // Write it back to the file

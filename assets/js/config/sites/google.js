@@ -20,8 +20,10 @@ module.exports = {
     title: /^(.+)\s-\s/i,
   },
   injection: {
-    target: '#rhs',
+    selector: '#rhs',
     type: 'append',
-    path: '/popover.html'
+    path: '/popover.html',
+    height: '500px',
+    width: '100%;',
   }
 };

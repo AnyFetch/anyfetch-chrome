@@ -8,7 +8,9 @@
  */
 module.exports.injectScript = function injectScript(tabId, path, cb) {
   // Query the tab to know if we already injected the content script
-  chrome.tabs.sendMessage(tabId, {type: 'anyfetch::csPing'}, function(response) {
+  chrome.tabs.sendMessage(tabId, {
+    type: 'anyfetch::csPing'
+  }, function(response) {
     if(response) {
       return cb();
     }

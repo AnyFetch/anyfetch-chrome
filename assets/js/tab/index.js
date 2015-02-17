@@ -68,7 +68,7 @@ module.exports.inject = function(tabId, site) {
         return console.warn(err);
       }
       chrome.tabs.sendMessage(tabId, {
-        type: 'anyfetch::csInjectRequest',
+        type: 'anyfetch::csInject',
         site: site
       });
     });

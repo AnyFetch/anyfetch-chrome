@@ -44,7 +44,7 @@ function getValue(rule) {
  * Message listener used to check if the content script is injected
  */
 var ping = function ping(request, sender, sendResponse) {
-  sendResponse();
+  sendResponse({});
 };
 
 /**
@@ -54,7 +54,7 @@ var inject = function inject(request, sender, sendResponse) {
   var site = request.site;
   var injectionMethods = {
     prepend: function(target, elem) {
-      target.parentNode.insertBefore(elem, target.firstChild);
+      target.insertBefore(elem, target.firstChild);
     },
     append: function(target, elem) {
       target.appendChild(elem);
@@ -64,16 +64,41 @@ var inject = function inject(request, sender, sendResponse) {
     }
   };
 
+  if(document.getElementById('anyfetch-iframe')) {
+    console.warn('Injection aborted (iframe looks already there)');
+    return;
+  }
+
   if(!site.injection || !injectionMethods[site.injection.type]) {
     console.warn('Injection aborted (no injection methods documented)');
     return;
   }
 
   var iframe = document.createElement('iframe');
-  var target = document.querySelectorAll(site.injection.target)[0];
   iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));
+  iframe.setAttribute('id', 'anyfetch-iframe');
   iframe.setAttribute('frameBorder', 0);
-  injectionMethods[site.injection.type](target, iframe);
+  if(site.injection.width) {
+    iframe.setAttribute('width', site.injection.width);
+  }
+  if(site.injection.height) {
+    iframe.setAttribute('height', site.injection.height);
+  }
+  if(site.injection.style) {
+    iframe.setAttribute('style', site.injection.style);
+  }
+
+  var retries = 5;
+  (function tryInject(pause, current) {
+    var target = document.querySelectorAll(site.injection.selector)[0];
+    if(target) {
+      injectionMethods[site.injection.type](target, iframe);
+    }
+    else if(current < retries) {
+      setTimeout(tryInject, pause, pause * 2, current + 1);
+    }
+  })(200, 0);
+
   sendResponse();
 };
 
@@ -81,8 +106,9 @@ var inject = function inject(request, sender, sendResponse) {
  * Message listener for context requests
  */
 var getContext = function getContext(request, sender, sendResponse) {
+  // TODO: implement retry here, this would be much cleaner
   var values = [];
-  var rules = request.site && request.context && request.context.dom;
+  var rules = request.site && request.site.context && request.site.context.dom;
   if(!rules) {
     sendResponse({context: values});
     return;
