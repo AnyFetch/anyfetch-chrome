@@ -15,35 +15,30 @@ var blacklist = require('./anyfetch/blacklist.js');
 var notificationHandler = require('./notification/index.js');
 
 
-function detectContextWithRetry(tab, site, attempts, delay, current, cb) {
-  if(!cb) {
-    cb = current;
-    current = 0;
-  }
-  if(current >= attempts) {
-    return cb(null, []);
-  }
-  detectContext(tab, site, function(err, context) {
-    if(err) {
-      return cb(err);
-    }
-    if(context.length) {
-      return cb(null, context);
-    }
-    else {
+var detectContextWithRetry = function detectContextWithRetry(tab, site, retries, delay, cb) {
+  async.retry(retries, function(cb) {
+    detectContext(tab, site, function(err, context) {
+      if(err) {
+        return cb(err);
+      }
+      if(context.length) {
+        return cb(null, context);
+      }
       setTimeout(function() {
         // Update tab object, may have changed
-        chrome.tabs.get(tab.id, function(tab) {
-          if(!tab) {
-            // We lost the tab, abort now
+        chrome.tabs.get(tab.id, function(newTab) {
+          if(!newTab || tab.url !== newTab.url) {
+            // We lost the tab, or the url changed, meaning a new process of detection as begun. Abort now
             return cb(null, []);
           }
-          detectContextWithRetry(tab, site, attempts, delay * 2, current + 1, cb);
+          tab = newTab;
+          delay = delay * 2;
+          cb(new Error('No context detected'));
         });
       }, delay);
-    }
-  });
-}
+    });
+  }, cb);
+};
 
 /**
  * Show pageAction when tab URL matches supportedSites.url regex
