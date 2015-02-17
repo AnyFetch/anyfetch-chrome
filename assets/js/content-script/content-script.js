@@ -40,32 +40,6 @@ function getValue(rule) {
   return nodes;
 }
 
-function getContext(rules) {
-  var values = [];
-  rules.forEach(function(rule) {
-    var value;
-    if(Array.isArray(rule)) {
-      // If the rule is an array of rules, we keep the first found
-      for(var i = 0; i < rule.length; i += 1) {
-        value = getValue(rule[i]);
-        if(value.length) {
-          values = values.concat(value);
-        }
-        if(value.length) {
-          break;
-        }
-      }
-    }
-    else {
-      value = getValue(rule);
-      if(value.length) {
-        values = values.concat(value);
-      }
-    }
-  });
-  return values;
-}
-
 /**
  * Message listener used to check if the content script is injected
  */
@@ -107,7 +81,34 @@ var inject = function inject(request, sender, sendResponse) {
  * Message listener for context requests
  */
 var getContext = function getContext(request, sender, sendResponse) {
-  sendResponse({context: getContext(request.site.context.dom)});
+  var values = [];
+  var rules = request.site && request.context && request.context.dom;
+  if(!rules) {
+    sendResponse({context: values});
+    return;
+  }
+  rules.forEach(function(rule) {
+    var value;
+    if(Array.isArray(rule)) {
+      // If the rule is an array of rules, we keep the first found
+      for(var i = 0; i < rule.length; i += 1) {
+        value = getValue(rule[i]);
+        if(value.length) {
+          values = values.concat(value);
+        }
+        if(value.length) {
+          break;
+        }
+      }
+    }
+    else {
+      value = getValue(rule);
+      if(value.length) {
+        values = values.concat(value);
+      }
+    }
+  });
+  sendResponse({context: values});
 };
 
 
