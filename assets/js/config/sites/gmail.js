@@ -46,6 +46,8 @@ module.exports = {
   injection: {
     selector: 'div[role="main"] div[role="complementary"]',
     type: 'prepend',
-    path: '/popover.html'
+    path: '/gmail.html',
+    width: '220px',
+    height: '400px'
   }
 };

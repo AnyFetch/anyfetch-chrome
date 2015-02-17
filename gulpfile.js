@@ -47,6 +47,7 @@ var paths = {
       'assets/less/style.less',
       'assets/less/popover.less',
       'assets/less/settings.less',
+      'assets/less/injection/*.less',
     ],
     target: 'extension/css'
   },
@@ -60,6 +61,7 @@ var paths = {
       'assets/jade/first-run.jade',
       'assets/jade/how-to-use.jade',
       'assets/jade/oauth-callback.jade',
+      'assets/jade/injection/*.jade',
     ],
     target: 'extension/'
   },

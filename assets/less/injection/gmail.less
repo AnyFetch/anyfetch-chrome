@@ -1,0 +1,248 @@
+@charset "utf-8";
+@import "../variables.less";
+@import "../spinner.less";
+@import "../../../bower_components/anyfetch-assets/stylesheets/style.less";
+
+@snippetBadgeWidth: 12px;
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'arial', sans-serif;
+  font-size: 13px;
+}
+
+.hidden {
+  display: none;
+}
+
+#context {
+  min-height: 50px;
+  max-height: 70px;
+  background-color: #F1F1F1;
+  color: #444444;
+  font-size: 1.1em;
+  border-bottom: solid 1px #E5E5E5;
+
+  i {
+    float: left;
+  }
+
+  .context {
+    padding: .6em;
+    ul.context-selection {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      margin-right: 34px;
+      font-size: 11px;
+      line-height: 22px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      li.context-item {
+        padding: 2px 4px;
+        margin-top: 2px;
+        background-color: #DDDDDD;
+        white-space: nowrap;
+        display: inline;
+        text-transform: capitalize;
+      }
+      li.context-item:hover {
+        cursor: pointer;
+      }
+      // li.context-item:not(:last-of-type)::after {
+      //   content: ", ";
+      // }
+      li.inactive > span {
+        text-decoration: line-through;
+        opacity: .6;
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  background-color: transparent;
+  width: 6px;
+}
+
+::-webkit-scrollbar:hover {
+  background-color: #F1F1F1;
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.06), inset 0 -1px 0 rgba(0,0,0,0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background-clip: content-box;
+  background-color: #CCCCCC;
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.06), inset 0 -1px 0 rgba(0,0,0,0.04);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #909090;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #e6e6e6;
+}
+
+#errors {
+  width: 100%;
+  padding: 17px;
+  background: @errorBackground;
+  color: @errorColor;
+  margin: 0px;
+  font-weight: 500;
+
+  a {
+    color: @errorColor;
+    text-decoration: underline;
+  }
+}
+
+#results {
+  max-height: 330px;
+  min-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .table-center {
+    min-height: 250px;
+    width: 100%;
+    display: table;
+    text-align: center;
+    .cell-center {
+      vertical-align: middle;
+      display: table-cell;
+    }
+  }
+
+  .spinner-message {
+    margin-top: 10px;
+    color: darken(@backgroundColor, 40%)
+  }
+
+  #noresultserror {
+    color: #ccc;
+    text-align: center;
+    p {
+      margin-top: 0;
+      text-transform: uppercase;
+      font-size: 2em;
+    }
+    a {
+      color: #999;
+      font-size: 1.2em;
+      text-decoration: underline;
+    }
+  }
+
+  #document-list {
+    list-style: none;
+    margin: 0; padding: 0;
+
+    fieldset {
+      border: 0;
+      border-top: 1px solid #dddddd;
+      text-align: center;
+      margin: 10px 10px -8px 10px;
+    }
+
+    .sliceHeader {
+      width: auto;
+      color: #6D6D6D;
+      padding: 0px 10px;
+      font-size: 1.1em;
+    }
+
+    .document-snippet {
+      position: relative;
+      max-height: 4.5em;
+      display: flex;
+      align-item: center;
+      overflow: hidden;
+      margin: 0px 5px 10px 5px;
+      padding: @snippetPadding;
+      padding-left: @snippetPadding + @snippetBadgeWidth;
+      background-color: #FFF;
+      border: @snippetBorder;
+      font-weight: 300;
+      font-size: .9em;
+      border-radius: 2px;
+
+      .badge-icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: @snippetBadgeWidth;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        background-color: #616161;
+
+        &.email, &.email-thread {
+          background-color: #D32F2F;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3f.png');
+        }
+
+        &.image {
+          background-color: #FFA000;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3d.png');
+        }
+
+        &.contact {
+          background-color: #4527A0;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3a.png');
+        }
+
+        &.document {
+          background-color: #1565C0;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3c.png');
+        }
+
+        &.event {
+          background-color: #795548;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa40.png');
+        }
+
+        &.trello-card {
+          background-color: #303F9F;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3e.png');
+        }
+
+        &.note {
+          background-color: #388E3C;
+          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa4a.png');
+        }
+      }
+
+      a.document-snippet-link {
+        width: 100%;
+        display: block;
+        text-decoration: none;
+        color: @linkColor;
+      }
+
+      .two-columns {
+        margin-bottom: 3px;
+      }
+
+      &:hover {
+        background-color: @snippetHighlightBackgroundColor;
+      }
+    }
+  }
+}
+
+.see-all {
+  width: 100%;
+  text-align: center;
+  font-size: 1.2em;
+  margin: 1em 0;
+  a:hover {
+    text-decoration: underline;
+  }
+}
