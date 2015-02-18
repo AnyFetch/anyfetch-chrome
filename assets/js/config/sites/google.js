@@ -18,12 +18,5 @@ module.exports = {
   url: /google\.(?:\w+(?:\.\w+)?)\/(?:search|webhp|.*#q=)/,
   context: {
     title: /^(.+)\s-\s/i,
-  },
-  injection: {
-    selector: '#rhs',
-    type: 'append',
-    path: '/popover.html',
-    height: '500px',
-    width: '100%;',
   }
 };
