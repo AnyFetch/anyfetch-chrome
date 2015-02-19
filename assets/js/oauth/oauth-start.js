@@ -6,7 +6,7 @@ var saveUserData = require('../anyfetch/save-user-data.js');
 /*
  * Start oauth flow with remote server
  */
- module.exports = function(cb, url) {
+module.exports = function(cb, url) {
   if(!cb) {
     cb = function() {};
   }
@@ -24,6 +24,7 @@ var saveUserData = require('../anyfetch/save-user-data.js');
       }
     });
 
+    // When the chrome-server redirects us on http://chrome.anyfetch.com we can grab the token and destroy the window
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       if(window.tabs[0].id === tab.id && changeInfo.url && changeInfo.url.substring(0, changeInfo.url.lastIndexOf('/')) === 'http://chrome.anyfetch.com') {
         var params = changeInfo.url.substring(changeInfo.url.lastIndexOf('=') + 1, changeInfo.url.length);
@@ -36,6 +37,7 @@ var saveUserData = require('../anyfetch/save-user-data.js');
             else {
               success = true;
             }
+            // destroying the popup window
             chrome.windows.remove(window.id);
             cb(null);
           });

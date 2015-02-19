@@ -17,7 +17,7 @@ var Config = function Config() {
     token: '',
     apiUrl: 'https://api.anyfetch.com',
     managerUrl: 'https://manager.anyfetch.com',
-    serverUrl: 'http://localhost:8000',
+    serverUrl: 'https://anyfetch-chrome.herokuapp.com',
     appUrl: 'https://app.anyfetch.com',
   };
 

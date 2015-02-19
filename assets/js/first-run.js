@@ -97,5 +97,5 @@ document.addEventListener('DOMContentLoaded', function() {
       showById('index');
       buttonHandler(cb);
     }
-    ], finalHandler);
+  ], finalHandler);
 });
