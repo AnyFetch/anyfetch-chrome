@@ -1,11 +1,12 @@
 'use strict';
 
 var config = require('../config/index.js');
+var saveUserData = require('../anyfetch/save-user-data.js');
 
 /*
  * Start oauth flow with remote server
  */
-module.exports = function(cb, url) {
+ module.exports = function(cb, url) {
   if(!cb) {
     cb = function() {};
   }
@@ -23,17 +24,23 @@ module.exports = function(cb, url) {
       }
     });
 
-    chrome.runtime.onMessage.addListener(
-      function(request, sender, sendResponse) {
-        if(request.type === 'anyfetch::frontLoginSuccessful') {
-          success = true;
-          sendResponse();
-          if(sender.tab) {
-            chrome.tabs.remove(sender.tab.id);
-          }
-          cb(null);
-        }
+    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+      if(window.tabs[0].id === tab.id && changeInfo.url && changeInfo.url.substring(0, changeInfo.url.lastIndexOf('/')) === 'http://chrome.anyfetch.com') {
+        var params = changeInfo.url.substring(changeInfo.url.lastIndexOf('=') + 1, changeInfo.url.length);
+
+        chrome.storage.sync.set({token: params}, function() {
+          saveUserData(function(err) {
+            if(err) {
+              console.error(err);
+            }
+            else {
+              success = true;
+            }
+            chrome.windows.remove(window.id);
+            cb(null);
+          });
+        });
       }
-    );
+    });
   });
 };
