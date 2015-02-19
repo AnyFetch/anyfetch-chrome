@@ -76,7 +76,7 @@ module.exports = function sliceInTime(documents) {
     slice.documents = [];
   });
   documents.forEach(function(doc) {
-    var modificationDate = moment(doc.creation_date);
+    var modificationDate = moment(doc.modification_date);
     var found = false;
     for(var i = 0; i < timeSlices.length && !found; i += 1) {
       if(i === 0 && modificationDate.isAfter(timeSlices[i].maxDate)) {
