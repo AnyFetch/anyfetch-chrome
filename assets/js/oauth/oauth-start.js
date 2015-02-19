@@ -25,11 +25,12 @@ module.exports = function(cb, url) {
 
     // When the chrome-server redirects us on http://chrome.anyfetch.com we can grab the token and destroy the window
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+      console.log(changeInfo.url);
       if(window.tabs[0].id === tab.id && changeInfo.url && changeInfo.url.substring(0, changeInfo.url.lastIndexOf('/')) === 'http://chrome.anyfetch.com') {
         var params = changeInfo.url.substring(changeInfo.url.lastIndexOf('=') + 1, changeInfo.url.length);
         config.store.loadSettings(function() {
           success = true;
-          //Closing the window after setting success to true to trigger the listener set before
+          // Closing the window after setting success to true to trigger the listener set before
           chrome.windows.remove(window.id);
           config.store.token = params;
           cb(null);
