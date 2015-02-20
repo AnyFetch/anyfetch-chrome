@@ -71,11 +71,11 @@ var finalHandler = function finalHandler(err) {
 var buttonHandler = function oauthButtonHandler(cb) {
   document.getElementById('start-oauth').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/connect');
+    oauthStart(cb, '/init/connect' + '?state=v2');
   });
   document.getElementById('start-register').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/register');
+    oauthStart(cb, '/init/register' + '?state=v2');
   });
 };
 
