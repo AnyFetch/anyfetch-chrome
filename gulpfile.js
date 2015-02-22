@@ -21,7 +21,6 @@ var paths = {
       'assets/js/how-to-use.js',
       'assets/js/advanced-settings.js',
       'assets/js/settings.js',
-      'assets/js/oauth-callback.js',
       'assets/js/content-script/content-script.js',
       'assets/js/mixpanel.js',
     ],
