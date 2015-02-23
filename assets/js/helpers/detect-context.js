@@ -40,6 +40,9 @@ function getFromDOM(tab, site, cb) {
 
   var requestContext = function(site, cb) {
     chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::csGetContext', site: site}, function(response) {
+      if(!response) {
+        return cb(null, []);
+      }
       var context = getContextObject(response.context);
       cb(null, context);
     });
