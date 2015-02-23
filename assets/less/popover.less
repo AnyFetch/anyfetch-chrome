@@ -1,7 +1,5 @@
 @charset "utf-8";
-@import "variables.less";
-@import "spinner.less";
-@import "../../bower_components/anyfetch-assets/stylesheets/style.less";
+@import "document-list.less";
 
 html {
   background: @backgroundColor;
@@ -27,40 +25,19 @@ html, body {
   opacity: .1;
 }
 
-.hidden {
-  display: none;
-}
-
 #context {
   min-height: 50px;
   background-color: @darkGray;
   color: @headerColor;
   font-size: 1.3em;
 
-  i {
-    float: left;
-  }
-
   .context {
     padding: 16px;
     ul.context-selection {
-      list-style: none;
-      margin: 0;
-      padding: 0;
       margin-right: 34px;
 
-      li.context-item {
-        display: inline
-      }
-      li.context-item:hover {
-        cursor: pointer;
-      }
       li.context-item:not(:last-of-type)::after {
         content: ", ";
-      }
-      li.inactive > span {
-        text-decoration: line-through;
-        opacity: .6;
       }
     }
   }
@@ -75,160 +52,13 @@ html, body {
   color: white;
 }
 
-#errors {
-  width: 100%;
-  padding: 17px;
-  background: @errorBackground;
-  color: @errorColor;
-  margin: 0px;
-  font-weight: 500;
-
-  a {
-    color: @errorColor;
-    text-decoration: underline;
-  }
-}
-
 #results {
   max-height: 450px;
   min-height: 250px;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  .table-center {
-    min-height: 250px;
-    width: 100%;
-    display: table;
-    text-align: center;
-    .cell-center {
-      vertical-align: middle;
-      display: table-cell;
-    }
-  }
-
-  .spinner-message {
-    margin-top: 10px;
-    color: darken(@backgroundColor, 40%)
-  }
-
-  #noresultserror {
-    color: #ccc;
-    text-align: center;
-    p {
-      margin-top: 0;
-      text-transform: uppercase;
-      font-size: 3em;
-    }
-    a {
-      color: #999;
-      font-size: 1.2em;
-      text-decoration: underline;
-    }
-  }
 
   #document-list {
-    list-style: none;
-    margin: 0; padding: 0;
-
-    fieldset {
-      border: 0;
-      border-top: 1px solid #dddddd;
-      text-align: center;
-      margin: 20px 10px -5px 10px;
-    }
-
     .sliceHeader {
-      width: auto;
-      color: #6D6D6D;
-      padding: 0px 10px;
       font-size: 14px;
     }
-
-    .document-snippet {
-      position: relative;
-      min-height: 5em;
-      display: flex;
-      align-item: center;
-      overflow: hidden;
-      margin: 0px 5px 10px 5px;
-      padding: @snippetPadding;
-      padding-left: @snippetPadding + @snippetBadgeWidth;
-      background-color: @snippetBackgroundColor;
-      border: @snippetBorder;
-      font-weight: 300;
-      border-radius: 5px;
-
-      .badge-icon {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        bottom: 0px;
-        width: @snippetBadgeWidth;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        background-color: #616161;
-
-        &.email, &.email-thread {
-          background-color: #D32F2F;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3f.png');
-        }
-
-        &.image {
-          background-color: #FFA000;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3d.png');
-        }
-
-        &.contact {
-          background-color: #4527A0;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3a.png');
-        }
-
-        &.document {
-          background-color: #1565C0;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3c.png');
-        }
-
-        &.event {
-          background-color: #795548;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa40.png');
-        }
-
-        &.trello-card {
-          background-color: #303F9F;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa3e.png');
-        }
-
-        &.note {
-          background-color: #388E3C;
-          background-image: url('/images/document-types/icons/type_5252ce4ce4cfcd16f55cfa4a.png');
-        }
-      }
-
-      a.document-snippet-link {
-        width: 100%;
-        display: block;
-        text-decoration: none;
-        color: @linkColor;
-      }
-
-      .two-columns {
-        margin-bottom: 3px;
-      }
-
-      &:hover {
-        background-color: @snippetHighlightBackgroundColor;
-      }
-    }
-  }
-}
-
-.see-all {
-  width: 100%;
-  text-align: center;
-  font-size: 1.4em;
-  margin: 1em 0;
-  a:hover {
-    text-decoration: underline;
   }
 }
