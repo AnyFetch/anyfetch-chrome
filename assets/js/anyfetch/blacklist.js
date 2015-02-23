@@ -55,8 +55,8 @@ var getAccounts = function(userEmail, cb) {
   ], cb);
 };
 
-var updateBlacklist = function(userEmail, cb) {
-  getAccounts(userEmail, function(err, accounts, providers) {
+var updateBlacklist = function(cb) {
+  getAccounts(config.store.email, function(err, accounts, providers) {
     if(err) {
       return cb(err);
     }
@@ -65,7 +65,8 @@ var updateBlacklist = function(userEmail, cb) {
     });
 
     config.store.providerCount = providers.length;
-    chrome.storage.sync.set({blacklist: config.store.blacklist, providerCount: config.store.providerCount}, cb);
+    // We have to set with the chrome API anyway because we modified internal properties of `blacklist`
+    chrome.storage.sync.set({blacklist: config.store.blacklist}, cb);
   });
 };
 

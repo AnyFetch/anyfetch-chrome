@@ -270,6 +270,7 @@ var toggleContextItem = function toggleContextItem(request, sender, sendResponse
     return false;
   });
 
+  // We have to set with the chrome API anyway because we modified internal properties of `blacklist`
   chrome.storage.sync.set({blacklist: config.store.blacklist});
   sendResponse({context: request.context});
   return false;
@@ -293,14 +294,13 @@ function refreshTabs() {
  * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var setToken = function setToken(request, sender, sendResponse) {
-  chrome.storage.sync.set({token: request.token}, function() {
-    saveUserData(function(err) {
-      if(err) {
-        console.error(err);
-      }
-      refreshTabs();
-      sendResponse();
-    });
+  config.store.token = request.token;
+  saveUserData(function(err) {
+    if(err) {
+      console.error(err);
+    }
+    refreshTabs();
+    sendResponse();
   });
   return true;
 };

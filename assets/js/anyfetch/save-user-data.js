@@ -1,6 +1,5 @@
 'use strict';
 
-var async = require('async');
 var config = require('../config/index.js');
 var call = require('./call.js');
 var updateBlacklist = require('./blacklist').updateBlacklist;
@@ -35,19 +34,7 @@ module.exports = function saveUserData(cb) {
       '$created': new Date()
     });
 
-    async.waterfall([
-      function saveData(cb) {
-        chrome.storage.sync.set({
-          email: config.store.email,
-          userId: config.store.userId,
-          companyId: config.store.companyId,
-          providerCount: config.store.providerCount
-        }, cb);
-      },
-      function saveBlacklist(cb) {
-        updateBlacklist(config.store.email, cb);
-      }
-    ], cb);
+    updateBlacklist(cb);
   });
 };
 

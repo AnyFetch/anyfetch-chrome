@@ -50,6 +50,7 @@ var saveSettings = function(event) {
 
 
   // Persist settings using the `chrome.storage` API
+  // (we don't use config.store since we have a lot of values to set)
   chrome.storage.sync.set(newValues, function() {
     console.log('Settings updated.');
     event.target.innerHTML = 'Saved!';
