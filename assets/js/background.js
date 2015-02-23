@@ -27,7 +27,7 @@ var detectContextWithRetry = function detectContextWithRetry(tab, site, retries,
       setTimeout(function() {
         // Update tab object, may have changed
         chrome.tabs.get(tab.id, function(newTab) {
-          if(!newTab || tab.url !== newTab.url) {
+          if(!newTab || tab.url !== newTab.url || tab.title !== newTab.title) {
             // We lost the tab, or the url changed, meaning a new process of detection as begun. Abort now
             return cb(null, []);
           }
@@ -65,17 +65,18 @@ function managePageAction(tab) {
         return;
       }
 
-      // Inject iframe if needed
-      tabFunctions.inject(tab.id, site);
-
       // Everything looks fine (supported website), retrieve context
-      detectContextWithRetry(tab, site, 4, 500, cb);
+      detectContextWithRetry(tab, site, 5, 500, cb);
     },
     function setIcon(context, cb) {
       // Empty context, skip.
       if(!context.length) {
         return;
       }
+
+      // Inject iframe if needed
+      tabFunctions.inject(tab.id, site);
+
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
       tabFunctions.activateExtension(tab.id, false);
 
@@ -196,7 +197,7 @@ var findContext = function findContext(request, sender, sendResponse) {
       }
 
       // Everything looks fine (supported website), retrieve context
-      detectContextWithRetry(tab, site, 4, 500, cb);
+      detectContextWithRetry(tab, site, 5, 500, cb);
     },
     function callSendResponse(context, cb) {
       sendResponse({
