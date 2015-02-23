@@ -40,7 +40,7 @@ var Store = function Store(keys, defaults) {
       return;
     }
     Object.keys(changes).forEach(function(key) {
-      self._cache[key] = changes[key].newValue;
+      self._cache[key] = changes[key].newValue || self._defaults[key];
     });
   });
 };

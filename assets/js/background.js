@@ -188,6 +188,9 @@ var findContext = function findContext(request, sender, sendResponse) {
         return cb(chrome.runtime.lastError || new Error('Lost the tab'));
       });
     },
+    function loadSettings(tab, cb) {
+      config.store.loadSettings(rarity.carry([tab], cb));
+    },
     function callDetectContext(tab, cb) {
       site = getSiteFromTab(config.supportedSites, tab);
 
