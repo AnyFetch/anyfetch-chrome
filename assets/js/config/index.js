@@ -18,7 +18,6 @@ var Config = function Config() {
     apiUrl: 'https://api.anyfetch.com',
     managerUrl: 'https://manager.anyfetch.com',
     serverUrl: 'https://anyfetch-chrome.herokuapp.com',
-    appUrl: 'https://app.anyfetch.com',
   };
 
   /**
@@ -41,10 +40,6 @@ var Config = function Config() {
       placeholder: 'An URL to the AnyFetch Chrome authentification server',
       label: 'AnyFetch Chrome Server URL'
     },
-    appUrl: {
-      placeholder: 'An URL to the AnyFetch App',
-      label: 'AnyFetch app URL'
-    }
   };
 
   /**
