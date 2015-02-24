@@ -39,7 +39,6 @@ module.exports.setSearchResults = function setSearchResults(results) {
     timeSlices: timeSlices,
 
     totalCount: results.count,
-    hasMore: (count < results.count),
 
     appUrl: config.store.appUrl,
     managerUrl: config.store.managerUrl

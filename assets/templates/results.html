@@ -11,16 +11,6 @@
     {{/isActive}}
   {{/timeSlices}}
 </ul>
-<div class="see-all">
-  <a id="see-all" href="{{appUrl}}/#/?q={{query}}" target="_blank" data-analytics-count="{{totalCount}}">
-    {{#hasMore}}
-      See all ({{totalCount}} matches)
-    {{/hasMore}}
-    {{^hasMore}}
-      See on AnyFetch app
-    {{/hasMore}}
-  </a>
-</div>
 {{/totalCount}}
 
 {{^totalCount}}
