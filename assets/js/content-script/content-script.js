@@ -4,14 +4,12 @@
 if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
   document.documentElement.setAttribute("data-anyfetch-injected", "true");
   (function() {
-    var turnObjToArray = function(obj) {
-      return [].map.call(obj, function(element) {
-        return element;
-      });
+    var nodeListToArray = function nodeListToArray(obj) {
+      return [].slice.call(obj);
     };
 
-    function getValue(rule) {
-      var nodes = turnObjToArray(document.querySelectorAll(rule.selector));
+    var getValue = function getValue(rule) {
+      var nodes = nodeListToArray(document.querySelectorAll(rule.selector));
 
       // For each matching node,
       // Find content removing empty and filtered values
@@ -41,7 +39,14 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         return acc;
       }, []);
       return nodes;
-    }
+    };
+
+    var retry = function retry(retries, pause, func) {
+      func();
+      if(retries) {
+        setTimeout(retry, pause, retries - 1, pause * 2);
+      }
+    };
 
     /**
      * Message listener used to check if the content script is injected
@@ -71,9 +76,9 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
           // Try to remove any other iframe that we may have injected before
           // This should fix the double inclusion bug
           var iframes = document.getElementsByClassName('anyfetch-iframe');
-          turnObjToArray(iframes).forEach(function(elem) {
+          nodeListToArray(iframes).forEach(function(elem) {
             if(elem !== iframe) {
-              elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extenson!)
+              elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extension!)
             }
           });
 
@@ -84,11 +89,10 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
           // Watch for size changes during some time to adjust height of the iframe
           // Useful for rapportive for example, which may expand it's height after loading
           // some results.
-          var retries = 5;
           var previousSize = 0;
-          (function watchSize(pause, current) {
+          var adjustSize = function adjustSize() {
             var size = 0;
-            turnObjToArray(target.children).forEach(function(elem) {
+            nodeListToArray(target.children).forEach(function(elem) {
               if(elem.id !== 'anyfetch-iframe') {
                 size += elem.clientHeight;
               }
@@ -99,15 +103,13 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
               iframe.height = size;
               previousSize = size;
             }
-            if(current < retries) {
-              setTimeout(watchSize, pause, pause * 2, current + 1);
-            }
-          })(400, 0);
+          };
+          retry(5, 400, adjustSize);
         };
       };
 
       if(!site.injection || !injectionMethods[site.injection.type]) {
-        console.warn('Injection aborted (no injection methods documented)');
+        console.warn('Injection aborted (no documented injection method)');
         return;
       }
 
@@ -127,17 +129,15 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         iframe.setAttribute('style', site.injection.style);
       }
 
-      var retries = 5;
-      (function tryInject(pause, current) {
+      var tryInject = function tryInject() {
         var target = document.querySelector(site.injection.selector);
         if(target) {
           iframe.onload = onloadIframe(iframe, target);
           injectionMethods[site.injection.type](target, iframe);
         }
-        else if(current < retries) {
-          setTimeout(tryInject, pause, pause * 2, current + 1);
-        }
-      })(200, 0);
+      };
+      retry(5, 200, tryInject);
+
       sendResponse();
     };
 

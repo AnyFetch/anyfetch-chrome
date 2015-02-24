@@ -21,7 +21,7 @@ module.exports.injectScript = function injectScript(tabId, path, cb) {
         if(results) {
           return cb();
         }
-        return cb(new Error('Couldn\'t inject content script'));
+        return cb(new Error('Can\'t inject content script'));
       });
     }
   });
