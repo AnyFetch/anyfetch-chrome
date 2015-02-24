@@ -10,7 +10,7 @@ var insertFields = function(descriptors) {
   for(var id in descriptors) {
     var view = descriptors[id];
     view.id = id;
-    view.value = view.default;
+    view.value = '';
 
     inputs += Mustache.render(templates.settingsInput, view);
   }
@@ -20,7 +20,7 @@ var insertFields = function(descriptors) {
 
 var displayValues = function(values) {
   Object.keys(values).forEach(function(id) {
-    document.getElementById(id).value = values[id];
+    document.getElementById(id).value = config.store[id];
   });
 };
 
@@ -31,7 +31,9 @@ var displayValues = function(values) {
  */
 var loadSettings = function() {
   // Fill in the overrided values only
-  chrome.storage.sync.get(Object.keys(config.settings), displayValues);
+  config.store.loadSettings(function() {
+    displayValues(config.settings);
+  });
 };
 
 
@@ -42,12 +44,13 @@ var saveSettings = function(event) {
     newValues[id] = input.value;
     // Empty fields are filled with their default value
     if(!input.value) {
-      input.value = config.settings[id].default;
+      input.value = config.defaults[id];
     }
   }
 
 
   // Persist settings using the `chrome.storage` API
+  // (we don't use config.store since we have a lot of values to set)
   chrome.storage.sync.set(newValues, function() {
     console.log('Settings updated.');
     event.target.innerHTML = 'Saved!';
@@ -59,13 +62,18 @@ var saveSettings = function(event) {
 
 
 /** Reset all settings to their default value */
-var resetSettings = function() {
-  chrome.storage.sync.clear(function() {
-    var newValues = {};
-    Object.keys(config.settings).forEach(function(id) {
-      newValues[id] = config.settings[id].default;
-    });
+var resetSettings = function(event) {
+  var newValues = {};
+  Object.keys(config.settings).forEach(function(key) {
+    newValues[key] = config.defaults[key];
+  });
+  chrome.storage.sync.set(newValues, function() {
+    console.log('Settings reset.');
     displayValues(newValues);
+    event.target.innerHTML = 'Done!';
+    window.setTimeout(function() {
+      event.target.innerHTML = 'Reset';
+    }, 1000);
   });
 };
 

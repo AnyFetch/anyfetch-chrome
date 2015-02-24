@@ -5,13 +5,13 @@ var config = require('../config/index.js');
 module.exports.httpRequest = function httpRequest(options, cb) {
   // We require zepto here cause it crashes our test suite. In tests, we mock this function so there is no problem.
   require('zepto/zepto.min.js');
-  if(!config.token) {
+  if(!config.store.token) {
     return cb(new Error('No token in config object while trying to call AnyFetch API'));
   }
 
   var ajaxOptions = {
     headers: {
-      'Authorization': 'Bearer ' + config.token,
+      'Authorization': 'Bearer ' + config.store.token,
     },
     contentType: 'application/json',
     dataType: 'json',

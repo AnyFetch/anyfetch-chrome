@@ -1,7 +1,7 @@
 <div class="context">
   <ul class="context-selection">
     {{#context}}
-      <li class="context-item {{#inactive}}inactive{{/inactive}}"><span>{{name}}</span></li>
+      <li class="context-item {{^active}}inactive{{/active}}"><span>{{name}}</span></li>
     {{/context}}
   </ul>
 </div>

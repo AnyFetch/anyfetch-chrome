@@ -1,6 +1,7 @@
 "use strict";
 
 var getContextObject = require('./content-helper.js').getContextObject;
+var injectScript = require('./content-script.js').injectScript;
 
 
 /**
@@ -38,27 +39,20 @@ function getFromDOM(tab, site, cb) {
   };
 
   var requestContext = function(site, cb) {
-    chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::contextRequest', site: site}, function(response) {
+    chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::csGetContext', site: site}, function(response) {
+      if(!response) {
+        return cb(null, []);
+      }
       var context = getContextObject(response.context);
       cb(null, context);
     });
   };
 
-  // Query the tab to know if we already injected the content script
-  chrome.tabs.sendMessage(tab.id, {type: 'anyfetch::ping'}, function(response) {
-    if(response && response.type === 'anyfetch::pong') {
-      requestContext(site, callCb);
+  injectScript(tab.id, '/js/content-script.js', function(err) {
+    if(err) {
+      return console.warn(err);
     }
-    else {
-      chrome.tabs.executeScript(tab.id, {
-        file: '/js/advanced-detection.js'
-      }, function(results) {
-        if(results) {
-          return requestContext(site, callCb);
-        }
-        console.error('Failed to inject content script');
-      });
-    }
+    requestContext(site, callCb);
   });
 }
 

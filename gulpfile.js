@@ -21,8 +21,7 @@ var paths = {
       'assets/js/how-to-use.js',
       'assets/js/advanced-settings.js',
       'assets/js/settings.js',
-      'assets/js/oauth-callback.js',
-      'assets/js/content-script/advanced-detection.js',
+      'assets/js/content-script/content-script.js',
       'assets/js/mixpanel.js',
     ],
     target: 'extension/js'
@@ -47,6 +46,7 @@ var paths = {
       'assets/less/style.less',
       'assets/less/popover.less',
       'assets/less/settings.less',
+      'assets/less/injection/*.less',
     ],
     target: 'extension/css'
   },
@@ -60,6 +60,7 @@ var paths = {
       'assets/jade/first-run.jade',
       'assets/jade/how-to-use.jade',
       'assets/jade/oauth-callback.jade',
+      'assets/jade/injection/*.jade',
     ],
     target: 'extension/'
   },
@@ -137,10 +138,10 @@ gulp.task('jade', function() {
 // Manifest generation
 gulp.task('manifest', function() {
   var manifestFilename = './assets/manifest.json';
-  var manifestFile = require(manifestFilename);
+  // We are not using require because it is caching the file
+  var manifestFile = JSON.parse(fs.readFileSync(manifestFilename, 'utf8'));
   // Read version number from `package.json`
   var packageFile = require('./package.json');
-
   // Update manifest version
   manifestFile.version = packageFile.version;
   // Write it back to the file
@@ -161,6 +162,7 @@ gulp.task('watch', function() {
   gulp.watch(paths.templates.all, ['browserify']);
   gulp.watch(paths.less.all, ['less']);
   gulp.watch(paths.jade.all, ['jade']);
+  gulp.watch('assets/manifest.json', ['manifest']);
 });
 
 // Run main tasks on launch

@@ -32,9 +32,9 @@ var goTo = function goTo(position) {
     prev.classList.remove('hidden');
   }
 
-  window.mixpanel.identify(config.userId);
+  window.mixpanel.identify(config.store.userId);
   window.mixpanel.track("How to use", {
-    email: config.email,
+    email: config.store.email,
     step: position
   });
 };
@@ -47,34 +47,35 @@ var goToRelative = function goToRelative(relativePos) {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  var next = document.getElementById('next');
-  var prev = document.getElementById('prev');
-  var end = document.getElementById('end');
-
-  if(prev) {
-    prev.addEventListener('click', function() {
-      goToRelative(-1);
+  config.store.loadSettings(function() {
+    window.mixpanel.identify(config.store.userId);
+    window.mixpanel.track_links("a.btn", "Open marketplace", {
+      email: config.store.email,
+      origin: "how to use"
     });
-  }
-  if(next) {
-    next.addEventListener('click', function() {
-      goToRelative(1);
+    window.mixpanel.track("How to use", {
+      email: config.store.email,
+      step: 1
     });
-  }
-  if(end) {
-    end.addEventListener('click', function() {
-      window.close();
-    });
-  }
-});
 
+    var next = document.getElementById('next');
+    var prev = document.getElementById('prev');
+    var end = document.getElementById('end');
 
-window.mixpanel.identify(config.userId);
-window.mixpanel.track_links("a.btn", "Open marketplace", {
-    email: config.email,
-    origin: "how to use"
-});
-window.mixpanel.track("How to use", {
-    email: config.email,
-    step: 1
+    if(prev) {
+      prev.addEventListener('click', function() {
+        goToRelative(-1);
+      });
+    }
+    if(next) {
+      next.addEventListener('click', function() {
+        goToRelative(1);
+      });
+    }
+    if(end) {
+      end.addEventListener('click', function() {
+        window.close();
+      });
+    }
+  });
 });

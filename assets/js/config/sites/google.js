@@ -18,5 +18,5 @@ module.exports = {
   url: /google\.(?:\w+(?:\.\w+)?)\/(?:search|webhp|.*#q=)/,
   context: {
     title: /^(.+)\s-\s/i,
-  },
+  }
 };

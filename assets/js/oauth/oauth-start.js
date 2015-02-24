@@ -1,11 +1,9 @@
 'use strict';
 
 var config = require('../config/index.js');
-var saveUserData = require('../anyfetch/save-user-data.js');
 
 /*
  * Start oauth flow with remote server
- * config must be loaded
  */
 module.exports = function(cb, url) {
   if(!cb) {
@@ -13,25 +11,8 @@ module.exports = function(cb, url) {
   }
   var success = false;
 
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      if(request.type === 'anyfetch::oauthResponse') {
-        success = true;
-        config.token = request.token;
-        sendResponse();
-        chrome.tabs.remove(sender.tab && sender.tab.id);
-        chrome.storage.sync.set({token: request.token}, cb);
-        saveUserData(function(err) {
-          if(err) {
-            console.error(err);
-          }
-        });
-      }
-    }
-  );
-
   chrome.windows.create({
-    url: config.serverUrl + url,
+    url: config.store.serverUrl + url,
     type: 'popup',
     width: 800,
     height: 800
@@ -39,6 +20,20 @@ module.exports = function(cb, url) {
     chrome.windows.onRemoved.addListener(function(id) {
       if(window.id === id && !success) {
         cb(new Error('Canceled by user'));
+      }
+    });
+
+    // When the chrome-server redirects us on http://chrome.anyfetch.com we can grab the token and destroy the window
+    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+      if(window.tabs[0].id === tab.id && changeInfo.url && changeInfo.url.substring(0, changeInfo.url.lastIndexOf('/')) === 'http://chrome.anyfetch.com') {
+        var params = changeInfo.url.substring(changeInfo.url.lastIndexOf('=') + 1, changeInfo.url.length);
+        config.store.loadSettings(function() {
+          success = true;
+          // Closing the window after setting success to true to trigger the listener set before
+          chrome.windows.remove(window.id);
+          config.store.token = params;
+          cb(null);
+        });
       }
     });
   });

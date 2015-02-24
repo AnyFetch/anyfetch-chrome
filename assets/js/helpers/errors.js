@@ -24,6 +24,5 @@ module.exports.clear = function() {
 module.exports.showSetupAccountError = function(err) {
   var resultsDisplay = $('#results');
   console.warn(err);
-  console.log(resultsDisplay);
   resultsDisplay.html(Mustache.render(templates.login));
 };

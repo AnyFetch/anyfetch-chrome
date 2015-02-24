@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "AnyFetch Instant Context",
+  "name": "AnyFetch Instant Context (STAGING)",
   "short_name": "AnyFetch",
   "description": "Find documents related to the current page with AnyFetch.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "icons": {
     "16": "images/icons/extension/icon16.png",
     "32": "images/icons/extension/icon32.png",
@@ -20,7 +20,8 @@
   ],
   "web_accessible_resources": [
     "oauth-callback.html",
-    "first-run.html"
+    "popover.html",
+    "gmail.html"
   ],
   "page_action": {
     "default_icon": {

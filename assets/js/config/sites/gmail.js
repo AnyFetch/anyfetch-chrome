@@ -24,14 +24,15 @@ module.exports = {
       {
         target: 'name',
         selector: 'div[role="main"] table[role="presentation"] table > tbody > tr > td span[email]',
-        filter: '[\\S+] .+' // Remove first name only, and "me" text
+        filter: '[\\S+]( |@).+' // Remove first name only, and "me" text
       },
       // Contact in semi full view
       // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
       [
         {
           target: 'textContent',
-          selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a'
+          selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a',
+          filter: '[\\S+] .+' // Remove first name only, or pseudonym
         }
       ],
       // Related Google+ Page
@@ -42,5 +43,12 @@ module.exports = {
         }
       ]
     ]
+  },
+  injection: {
+    selector: 'div[role="main"] div[role="complementary"]',
+    type: 'prepend',
+    path: '/gmail.html',
+    width: '220px',
+    height: '400px'
   }
 };

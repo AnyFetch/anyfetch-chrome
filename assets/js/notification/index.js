@@ -58,9 +58,9 @@ module.exports.displayNoProviders = function noProvidersNotification() {
       lastClickedOnNoProviders = new Date();
       chrome.tabs.create({url: 'https://manager.anyfetch.com/marketplace'});
 
-      window.mixpanel.identify(config.userId);
+      window.mixpanel.identify(config.store.userId);
       window.mixpanel.track("Open marketplace", {
-        email: config.email,
+        email: config.store.email,
         origin: "notification"
       });
     }

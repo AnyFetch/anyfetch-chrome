@@ -1,5 +1,6 @@
 "use strict";
 
+var injectScript = require('../helpers/content-script.js').injectScript;
 
 /**
  * Enable or disable (blue / grey) the anyfetch extension icon on specifed tabId
@@ -43,6 +44,9 @@ module.exports.showExtension = function(tabId) {
 };
 
 
+/**
+ * set the pageAction's title for the target tab
+ */
 module.exports.setTitle = function(tabId, title) {
   chrome.pageAction.setTitle({
     tabId: tabId,
@@ -50,3 +54,22 @@ module.exports.setTitle = function(tabId, title) {
   });
 };
 
+
+/**
+ * Inject content to the target tab
+ * @param {int} tabId The target tab id (required)
+ * @param {site} site The detected site associated with the tab (required)
+ */
+module.exports.inject = function(tabId, site) {
+  if(site.injection) {
+    injectScript(tabId, '/js/content-script.js', function(err) {
+      if(err) {
+        return console.warn(err);
+      }
+      chrome.tabs.sendMessage(tabId, {
+        type: 'anyfetch::csInject',
+        site: site
+      });
+    });
+  }
+};

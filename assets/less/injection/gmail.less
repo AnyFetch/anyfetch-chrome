@@ -1,0 +1,138 @@
+@charset "utf-8";
+@import "../document-list.less";
+
+@snippetBadgeWidth: 12px;
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'arial', sans-serif;
+  font-size: 13px;
+}
+
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  overflow-y: auto;
+}
+
+#context {
+  background-color: #F5F5F5;
+  color: #444444;
+  font-size: 1.1em;
+  border-bottom: solid 1px #E5E5E5;
+
+  .context {
+    padding: .4em;
+    ul.context-selection {
+      overflow: hidden;
+      font-size: 11px;
+      line-height: 22px;
+      text-overflow: ellipsis;
+      li.context-item {
+        padding: 2px 4px;
+        margin-top: 2px;
+        background-color: #DDDDDD;
+        white-space: nowrap;
+        text-transform: capitalize;
+      }
+      li.context-item.inactive {
+        background-color: #EEEEEE;
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  background-color: transparent;
+  width: 6px;
+}
+
+::-webkit-scrollbar:hover {
+  background-color: #F1F1F1;
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.06), inset 0 -1px 0 rgba(0,0,0,0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background-clip: content-box;
+  background-color: #CCCCCC;
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.06), inset 0 -1px 0 rgba(0,0,0,0.04);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #909090;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #e6e6e6;
+}
+
+#results {
+  #document-list {
+    fieldset {
+      margin: 10px 10px -8px 10px;
+    }
+
+    .document-snippet {
+      margin: 0px 5px 8px 5px;
+      background-color: #FFF;
+      font-size: .9em;
+      border-radius: 2px;
+
+      a.document-snippet-link {
+        .anyfetch-document-snippet {
+          padding: 4px;
+
+          h1.anyfetch-title {
+            font-size: 1.1em;
+            font-weight: normal;
+          }
+
+          .anyfetch-date {
+            font-size: .9em;
+          }
+
+          main.anyfetch-content {
+            font-size: .9em;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 100%;
+            white-space: nowrap;
+            color: #999;
+          }
+
+          main.anyfetch-content:first-letter {
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      &:hover {
+        box-shadow: inset 0px 0px 25px 0px rgba(0,0,0,0.03);
+        border: darken(#DDD, 5%) solid 1px;
+      }
+    }
+  }
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  height: 15px;
+  background-color: white;
+  width: 100%;
+  span {
+    display: block;
+    font-size: 10px;
+    text-align: right;
+    color: #BBB;
+    margin-top: 1px;
+    margin-right: 2px;
+  }
+}

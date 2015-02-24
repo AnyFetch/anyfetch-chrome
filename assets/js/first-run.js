@@ -35,13 +35,13 @@ var showSuccess = function showSuccess(message) {
   showById('success');
   document.getElementById('success-message').innerHTML = message;
 
-  window.mixpanel.identify(config.userId);
-  window.mixpanel.track("Login", {
-    email: config.email,
+  window.mixpanel.identify(config.store.userId);
+  window.mixpanel.track('Login', {
+    email: config.store.email,
   });
   // The background page will catch this and reload contexts which might have some results
   chrome.runtime.sendMessage({
-    type: 'anyfetch::loginSuccessful',
+    type: 'anyfetch::backgroundLoginSuccessful',
   });
 };
 
@@ -71,21 +71,21 @@ var finalHandler = function finalHandler(err) {
 var buttonHandler = function oauthButtonHandler(cb) {
   document.getElementById('start-oauth').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/connect');
+    oauthStart(cb, '/init/connect' + '?state=v2');
   });
   document.getElementById('start-register').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/register');
+    oauthStart(cb, '/init/register' + '?state=v2');
   });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
   async.waterfall([
     function loadSettings(cb) {
-      config.loadUserSettings(cb);
+      config.store.loadSettings(cb);
     },
     function checkUserToken(cb) {
-      checkToken(config.token, function(err) {
+      checkToken(config.store.token, function(err) {
         cb(null, !err);
       });
     },
