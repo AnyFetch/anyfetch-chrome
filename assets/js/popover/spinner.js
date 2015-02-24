@@ -28,8 +28,8 @@ Spinner.prototype.start = function start() {
       self.show("Still searching...");
       self.timeout = setTimeout(function() {
         self.show("Still waiting, but something is not right.");
-      }, 10000);
-    }, 1000);
+      }, 6000);
+    }, 1500);
   }, 250);
 };
 

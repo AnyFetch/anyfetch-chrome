@@ -66,6 +66,45 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
           target.innerHTML = elem;
         }
       };
+      var onloadIframe = function(iframe, target) {
+        return function() {
+          // Try to remove any other iframe that we may have injected before
+          // This should fix the double inclusion bug
+          var iframes = document.getElementsByClassName('anyfetch-iframe');
+          turnObjToArray(iframes).forEach(function(elem) {
+            if(elem !== iframe) {
+              elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extenson!)
+            }
+          });
+
+          // Adjust iframe height to fill available space, taking into account existing elements
+          //
+          // Currently only working for gmail, so be careful with that.
+          //
+          // Watch for size changes during some time to adjust height of the iframe
+          // Useful for rapportive for example, which may expand it's height after loading
+          // some results.
+          var retries = 5;
+          var previousSize = 0;
+          (function watchSize(pause, current) {
+            var size = 0;
+            turnObjToArray(target.children).forEach(function(elem) {
+              if(elem.id !== 'anyfetch-iframe') {
+                size += elem.clientHeight;
+              }
+            });
+            size = document.documentElement.clientHeight - 200 - size; // 200 ~= size of gmail header
+            size = size < 400 ? 400 : size; // Minimum size of 400
+            if(!previousSize || Math.abs(previousSize - size) > 50) { // 50 = threshold for resizing
+              iframe.height = size;
+              previousSize = size;
+            }
+            if(current < retries) {
+              setTimeout(watchSize, pause, pause * 2, current + 1);
+            }
+          })(400, 0);
+        };
+      };
 
       if(!site.injection || !injectionMethods[site.injection.type]) {
         console.warn('Injection aborted (no injection methods documented)');
@@ -75,7 +114,9 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
       var iframe = document.createElement('iframe');
       iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));
       iframe.setAttribute('id', 'anyfetch-iframe');
+      iframe.setAttribute('class', 'anyfetch-iframe');
       iframe.setAttribute('frameBorder', 0);
+      iframe.setAttribute('style', 'transition: height 0.5s;');
       if(site.injection.width) {
         iframe.setAttribute('width', site.injection.width);
       }
@@ -88,8 +129,9 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
 
       var retries = 5;
       (function tryInject(pause, current) {
-        var target = document.querySelectorAll(site.injection.selector)[0];
+        var target = document.querySelector(site.injection.selector);
         if(target) {
+          iframe.onload = onloadIframe(iframe, target);
           injectionMethods[site.injection.type](target, iframe);
         }
         else if(current < retries) {
