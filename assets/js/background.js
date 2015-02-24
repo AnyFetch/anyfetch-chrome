@@ -274,8 +274,8 @@ var toggleContextItem = function toggleContextItem(request, sender, sendResponse
     return false;
   });
 
-  // We have to set with the chrome API anyway because we modified internal properties of `blacklist`
-  chrome.storage.sync.set({blacklist: config.store.blacklist});
+  // We modified internal properties of `blacklist`, so we call forceSync
+  config.store.forceSync();
   sendResponse({context: request.context});
   return false;
 };

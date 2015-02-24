@@ -24,6 +24,7 @@ var Store = function Store(keys, defaults) {
       if(chrome.runtime.lastError) {
         return cb(chrome.runtime.lastError);
       }
+      // Chrome's storage API has a rate limiting of 2 items writes per second
       setTimeout(cb, 1000);
     });
   }, 2);
@@ -34,15 +35,6 @@ var Store = function Store(keys, defaults) {
 
   // Launch loading of settings from the chrome storage API
   self.loadSettings();
-
-  chrome.storage.onChanged.addListener(function(changes, aeraName) {
-    if(aeraName !== 'sync') {
-      return;
-    }
-    Object.keys(changes).forEach(function(key) {
-      self._cache[key] = changes[key].newValue || self._defaults[key];
-    });
-  });
 };
 
 Store.prototype.addProperty = function addProperty(key, value) {
@@ -101,6 +93,17 @@ Store.prototype.loadSettings = function loadSettings(cb) {
       cb(null);
     });
     self._loadedListeners = [];
+  });
+};
+
+Store.prototype.forceSync = function forceSync(cb) {
+  var self = this;
+  cb = cb || function() {};
+  chrome.storage.sync.set(self._cache, function() {
+    if(chrome.runtime.lastError) {
+      return cb(chrome.runtime.lastError);
+    }
+    cb();
   });
 };
 

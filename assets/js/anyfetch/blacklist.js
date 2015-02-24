@@ -65,8 +65,8 @@ var updateBlacklist = function(cb) {
     });
 
     config.store.providerCount = providers.length;
-    // We have to set with the chrome API anyway because we modified internal properties of `blacklist`
-    chrome.storage.sync.set({blacklist: config.store.blacklist}, cb);
+    // We modified internal properties of `blacklist`, so we call forceSync
+    config.store.forceSync(cb);
   });
 };
 
