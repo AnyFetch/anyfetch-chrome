@@ -31,7 +31,8 @@ module.exports = {
       [
         {
           target: 'textContent',
-          selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a'
+          selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a',
+          filter: '[\\S+] .+' // Remove first name only, or pseudonym
         }
       ],
       // Related Google+ Page
