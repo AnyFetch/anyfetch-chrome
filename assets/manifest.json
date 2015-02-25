@@ -21,7 +21,8 @@
   "web_accessible_resources": [
     "oauth-callback.html",
     "popover.html",
-    "gmail.html"
+    "gmail.html",
+    "settings.html"
   ],
   "page_action": {
     "default_icon": {
