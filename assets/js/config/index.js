@@ -13,7 +13,7 @@ var Config = function Config() {
     email: '',
     companyId: '',
     providerCount: 0,
-    blacklist: [],
+    blacklist: {},
     token: '',
     apiUrl: 'https://api.anyfetch.com',
     managerUrl: 'https://manager.anyfetch.com',
