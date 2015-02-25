@@ -50,7 +50,7 @@ function getFromDOM(tab, site, cb) {
 
   injectScript(tab.id, '/js/content-script.js', function(err) {
     if(err) {
-      return console.warn(err);
+      return callCb(err);
     }
     requestContext(site, callCb);
   });

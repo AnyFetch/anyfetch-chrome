@@ -35,6 +35,17 @@ var Store = function Store(keys, defaults) {
 
   // Launch loading of settings from the chrome storage API
   self.loadSettings();
+
+  chrome.storage.onChanged.addListener(function(changes, aeraName) {
+    if(aeraName !== 'sync') {
+      return;
+    }
+    console.log(changes);
+    Object.keys(changes).forEach(function(key) {
+      // console.log('updating', key, 'with value', changes[key].newValue);
+      self._cache[key] = changes[key].newValue;
+    });
+  });
 };
 
 Store.prototype.addProperty = function addProperty(key, value) {
