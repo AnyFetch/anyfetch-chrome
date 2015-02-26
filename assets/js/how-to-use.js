@@ -58,6 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
       step: 1
     });
 
+    if(config.store.email) {
+      document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
+    }
+
     var next = document.getElementById('next');
     var prev = document.getElementById('prev');
     var end = document.getElementById('end');
