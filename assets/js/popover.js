@@ -40,12 +40,23 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       mixpanel.identify(config.store.userId);
-      mixpanel.people.set({
-        'lastContext': new Date(),
-      });
-      mixpanel.people.increment({
-        'ContextCount': 1
-      });
+
+      if(popup) {
+        mixpanel.people.set({
+          'lastContext': new Date(),
+        });
+        mixpanel.people.increment({
+          'ContextCount': 1
+        });
+      }
+      else {
+        mixpanel.people.set({
+          'lastInjectedContext': new Date(),
+        });
+        mixpanel.people.increment({
+          'InjectedContextCount': 1
+        });
+      }
 
       chrome.runtime.sendMessage({
         type: 'anyfetch::backgroundFindContext',
@@ -66,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'Site': site.name
         }
       );
+      console.log("SENT EVENT", popup ? 'Foreground Search' : 'Injected Search');
 
       var increment = {};
       increment[site.name + ' context view'] = 1;
