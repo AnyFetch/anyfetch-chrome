@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('login-btn').classList.remove('hidden');
       }
       if(config.store.email) {
-      	document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
+        document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
       }
     });
   });
