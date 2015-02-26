@@ -56,12 +56,18 @@ module.exports.displayNoProviders = function noProvidersNotification() {
   chrome.notifications.onClicked.addListener(function(_notificationId) {
     if(notificationId === _notificationId) {
       lastClickedOnNoProviders = new Date();
-      chrome.tabs.create({url: 'https://manager.anyfetch.com/marketplace'});
+      config.store.loadSettings(function() {
+        var email = '';
+        if(config.store.email) {
+          email = '&email=' + config.store.email;
+        }
+        chrome.tabs.create({url: 'https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace' + email});
 
-      window.mixpanel.identify(config.store.userId);
-      window.mixpanel.track("Open marketplace", {
-        email: config.store.email,
-        origin: "notification"
+        window.mixpanel.identify(config.store.userId);
+        window.mixpanel.track("Open marketplace", {
+          email: config.store.email,
+          origin: "notification"
+        });
       });
     }
   });
