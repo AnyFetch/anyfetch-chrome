@@ -44,7 +44,7 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
     var retry = function retry(retries, pause, func) {
       func();
       if(retries) {
-        setTimeout(retry, pause, retries - 1, pause * 2);
+        setTimeout(retry, pause, retries - 1, pause * 2, func);
       }
     };
 
