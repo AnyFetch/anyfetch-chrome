@@ -23,6 +23,15 @@ module.exports.bindClickDocumentList = function() {
         "Document Click",
         props
       );
+
+      mixpanel.people.increment({
+        documentClickCount: 1
+      });
+
+      mixpanel.people.set({
+        "lastDocumentClick": new Date()
+      });
+
     }, false);
   }
 };

@@ -24,7 +24,8 @@ module.exports = {
       {
         target: 'name',
         selector: 'div[role="main"] table[role="presentation"] table > tbody > tr > td span[email]',
-        filter: '[\\S+]( |@).+' // Remove first name only, and "me" text
+        filter: '[\\S+]( |@).+', // Remove first name only, and "me" text
+        quote: true,
       },
       // Contact in semi full view
       // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
@@ -32,7 +33,8 @@ module.exports = {
         {
           target: 'textContent',
           selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a',
-          filter: '[\\S+] .+' // Remove first name only, or pseudonym
+          filter: '[\\S+] .+', // Remove first name only, or pseudonym
+          quote: true,
         }
       ],
       // Related Google+ Page

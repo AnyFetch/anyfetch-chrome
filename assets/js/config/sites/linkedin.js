@@ -16,7 +16,8 @@ module.exports = {
     dom: [
       {
         target: 'textContent',
-        selector: '#name-container span.full-name'
+        selector: '#name-container span.full-name',
+        quote: true,
       }
     ]
   }

@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
           'Site': site.name
         }
       );
-      console.log("SENT EVENT", popup ? 'Foreground Search' : 'Injected Search');
 
       var increment = {};
       increment[site.name + ' context view'] = 1;
