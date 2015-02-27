@@ -47,6 +47,17 @@ var goToRelative = function goToRelative(relativePos) {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+  var marketplaceUrl = "https://manager.anyfetch.com/marketplace";
+
+  document.getElementById('open-marketplace').addEventListener('click', function() {
+    chrome.windows.create({
+      url: marketplaceUrl,
+      type: 'popup',
+      width: 1100,
+      height: 800
+    }, null);
+  });
+
   config.store.loadSettings(function() {
     window.mixpanel.identify(config.store.userId);
     window.mixpanel.track_links("a.btn", "Open marketplace", {
@@ -59,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if(config.store.email) {
-      document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
+      marketplaceUrl = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
     }
 
     var next = document.getElementById('next');
