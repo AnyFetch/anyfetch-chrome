@@ -9,8 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if(err) {
         document.getElementById('login-btn').classList.remove('hidden');
       }
-      if(config.store.email) {
-        document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
+      else {
+        if(config.store.email) {
+          document.getElementById('open-marketplace').classList.remove('hidden');
+          document.getElementById('open-marketplace').href = "https://manager.anyfetch.com/sign_in?redirection=%2Fmarketplace&email=" + config.store.email;
+        }
       }
     });
   });
