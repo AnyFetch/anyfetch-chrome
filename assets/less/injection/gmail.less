@@ -112,11 +112,15 @@ header#header {
 #results {
   #document-list {
     fieldset {
-      margin: 10px 10px -8px 10px;
+      margin: 10px 10px -10px 10px;
+      border-top: 1px solid #E5E5E5;
+      legend.sliceHeader {
+        color: #C7C7C7;
+      }
     }
 
     .document-snippet {
-      margin: 0px 5px 8px 5px;
+      margin: 0px 5px 10px 5px;
       background-color: #FFF;
       font-size: .9em;
       border-radius: 2px;
@@ -142,7 +146,7 @@ header#header {
       }
       a.document-snippet-link {
         .anyfetch-document-snippet {
-          padding: 4px;
+          padding: .5em;
 
           h1.anyfetch-title {
             font-size: 1.1em;
@@ -159,7 +163,7 @@ header#header {
             overflow: hidden;
             width: 100%;
             white-space: nowrap;
-            color: #999;
+            color: #888;
           }
 
           main.anyfetch-content:first-letter {
