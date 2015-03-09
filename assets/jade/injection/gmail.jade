@@ -9,8 +9,13 @@ html
     title AnyFetch
   body
     #content
+      header#header
+        .center
+          a.logo(href='http://anyfetch.com' target='_blank' title='Visit the AnyFetch\'s website')
+            | Any
+            b
+              | Fetch
+          a.icon-gear(href='/settings.html' target='_blank' title='Access the settings')
       section#context
       p#errors.hidden
       section#results
-    section#footer
-      a(href="/settings.html" target="_blank") AnyFetch Instant Context
