@@ -42,7 +42,10 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
     };
 
     var retry = function retry(retries, pause, func) {
-      func();
+      // If the function returns true, stop retrying
+      if(func()) {
+        return;
+      }
       if(retries) {
         setTimeout(retry, pause, retries - 1, pause * 2, func);
       }
@@ -71,18 +74,21 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
           target.innerHTML = elem;
         }
       };
-      var onloadIframe = function(iframe, target) {
-        return function() {
-          // Try to remove any other iframe that we may have injected before
-          // This should fix the double inclusion bug
-          var iframes = document.getElementsByClassName('anyfetch-iframe');
-          nodeListToArray(iframes).forEach(function(elem) {
-            if(elem !== iframe) {
-              elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extension!)
-            }
-          });
 
-          // Adjust iframe height to fill available space, taking into account existing elements
+      var onloadIframe = function(target) {
+        return function() {
+          var self = this;
+
+          var iframes = document.querySelectorAll(site.injection.selector + ' > #anyfetch-iframe');
+          if(iframes.length > 1) {
+            nodeListToArray(iframes).forEach(function(elem) {
+              if(elem === iframe) {
+                elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extension!)
+              }
+            });
+          }
+
+          // Adjust iframe height to fill availablheight="320"e space, taking into account existing elements
           //
           // Currently only working for gmail, so be careful with that.
           //
@@ -97,12 +103,27 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
                 size += elem.clientHeight;
               }
             });
-            size = document.documentElement.clientHeight - 200 - size; // 200 ~= size of gmail header
+
+            // Find the inner height of the content (the results) of the iframe.
+            var contentDiv;
+            if(self.contentWindow) {
+              contentDiv = self.contentWindow.document.getElementById('content');
+            }
+
+            // We can now find out if the iframe is scrollable (i.e. lots of results), and if we should expand the
+            // frame to maximum available height.
+            if(contentDiv && contentDiv.scrollHeight === contentDiv.clientHeight) {
+              size = self.contentWindow.document.documentElement.clientHeight;
+            }
+            else {
+              size = document.documentElement.clientHeight - 200 - size; // 200 ~= size of gmail header
+            }
             size = size < 400 ? 400 : size; // Minimum size of 400
             if(!previousSize || Math.abs(previousSize - size) > 50) { // 50 = threshold for resizing
-              iframe.height = size;
+              self.height = size;
               previousSize = size;
             }
+            return false; // continue retrying
           };
           retry(5, 400, adjustSize);
         };
@@ -112,6 +133,20 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         console.warn('Injection aborted (no documented injection method)');
         return;
       }
+
+      // Try to remove any other iframe that we may have injected before
+      // This should fix the double inclusion bug
+      var iframes = document.querySelectorAll(site.injection.selector + ' > #anyfetch-iframe');
+      if(iframes.length) {
+        console.warn('Prevented double injection');
+        return;
+      }
+
+      if(this.injectedhref && this.injectedhref === document.location.href) {
+        console.warn('Prevented double injection');
+        return;
+      }
+      this.injectedhref = document.location.href;
 
       var iframe = document.createElement('iframe');
       iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));
@@ -132,9 +167,11 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
       var tryInject = function tryInject() {
         var target = document.querySelector(site.injection.selector);
         if(target) {
-          iframe.onload = onloadIframe(iframe, target);
+          iframe.onload = onloadIframe(target);
           injectionMethods[site.injection.type](target, iframe);
+          return true; // we should be good, stop retrying
         }
+        return false;
       };
       retry(5, 200, tryInject);
 
