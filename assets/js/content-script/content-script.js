@@ -88,7 +88,7 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
             });
           }
 
-          // Adjust iframe height to fill availablheight="320"e space, taking into account existing elements
+          // Adjust iframe height to fill available height, taking into account existing elements
           //
           // Currently only working for gmail, so be careful with that.
           //
@@ -113,10 +113,15 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
             // We can now find out if the iframe is scrollable (i.e. lots of results), and if we should expand the
             // frame to maximum available height.
             if(contentDiv && contentDiv.scrollHeight === contentDiv.clientHeight) {
+              // Not overflowing
               size = self.contentWindow.document.documentElement.clientHeight;
+              // Remove overflowing class
+              contentDiv.classList.toggle('overflowing', false);
             }
             else {
               size = document.documentElement.clientHeight - 200 - size; // 200 ~= size of gmail header
+              // Add overflowing class
+              contentDiv.classList.toggle('overflowing', true);
             }
             size = size < 400 ? 400 : size; // Minimum size of 400
             if(!previousSize || Math.abs(previousSize - size) > 50) { // 50 = threshold for resizing
@@ -142,11 +147,11 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         return;
       }
 
-      if(this.injectedhref && this.injectedhref === document.location.href) {
+      if(this.injectedHref && this.injectedHref === document.location.href) {
         console.warn('Prevented double injection');
         return;
       }
-      this.injectedhref = document.location.href;
+      this.injectedHref = document.location.href;
 
       var iframe = document.createElement('iframe');
       iframe.setAttribute('src', chrome.extension.getURL(site.injection.path));

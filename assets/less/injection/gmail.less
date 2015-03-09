@@ -19,6 +19,15 @@ html, body {
   right: 0;
   bottom: 20px;
   overflow-y: auto;
+
+  &.overflowing:after {
+    position: fixed;
+    bottom: 20px;
+    box-shadow: inset 0 -3px 4px -2px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 4px;
+    width: 100%;
+  }
 }
 
 #context {
@@ -120,7 +129,7 @@ html, body {
     }
   }
 
-  #noresultserror {
+  #no-results-error {
     p {
       font-size: 2em;
     }
