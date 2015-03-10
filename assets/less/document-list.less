@@ -1,6 +1,7 @@
 @charset "utf-8";
 @import "variables.less";
 @import "spinner.less";
+@import "animations.less";
 @import "../../bower_components/anyfetch-assets/stylesheets/style.less";
 
 .hidden {
@@ -69,7 +70,7 @@
     color: darken(@backgroundColor, 40%)
   }
 
-  #noresultserror {
+  #no-results-error {
     color: #ccc;
     text-align: center;
     p {
@@ -93,13 +94,13 @@
       border-top: 1px solid #dddddd;
       text-align: center;
       margin: 20px 10px -5px 10px;
+      legend.sliceHeader {
+        width: auto;
+        color: #6D6D6D;
+        padding: 0px 10px;
+      }
     }
 
-    .sliceHeader {
-      width: auto;
-      color: #6D6D6D;
-      padding: 0px 10px;
-    }
 
     .document-snippet {
       position: relative;
