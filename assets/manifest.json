@@ -3,7 +3,7 @@
   "name": "AnyFetch Instant Context",
   "short_name": "AnyFetch",
   "description": "Find documents related to the current page with AnyFetch.",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "icons": {
     "16": "images/icons/extension/icon16.png",
     "32": "images/icons/extension/icon32.png",
