@@ -87,14 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
         type: 'anyfetch::backgroundGetResults',
         context: response.context
       }, function(response) {
-        view.setSearchResults(response);
-        cb(null);
+        if(response.err) {
+          cb(response.err);
+        }
+        else {
+          view.setSearchResults(response);
+          cb(null);
+        }
       });
     }
   ], function(err) {
     spinner.stop();
-
-    if(err instanceof Error) {
+    if(err instanceof Error || err.message) {
       if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
         errors.showSetupAccountError(err);
       }
