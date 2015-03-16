@@ -55,19 +55,40 @@ var getAccounts = function(userEmail, cb) {
   ], cb);
 };
 
-var updateBlacklist = function(cb) {
-  getAccounts(config.store.email, function(err, accounts, providers) {
-    if(err) {
-      return cb(err);
+var getUserName = function(cb) {
+  async.waterfall([
+    function getName(cb) {
+      var options = {
+        url: config.store.apiUrl + '/',
+      };
+      call.httpRequest(options, cb);
+    },
+    function parseUserName(body, cb) {
+      cb(null, body.user_name);
     }
-    getWords(accounts).forEach(function(word) {
-      config.store.blacklist[word.toLowerCase()] = true;
-    });
+  ], cb);
+};
 
-    config.store.providerCount = providers.length;
-    // We modified internal properties of `blacklist`, so we call forceSync
-    config.store.forceSync(cb);
-  });
+var updateBlacklist = function(cb) {
+  async.waterfall([
+    getUserName,
+    function blacklistUserName(userName, cb) {
+      config.store.blacklist[userName.toLowerCase()] = true;
+      cb();
+    },
+    function retrieveAccouts(cb) {
+      getAccounts(config.store.email, cb);
+    },
+    function blacklistAccoutns(accounts, providers, cb) {
+      getWords(accounts).forEach(function(word) {
+        config.store.blacklist[word.toLowerCase()] = true;
+      });
+
+      config.store.providerCount = providers.length;
+      // We modified internal properties of `blacklist`, so we call forceSync
+      config.store.forceSync(cb);
+    }
+  ], cb);
 };
 
 
