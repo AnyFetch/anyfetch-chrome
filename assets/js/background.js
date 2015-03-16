@@ -246,7 +246,7 @@ var getResults = function getResults(request, sender, sendResponse) {
     }
   ], function(err) {
     if(err) {
-      console.warn(err);
+      sendResponse({'err': {message: err.message}});
     }
   });
 
