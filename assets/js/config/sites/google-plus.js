@@ -14,7 +14,10 @@ module.exports = {
     }
   },
   url: /plus\.google\.com\/.*(?:\+(.+)|(?:\d{21,}))/,
-  context: {
-    title: /^(.+?)\s?(?:\((.*)\))?(?:\s-\s.*)?\s-\sGoogle\+$/i
-  }
+  context: [
+    {
+      title: /^(.+?)\s?(?:\((.*)\))?(?:\s-\s.*)?\s-\sGoogle\+$/i,
+      quote: true,
+    }
+  ]
 };

@@ -23,7 +23,10 @@ module.exports = {
     }
   },
   url: /facebook\.com\/(?:(?:groups|events)\/(?:\w+\/)?(?:[0-9]{15})\/|(?!notifications|settings|photo.php|l.php)[^\/]+$)/,
-  context: {
-    title: /^(?:\(\d+\)\s)?(.+)$/i
-  }
+  context: [
+    {
+      title: /^(?:\(\d+\)\s)?(.+)$/i,
+      quote: true,
+    }
+  ]
 };

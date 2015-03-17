@@ -14,7 +14,10 @@ module.exports = {
     }
   },
   url: /google\.(?:\w+(?:\.\w+)?)\/contacts\/(?:u\/[0-9]+\/)?.*#contact\/(?:.*)[0-9a-f]+/,
-  context: {
-    title: /^(.+)\s-\s.*contact.*/i
-  }
+  context: [
+    {
+      title: /^(.+)\s-\s.*contact.*/i,
+      quote: true,
+    }
+  ]
 };

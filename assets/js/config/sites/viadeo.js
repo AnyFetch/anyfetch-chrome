@@ -12,7 +12,10 @@ module.exports = {
     }
   },
   url: /viadeo\.com\/.*\/*profile\//,
-  context: {
-    title: /^(.+?), (.+?) - (?:.+) \| Viadeo$/i
-  }
+  context: [
+    {
+      title: /^(.+?), (.+?) - (?:.+) \| Viadeo$/i,
+      quote: true,
+    }
+  ]
 };

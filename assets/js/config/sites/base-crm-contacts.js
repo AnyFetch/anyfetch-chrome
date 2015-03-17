@@ -11,7 +11,10 @@ module.exports = {
     }
   },
   url: /app\.futuresimple\.com\/crm\/contacts/,
-  context: {
-    title: /Base\sCRM:\s(.+)/i,
-  },
+  context: [
+    {
+      title: /Base\sCRM:\s(.+)/i,
+      quote: true,
+    },
+  ]
 };

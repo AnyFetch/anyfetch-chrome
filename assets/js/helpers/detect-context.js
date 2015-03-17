@@ -8,11 +8,12 @@ var injectScript = require('./content-script.js').injectScript;
  * Return the detected elements from the title or an empty array
  * if the regex fails (expected context from a badly formatted title)
  * @param {Object} tab https://developer.chrome.com/extensions/tabs#type-Tab
- * @param {Object} site A site from config.supportedSites
+ * @param {Object} rule A rule from the context array of a supported site and
+ *                      having a title field to match on
  * @return {Array}
  */
-function getFromTitle(tab, site) {
-  var matches = tab.title.match(site.context.title);
+function getFromTitle(tab, rule) {
+  var matches = tab.title.match(rule.title);
   if(matches && matches.length > 1) {
     // The first element is the input. We return the captured elements
     // from the string (parenthesis in the regexp)
@@ -66,12 +67,35 @@ function getFromDOM(tab, site, cb) {
  *                 This is initialized to true, and currently the filtering is done outside this function.
  */
 module.exports = function detectContext(tab, site, cb) {
-  // We check the site's context detection method.
-  // TODO: Mix the results of the two methods.
-  if(site.context.title) {
-    return cb(null, getFromTitle(tab, site));
+  var values = [];
+  var dom = false;
+
+  if(!site.context) {
+    return cb(new Error('Missing context detection rules for ' + site.name));
   }
-  else if(site.context.dom) {
-    return getFromDOM(tab, site, cb);
+  else if(!Array.isArray(site.context)) {
+    return cb(new Error('You must provide an array of rules for ' + site.name));
+  }
+
+  site.context.forEach(function(rule) {
+    if(rule.title) {
+      values = values.concat(getFromTitle(tab, rule));
+    }
+    else if(rule.dom) {
+      dom = true;
+    }
+  });
+
+  if(dom) {
+    getFromDOM(tab, site, function(err, domvalues) {
+      if(err) {
+        return cb(err);
+      }
+      values = values.concat(domvalues);
+      cb(null, values);
+    });
+  }
+  else {
+    cb(null, values);
   }
 };

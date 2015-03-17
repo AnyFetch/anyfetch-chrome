@@ -13,7 +13,10 @@ module.exports = {
     }
   },
   url: /salesforce\.com\/[a-zA-Z0-9]{15}$/,
-  context: {
-    title: /^Contact\s?(?:\s)?:\s(.+)\s\~\s/i
-  },
+  context: [
+    {
+      title: /^Contact\s?(?:\s)?:\s(.+)\s\~\s/i,
+      quote: true,
+    }
+  ]
 };

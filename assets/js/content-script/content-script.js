@@ -9,28 +9,24 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
     };
 
     var getValue = function getValue(rule) {
-      var nodes = nodeListToArray(document.querySelectorAll(rule.selector));
+      var nodes = nodeListToArray(document.querySelectorAll(rule.dom.selector));
 
       // For each matching node,
       // Find content removing empty and filtered values
       nodes = nodes.reduce(function(acc, node) {
         var value = '';
-        if(rule.target === 'textContent') {
+        if(rule.dom.target === 'textContent') {
           value = node.textContent;
         }
-        else if(rule.target === 'value') {
+        else if(rule.dom.target === 'value') {
           value = node.value;
         }
         else {
-          value = node.getAttribute(rule.target);
+          value = node.getAttribute(rule.dom.target);
         }
 
-        if(rule.filter && !new RegExp(rule.filter).test(value)) {
+        if(rule.filter && !(new RegExp(rule.filter)).test(value)) {
           value = null;
-        }
-
-        if(rule.selected === false) {
-          value = '~' + value.trim();
         }
 
         if(value) {
@@ -38,6 +34,22 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         }
         return acc;
       }, []);
+
+
+      // Add rule's option to every context item
+      nodes = nodes.map(function(node) {
+        var item = {};
+        item.value = node;
+        item.quote = !!rule.quote;
+        if(rule.active === false) {
+          item.active = rule.active;
+        }
+        else {
+          item.active = true;
+        }
+        return item;
+      });
+
       return nodes;
     };
 
@@ -189,9 +201,9 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
     var getContext = function getContext(request, sender, sendResponse) {
       var execGetContext = function execGetContext() {
         var values = [];
-        var rules = request.site && request.site.context && request.site.context.dom;
+        var rules = request.site && request.site.context;
         if(!rules) {
-          sendResponse({context: values});
+          sendResponse({context: []});
           return;
         }
 
@@ -205,8 +217,11 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         };
 
         rules.forEach(function(rule) {
+          if(!rule.dom) {
+            return;
+          }
           if(Array.isArray(rule)) {
-            // If the rule is an array of rules, we keep the first found
+            // If the rule is an array of rules, we keep the first matching a context
             rule.some(appendValue);
           }
           else {
@@ -221,7 +236,7 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
       };
 
       retry(3, 250, execGetContext); // 0ms, 250ms, 500ms, 1000ms = ~1.7s;
-      return true; // let chrome know this is asynchroneous
+      return true; // let chrome know this is asynchronous
     };
 
 

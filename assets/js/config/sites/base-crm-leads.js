@@ -8,13 +8,14 @@ module.exports = {
     ],
   },
   url: /app\.futuresimple\.com\/leads/,
-  context: {
-    dom: [
-      // Lead name
-      {
+  context: [
+    // Lead name
+    {
+      dom: {
         target: 'textContent',
         selector: '.detail-title'
       },
-    ]
-  }
+      quote: true,
+    }
+  ]
 };
