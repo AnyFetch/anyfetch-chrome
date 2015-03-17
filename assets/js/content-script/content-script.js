@@ -236,7 +236,7 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
       };
 
       retry(3, 250, execGetContext); // 0ms, 250ms, 500ms, 1000ms = ~1.7s;
-      return true; // let chrome know this is asynchroneous
+      return true; // let chrome know this is asynchronous
     };
 
 
