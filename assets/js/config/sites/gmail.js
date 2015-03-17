@@ -7,10 +7,11 @@ module.exports = {
       'https://mail.google.com/mail/u/0/#inbox',
       'https://mail.google.com/mail/u/0/#drafts',
       'https://mail.google.com/mail/u/42/#inbox/14a2c5913c9c71f4',
+      'https://mail.google.com/mail/ca/u/1/#label/Development%2FGithub/14b4eda0ed74bc9b'
     ]
   },
   // @see https://regex101.com/r/aT5nJ2/2
-  url: /mail\.google\.com\/mail\/(?:u\/[0-9]+\/)?.*#(?!contact|label).*$/,
+  url: /mail\.google\.com\/mail\/.*#(?!contact).*$/,
   context: [
     // Email in full view
     // Subject
