@@ -17,7 +17,10 @@ module.exports = {
     }
   },
   url: /mail\.google\.com\/mail\/(?:u\/[0-9]+\/)?.*#contact\/[0-9a-f]+/,
-  context: {
-    title: /^(.+)\s-\s(?:.*contact.*)\s-\s(?:.+)\s-\sGmail$/i
-  }
+  context: [
+    {
+      title: /^(.+)\s-\s(?:.*contact.*)\s-\s(?:.+)\s-\sGmail$/i,
+      quote: true,
+    }
+  ]
 };

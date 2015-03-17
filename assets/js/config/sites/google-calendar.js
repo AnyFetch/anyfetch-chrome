@@ -11,10 +11,10 @@ module.exports = {
     ]
   },
   url: /google\.(?:\w+(?:\.\w+)?)\/calendar\/render/,
-  context: {
-    dom: [
-      // Event title
-      [
+  context: [
+    // Event title
+    {
+      dom: [
         {
           target: 'textContent',
           selector: '.ui-sch.ep-title > div'
@@ -24,11 +24,14 @@ module.exports = {
           selector: '.ui-sch.ep-title > input'
         },
       ],
-      // Attendees
-      {
+    },
+    // Attendees
+    {
+      dom: {
         target: 'title',
-        selector: '.ep-gl-guest'
+        selector: '.ep-gl-guest',
       },
-    ]
-  }
+      quote: true
+    },
+  ]
 };

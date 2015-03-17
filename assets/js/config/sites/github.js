@@ -24,7 +24,10 @@ module.exports = {
     }
   },
   url: /github\.com\/(?!notifications|blog|explore|showcases|trending|stars|new)[^\/]+\/?$/,
-  context: {
-    title: /^(.+?)\s\((.+)\)(?:\s·\sGitHub)?$/i
-  }
+  context: [
+    {
+      title: /^(.+?)\s\((.+)\)(?:\s·\sGitHub)?$/i,
+      quote: true,
+    }
+  ]
 };

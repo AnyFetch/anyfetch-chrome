@@ -11,14 +11,14 @@ module.exports = {
     ],
   },
   url: /linkedin\.com\/(?:pub|profile|in)\//,
-  context: {
-    // We have to use DOM, since linkedin shows "Your profile" on your own profile
-    dom: [
-      {
+  context: [
+    {
+      // We have to use DOM, since linkedin shows "Your profile" on your own profile
+      dom: {
         target: 'textContent',
         selector: '#name-container span.full-name',
-        quote: true,
-      }
-    ]
-  }
+      },
+      quote: true,
+    }
+  ]
 };

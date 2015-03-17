@@ -11,7 +11,10 @@ module.exports = {
     }
   },
   url: /twitter\.com\/([^\/]+)$/,
-  context: {
-    title: /^(.+)\s\(@(.+)\)\s\| Twitter$/i
-  }
+  context: [
+    {
+      title: /^(.+)\s\(@(.+)\)\s\| Twitter$/i,
+      quote: true,
+    }
+  ]
 };

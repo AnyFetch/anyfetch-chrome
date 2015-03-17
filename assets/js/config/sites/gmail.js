@@ -11,41 +11,43 @@ module.exports = {
   },
   // @see https://regex101.com/r/aT5nJ2/2
   url: /mail\.google\.com\/mail\/(?:u\/[0-9]+\/)?.*#(?!contact|label).*$/,
-  context: {
-    dom: [
-      // Email in full view
-      // Subject
-      {
+  context: [
+    // Email in full view
+    // Subject
+    {
+      dom: {
         target: 'textContent',
         selector: 'div[role="main"] table[role="presentation"] > tr > td > div > div > div > div > h2',
-        selected: false,
       },
-      // Sender
-      {
+      active: false,
+    },
+    // Sender
+    {
+      dom: {
         target: 'name',
         selector: 'div[role="main"] table[role="presentation"] table > tbody > tr > td span[email]',
-        filter: '[\\S+]( |@).+', // Remove first name only, and "me" text
-        quote: true,
       },
-      // Contact in semi full view
-      // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
-      [
-        {
-          target: 'textContent',
-          selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a',
-          filter: '[\\S+] .+', // Remove first name only, or pseudonym
-          quote: true,
-        }
-      ],
-      // Related Google+ Page
-      [
-        {
-          target: 'textContent',
-          selector: 'div[role="main"] div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
-        }
-      ]
-    ]
-  },
+      filter: '[\\S+]( |@).+', // Remove first name only, and "me" text
+      quote: true,
+    },
+    // Contact in semi full view
+    // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
+    {
+      dom: {
+        target: 'textContent',
+        selector: 'div[role="main"] div[tabindex="0"]:not([aria-hidden="true"]) > a',
+      },
+      filter: '[\\S+] .+', // Remove first name only, or pseudonym
+      quote: true,
+    },
+    // Related Google+ Page
+    {
+      dom: {
+        target: 'textContent',
+        selector: 'div[role="main"] div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
+      }
+    }
+  ],
   injection: {
     selector: 'div[role="main"] div[role="complementary"]',
     type: 'prepend',

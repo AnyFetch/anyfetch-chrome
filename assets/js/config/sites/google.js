@@ -16,7 +16,9 @@ module.exports = {
   },
   // @see https://regex101.com/r/bG9qB7/2
   url: /google\.(?:\w+(?:\.\w+)?)\/(?:search|webhp|.*#q=)/,
-  context: {
-    title: /^(.+)\s-\s/i,
-  }
+  context: [
+    {
+      title: /^(.+)\s-\s/i,
+    }
+  ]
 };
