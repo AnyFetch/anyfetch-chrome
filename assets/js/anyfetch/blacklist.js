@@ -55,27 +55,8 @@ var getAccounts = function(userEmail, cb) {
   ], cb);
 };
 
-var getUserName = function(cb) {
-  async.waterfall([
-    function getName(cb) {
-      var options = {
-        url: config.store.apiUrl + '/',
-      };
-      call.httpRequest(options, cb);
-    },
-    function parseUserName(body, cb) {
-      cb(null, body.user_name);
-    }
-  ], cb);
-};
-
 var updateBlacklist = function(cb) {
   async.waterfall([
-    getUserName,
-    function blacklistUserName(userName, cb) {
-      config.store.blacklist[userName.toLowerCase()] = true;
-      cb();
-    },
     function retrieveAccouts(cb) {
       getAccounts(config.store.email, cb);
     },
@@ -83,6 +64,7 @@ var updateBlacklist = function(cb) {
       getWords(accounts).forEach(function(word) {
         config.store.blacklist[word.toLowerCase()] = true;
       });
+      config.store.blacklist[config.store.userName.toLowerCase()] = true;
 
       config.store.providerCount = providers.length;
       // We modified internal properties of `blacklist`, so we call forceSync
