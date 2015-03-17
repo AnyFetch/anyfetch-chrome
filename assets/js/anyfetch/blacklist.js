@@ -56,18 +56,21 @@ var getAccounts = function(userEmail, cb) {
 };
 
 var updateBlacklist = function(cb) {
-  getAccounts(config.store.email, function(err, accounts, providers) {
-    if(err) {
-      return cb(err);
-    }
-    getWords(accounts).forEach(function(word) {
-      config.store.blacklist[word.toLowerCase()] = true;
-    });
+  async.waterfall([
+    function retrieveAccounts(cb) {
+      getAccounts(config.store.email, cb);
+    },
+    function blacklistAccoutns(accounts, providers, cb) {
+      getWords(accounts).forEach(function(word) {
+        config.store.blacklist[word.toLowerCase()] = true;
+      });
+      config.store.blacklist[config.store.userName.toLowerCase()] = true;
 
-    config.store.providerCount = providers.length;
-    // We modified internal properties of `blacklist`, so we call forceSync
-    config.store.forceSync(cb);
-  });
+      config.store.providerCount = providers.length;
+      // We modified internal properties of `blacklist`, so we call forceSync
+      config.store.forceSync(cb);
+    }
+  ], cb);
 };
 
 

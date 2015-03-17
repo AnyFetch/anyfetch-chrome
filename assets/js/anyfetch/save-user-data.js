@@ -16,12 +16,14 @@ module.exports = function saveUserData(cb) {
   call.httpRequest(options, function(err, indexPage) {
     // Store on config
     config.store.email = indexPage.user_email;
+    config.store.userName = indexPage.user_name;
     config.store.userId = indexPage.user_id;
     config.store.companyId = indexPage.company_id;
 
     // Send to mixpanel
     window.mixpanel.people.set({
       '$email': config.store.email,
+      // Update mixpanel too ?
       '$name': config.store.email,
       'userId': config.store.userId,
       'companyId': config.store.companyId,
