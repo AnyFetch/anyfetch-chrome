@@ -187,35 +187,41 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
      * Message listener for context requests
      */
     var getContext = function getContext(request, sender, sendResponse) {
-      // TODO: implement retry here, this would be much cleaner
-      var values = [];
-      var rules = request.site && request.site.context && request.site.context.dom;
-      if(!rules) {
-        sendResponse({context: values});
-        return;
-      }
-      rules.forEach(function(rule) {
-        var value;
-        if(Array.isArray(rule)) {
-          // If the rule is an array of rules, we keep the first found
-          for(var i = 0; i < rule.length; i += 1) {
-            value = getValue(rule[i]);
-            if(value.length) {
-              values = values.concat(value);
-            }
-            if(value.length) {
-              break;
-            }
-          }
+      var execGetContext = function execGetContext() {
+        var values = [];
+        var rules = request.site && request.site.context && request.site.context.dom;
+        if(!rules) {
+          sendResponse({context: values});
+          return;
         }
-        else {
-          value = getValue(rule);
+
+        var appendValue = function appendValue(rule) {
+          var value = getValue(rule);
           if(value.length) {
             values = values.concat(value);
+            return true;
           }
+          return false;
+        };
+
+        rules.forEach(function(rule) {
+          if(Array.isArray(rule)) {
+            // If the rule is an array of rules, we keep the first found
+            rule.some(appendValue);
+          }
+          else {
+            appendValue(rule);
+          }
+        });
+        if(!values.length) {
+          return false; // retry
         }
-      });
-      sendResponse({context: values});
+        sendResponse({context: values});
+        return true; // stop retrying
+      };
+
+      retry(3, 250, execGetContext); // 0ms, 250ms, 500ms, 1000ms = ~1.7s;
+      return true; // let chrome know this is asynchroneous
     };
 
 
