@@ -260,14 +260,14 @@ var getResults = function getResults(request, sender, sendResponse) {
  */
 var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
   request.context.some(function(item, index, context) {
-    if(item.name === request.name) {
+    if(item.value === request.name) {
       var newState = !item.active;
       context[index].active = newState;
-      if(config.store.blacklist[item.name.toLowerCase()] && newState) {
-        delete config.store.blacklist[item.name.toLowerCase()];
+      if(config.store.blacklist[item.value.toLowerCase()] && newState) {
+        delete config.store.blacklist[item.value.toLowerCase()];
       }
       else if(!newState) {
-        config.store.blacklist[item.name.toLowerCase()] = true;
+        config.store.blacklist[item.value.toLowerCase()] = true;
       }
       return true;
     }

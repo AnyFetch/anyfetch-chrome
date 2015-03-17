@@ -77,14 +77,8 @@ var updateBlacklist = function(cb) {
 var filterQuery = function(context) {
   context.forEach(function(item) {
     // Remove items in blacklist
-    if(config.store.blacklist[item.name.toLowerCase()]) {
+    if(config.store.blacklist[item.value.toLowerCase()]) {
       item.active = false;
-    }
-
-    // Items starting with '~' should be disabled by default
-    if(item.name[0] === '~') {
-      item.active = false;
-      item.name = item.name.substr(1);
     }
   });
 

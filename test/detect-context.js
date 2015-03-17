@@ -39,15 +39,17 @@ function testTitlesRegex(siteName) {
       return;
     }
     Object.keys(tests.titles).forEach(function(title) {
-      it('should match "' + title + '"', function() {
-        title.should.match(site.context.title);
+      site.context.forEach(function(context) {
+        it('should match "' + title + '"', function() {
+          title.should.match(context.title);
 
-        var context = title.match(site.context.title);
-        should(context).be.ok;
-        context.shift(1);
-        // Normalize the array for eql below (hacky hack)
-        context = context.concat([]);
-        context.should.eql(site.tests.titles[title]);
+          var match = title.match(context.title);
+          should(context).be.ok;
+          match.shift(1);
+          // Normalize the array for eql below (hacky hack)
+          match = match.concat([]);
+          match.should.eql(site.tests.titles[title]);
+        });
       });
     });
   });
