@@ -57,7 +57,7 @@ var getAccounts = function(userEmail, cb) {
 
 var updateBlacklist = function(cb) {
   async.waterfall([
-    function retrieveAccouts(cb) {
+    function retrieveAccounts(cb) {
       getAccounts(config.store.email, cb);
     },
     function blacklistAccoutns(accounts, providers, cb) {
