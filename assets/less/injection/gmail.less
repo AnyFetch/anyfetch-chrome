@@ -2,40 +2,57 @@
 @import "../document-list.less";
 @import "../gear.less";
 
-@snippetBadgeWidth: 12px;
+@snippetBadgeWidth: 20px;
 
 html, body {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
-  font-family: 'arial', sans-serif;
+  font-family: "HelveticaNeue", "Liberation Sans", "Open Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
   font-size: 13px;
 }
 
 header#header {
-  display: table;
-  .center {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    color: white;
-    a {
-      color: white;
-      text-decoration: none;
+  font-size: 1em;
+  color: white;
+
+  width: 100%;
+  background-color: #25A9DF;
+  height: 4.5em;
+  padding: .6em;
+  box-sizing: border-box;
+
+  #contact {
+    color: inherit;
+    text-decoration: inherit;
+    height: 100%;
+    img.avatar {
+      float: left;
+      height: 100%;
+      margin-right: .6em;
+      border-radius: .3em;
+      border: 0.2em solid white;
+      box-sizing: border-box;
     }
-    a.icon-gear {
-      position: absolute;
-      right: 2px;
+
+    .infos {
+      overflow-x: hidden;
+      > * {
+        display: block;
+        font-size: .85em;
+      }
+      .name {
+        text-transform: capitalize;
+        font-size: 1em;
+        font-weight: bold;
+      }
+      .anyfetch-hlt {
+        background: none;
+      }
     }
   }
-  font-size: 1em;
-  width: 100%;
-  height: 2em;
-  background: url(/images/icons/anyfetch_icon_heron_only.svg), #25A9DF;
-  background-size: 2em;
-  background-repeat: no-repeat;
-  background-position: bottom left;
 }
 
 #content {
@@ -43,13 +60,14 @@ header#header {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 20px;
+  bottom: 10px;
+  background-color: #F5F5F7;
   overflow-y: auto;
 
   &.overflowing:after {
     position: fixed;
-    bottom: 20px;
-    box-shadow: inset 0 -3px 4px -2px rgba(0, 0, 0, 0.2);
+    bottom: 10px;
+    box-shadow: inset 0 -3px 5px -2px rgba(0, 0, 0, 0.15);
     content: "";
     height: 4px;
     width: 100%;
@@ -57,31 +75,7 @@ header#header {
 }
 
 #context {
-  background-color: #F5F5F5;
-  color: #444444;
-  font-size: 1.1em;
-  border-top: solid 1px #E5E5E5;
-  border-bottom: solid 1px #E5E5E5;
-
-  .context {
-    padding: .4em;
-    ul.context-selection {
-      overflow: hidden;
-      font-size: 11px;
-      line-height: 22px;
-      text-overflow: ellipsis;
-      li.context-item {
-        padding: 2px 4px;
-        margin-top: 2px;
-        background-color: #DDDDDD;
-        white-space: nowrap;
-        text-transform: capitalize;
-      }
-      li.context-item.inactive {
-        background-color: #EEEEEE;
-      }
-    }
-  }
+  display: none;
 }
 
 ::-webkit-scrollbar {
@@ -112,10 +106,11 @@ header#header {
 #results {
   #document-list {
     fieldset {
-      margin: 10px 10px -10px 10px;
-      border-top: 1px solid #E5E5E5;
+      margin: 12px 10px -8px 10px;
+      border: none;
       legend.sliceHeader {
         color: #C7C7C7;
+        font-style: .9em;
       }
     }
 
@@ -123,8 +118,8 @@ header#header {
       margin: 0px 5px 10px 5px;
       background-color: #FFF;
       font-size: .9em;
-      border-radius: 2px;
-      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+      border-radius: 3px;
+      // box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
       opacity: 0;
       -webkit-animation: fadein .4s;
       -webkit-animation-fill-mode: forwards;
@@ -149,21 +144,41 @@ header#header {
           padding: .5em;
 
           h1.anyfetch-title {
-            font-size: 1.1em;
-            font-weight: normal;
+
+            font-size: 1em;
+            font-weight: bold;
+            color: #3A3A3A;
+            span.anyfetch-hlt {
+              background-color: none;
+            }
           }
 
           .anyfetch-date {
             font-size: .9em;
           }
 
-          main.anyfetch-content {
+          .anyfetch-participants {
             font-size: .9em;
+            color: #B5B5B5;
+            li.anyfetch-hlt {
+              color: #2AABE0;
+            }
+          }
+
+          main.anyfetch-content {
+            margin: .4em 0;
+            font-size: 1em;
             text-overflow: ellipsis;
             overflow: hidden;
             width: 100%;
-            white-space: nowrap;
-            color: #888;
+            // white-space: nowrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            // color: #0E566B;
+            span.anyfetch-hlt {
+              color: #3A9FD2;
+            }
           }
 
           main.anyfetch-content:first-letter {
@@ -172,9 +187,30 @@ header#header {
         }
       }
 
+      .arrow-container {
+        position: relative;
+        width: 1.5em;
+        .arrow-right {
+          height: .45em;
+          width: .45em;
+          position: absolute;
+          margin: auto;
+          top: 0;
+          bottom: 0;
+
+          border-top: 2px solid lightgray;
+          border-right: 2px solid lightgray;
+          transform: rotate(45deg);
+        }
+      }
+
       &:hover {
-        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.06);
+        // box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.06);
         border: darken(#DDD, 5%) solid 1px;
+
+        .arrow-container .arrow-right {
+          border-color: gray;
+        }
       }
     }
   }
