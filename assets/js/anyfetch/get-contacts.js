@@ -11,14 +11,15 @@ var call = require('./call.js');
  *   documents An array of matching documents
  *   totalCount The total number of matches (may be superior to `documents.length`)
  */
-module.exports = function getDocuments(query, cb) {
+module.exports = function getContacts(query, cb) {
   var options = {
     url: config.store.apiUrl + '/documents',
     data: {
       search: query,
       limit: config.resultsCountLimit,
       sort: '-modificationDate',
-      render_templates: true
+      // render_templates: true,
+      document_type: '5252ce4ce4cfcd16f55cfa3a'
     },
   };
 

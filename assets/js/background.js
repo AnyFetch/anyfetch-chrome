@@ -8,6 +8,7 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getDocuments = require('./anyfetch/get-documents.js');
+var getContacts = require('./anyfetch/get-contacts.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
@@ -196,20 +197,22 @@ var findContext = function findContext(request, sender, sendResponse) {
 
       // Unsupported website, skip.
       if(!site) {
-        return;
+        return cb(new Error('Unsupported website'));
       }
 
       // Everything looks fine (supported website), retrieve context
       detectContextWithRetry(tab, site, 5, 500, cb);
     },
-    function callSendResponse(context, cb) {
-      sendResponse({
-        site: site,
-        context: blacklist.filterQuery(context)
-      });
-      cb();
+  ], function(err, context) {
+    if(err) {
+      sendResponse({err: err});
+      return false;
     }
-  ]);
+    sendResponse({
+      site: site,
+      context: blacklist.filterQuery(context)
+    });
+  });
   return true;
 };
 
@@ -231,23 +234,25 @@ var getResults = function getResults(request, sender, sendResponse) {
     check: request.check
   };
 
-  async.waterfall([
-    function(cb) {
+  async.auto({
+    loadSettings: function loadSettings(cb) {
       config.store.loadSettings(cb);
     },
-    function search(cb) {
+    searchDocuments: ['loadSettings', function searchDocuments(cb) {
       getDocuments(query, cb);
-    },
-    function respond(documents, count, cb) {
-      payload.count = count;
-      payload.documents = documents;
-      sendResponse(payload);
-      cb(null);
-    }
-  ], function(err) {
+    }],
+    searchContacts: ['loadSettings', function searchContacts(cb) {
+      getContacts(query, cb);
+    }]
+  }, function(err, results) {
     if(err) {
-      sendResponse({'err': {message: err.message}});
+      sendResponse({err: err});
+      return false;
     }
+    payload.documents = results.searchDocuments[0];
+    payload.count = results.searchDocuments[1];
+    payload.contacts = results.searchContacts[0];
+    sendResponse(payload);
   });
 
   return true;
