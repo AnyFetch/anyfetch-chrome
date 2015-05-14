@@ -68,6 +68,18 @@ module.exports.setSearchHeader = function setSearchHeader(results) {
     contactHeader: results.contacts.length ? results.contacts[0] : null,
   };
 
+
+  // If view.contactHeader is null, try to detect a default contact on the context
+  if(!view.contactHeader) {
+    results.context.some(function(context) {
+      if(context.type === 'main-contact') {
+        view.contactFallback = context.value;
+        return true;
+      }
+      return false;
+    });
+  }
+
   var headerHtml = Mustache.render(templates.header, view);
   headerDisplay.html(headerHtml);
 };

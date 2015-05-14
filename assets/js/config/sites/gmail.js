@@ -21,6 +21,7 @@ module.exports = {
         selector: 'div[role="main"] table[role="presentation"] > tr > td > div > div > div > div > h2',
       },
       active: false,
+      type: 'subject',
     },
     // Sender
     {
@@ -30,6 +31,7 @@ module.exports = {
       },
       filter: '[\\S+]( |@).+', // Remove first name only, and "me" text
       quote: true,
+      type: 'main-contact',
     },
     // Contact in semi full view
     // Known bug: Contact in semi-full view won't be detected if not linked to a Google+ profile
@@ -40,13 +42,15 @@ module.exports = {
       },
       filter: '[\\S+] .+', // Remove first name only, or pseudonym
       quote: true,
+      type: 'main-contact',
     },
     // Related Google+ Page
     {
       dom: {
         target: 'textContent',
         selector: 'div[role="main"] div[role="complementary"] table > tbody > tr > td > span[tabindex="0"]'
-      }
+      },
+      type: 'main-contact',
     }
   ],
   injection: {

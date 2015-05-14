@@ -22,6 +22,7 @@ function getFromTitle(tab, rule) {
     matches = matches.map(function(match) {
       var item = {};
       item.value = match;
+      item.type = rule.type;
       item.quote = !!rule.quote;
       if(rule.active === false) {
         item.active = rule.active;
