@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   ], function(err) {
     spinner.stop();
-    if(err instanceof Error || err.message) {
+    if(err && (err instanceof Error || err.message)) {
       if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
         errors.showSetupAccountError(err);
       }
