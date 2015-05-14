@@ -1,0 +1,20 @@
+<article class="anyfetch-document-snippet anyfetch-type-image">
+  <header class="anyfetch-header">
+    {{#thumb}}
+      <figure class="anyfetch-aside-image">
+        <img src="{{ thumb }}" alt="{{ title }}" />
+      </figure>
+    {{/thumb}}
+    <hgroup class="anyfetch-title-group">
+      <h1 class="anyfetch-title">{{{ title }}}</h1>
+      {{#author}}
+        <p class="anyfetch-title-detail anyfetch-person">{{.}}</p>
+      {{/author}}
+      <ul class="anyfetch-pill-list anyfetch-participants">
+      {{#keywords}}
+        <li class="anyfetch-pill anyfetch-name">{{.}}</li>
+      {{/keywords}}
+      </ul>
+    </hgroup>
+  </header>
+</article>

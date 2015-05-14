@@ -4,6 +4,23 @@
 @import "animations.less";
 @import "../../bower_components/anyfetch-assets/stylesheets/style.less";
 
+ul.anyfetch-pipe-list {
+  list-style: none;
+  li + li:before {
+    content: "  |  ";
+  }
+}
+
+.anyfetch-name {
+  text-transform: capitalize;
+}
+
+.anyfetch-email {
+  &:before, &:after {
+    content: "";
+  }
+}
+
 .hidden {
   display: none;
 }

@@ -18,7 +18,6 @@ module.exports = function getDocuments(query, cb) {
       search: query,
       limit: config.resultsCountLimit,
       sort: '-modificationDate',
-      render_templates: true
     },
   };
 

@@ -1,0 +1,29 @@
+<article class="anyfetch-document-snippet anyfetch-type-event">
+  <header class="anyfetch-header">
+    <hgroup class="anyfetch-title-group">
+      <h1 class="anyfetch-title">
+        {{#eventName}}
+          {{{eventName}}}
+        {{/eventName}}
+        {{^eventName}}
+          (untitled event)
+        {{/eventName}}
+      </h1>
+      <p class="anyfetch-title-detail anyfetch-date-span">
+        <time class="anyfetch-date">{{ startDate }}</time>
+        <span> > </span>
+        <time class="anyfetch-date">{{ endDate }}</time>
+      </p>
+      <ul class="anyfetch-pipe-list anyfetch-inline-list anyfetch-participants">
+        {{#attendee}}
+          {{#name}}
+            <li class="anyfetch-name {{#highlight}}anyfetch-hlt{{/highlight}}">{{{.}}}</li>
+          {{/name}}
+          {{^name}}
+            <li class="anyfetch-email {{#highlight}}anyfetch-hlt{{/highlight}}">{{{address}}}</li>
+          {{/name}}
+        {{/attendee}}
+      </ul>
+    </hgroup>
+  </header>
+</article>

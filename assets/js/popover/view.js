@@ -11,13 +11,16 @@ var analyticsHelper = require('../helpers/analytics-helper.js');
 var spinner = require('./spinner.js');
 
 var renderDocument = function(doc) {
+  if(templates['doctype_' + doc.document_type.id]) {
+    doc.rendered_snippet = Mustache.render(templates['doctype_' + doc.document_type.id], doc.data);
+  }
   var view = {
     snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,
     documentType: doc.document_type.name,
     providerName: doc.provider.client ? doc.provider.client.name : ''
   };
-  return Mustache.render(templates.listItem, view);
+  return Mustache.render(templates.snippet, view);
 };
 
 module.exports.setSearchResults = function setSearchResults(results) {

@@ -1,0 +1,23 @@
+<article class="anyfetch-document-snippet anyfetch-type-trello-card">
+  <header class="anyfetch-header">
+    <hgroup class="anyfetch-title-group">
+      <h1 class="anyfetch-title">
+        {{{title}}}
+      </h1>
+      <p class="anyfetch-title-detail">
+        <span>{{ board }}</span>
+        <span class="anyfetch-right-arrow"></span>
+        <span>{{ list }}</span>
+        <time class="anyfetch-date">{{ date }}</time>
+      </p>
+
+      <ul class="anyfetch-pill-list">
+        {{ #members }}
+          <li class="anyfetch-pill {{#highlight}}anyfetch-hlt{{/highlight}}">
+            <span class="anyfetch-name">{{ . }}</span>
+          </li>
+        {{ /members }}
+      </ul>
+    </hgroup>
+  </header>
+</article>
