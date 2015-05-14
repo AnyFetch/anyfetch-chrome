@@ -18,6 +18,9 @@ In order to add a local, unpacked extension to Chrome, go to your Extension mana
 .
 ├── assets
 │   ├── js              # Your Javascript code goes here, it is browserified.
+|   |   └── config
+|   |       └── sites   # Location specific configuration.
+|   |                     See below for details.
 │   ├── jade            # Templates for extension pages goes here.
 │   ├── less            # LESS files, transcripted to CSS.
 │   ├── manifest.json   # Extension properties, permissions, etc.
@@ -50,6 +53,12 @@ In order to add a local, unpacked extension to Chrome, go to your Extension mana
 
 The zip can be uploaded directly to the Chrome Web Store.
 To push the new version to the Chrome Web Store, follow [this procedure](https://developer.chrome.com/webstore/publish).
+
+## How to make a new site configuration file
+
+TODO.
+
+You should probably try to guess how they work by reading the existing config files, because I'm lazy and it would take too much time to make a complete documentation about that.
 
 ## Interesting reads
 
