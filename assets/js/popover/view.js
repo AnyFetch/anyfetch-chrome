@@ -8,7 +8,6 @@ var templates = require('../../templates/templates.js');
 var errors = require('../helpers/errors.js');
 var sliceInTime = require('../helpers/slice-in-time.js');
 var analyticsHelper = require('../helpers/analytics-helper.js');
-var spinner = require('./spinner.js');
 
 var renderDocument = function(doc) {
   if(templates['doctype_' + doc.document_type.id]) {
@@ -18,7 +17,8 @@ var renderDocument = function(doc) {
     snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,
     documentType: doc.document_type.name,
-    providerName: doc.provider.client ? doc.provider.client.name : ''
+    providerName: doc.provider.client ? doc.provider.client.name : '',
+    providerId: doc.provider.client ? doc.provider.client.id : ''
   };
   return Mustache.render(templates.snippet, view);
 };
@@ -26,6 +26,14 @@ var renderDocument = function(doc) {
 module.exports.setSearchResults = function setSearchResults(results) {
   var resultsDisplay = $('#results');
   errors.clear();
+
+  // Remove documen which match contact in header
+  var headerContact = results.contacts.length ? results.contacts[0] : null;
+  if(headerContact) {
+    results.documents = results.documents = results.documents.filter(function(doc) {
+      return doc.id !== headerContact.id;
+    });
+  }
 
   // Render each document
   var timeSlices = sliceInTime(results.documents);
@@ -54,43 +62,13 @@ module.exports.setSearchResults = function setSearchResults(results) {
   analyticsHelper.bindClickApp();
 };
 
-module.exports.search = function search(context, cb) {
-  if(!cb) {
-    cb = function() {};
-  }
-  // We store the last request time, so we can filter out old request in the callback
-  var check = new Date().getTime();
-  spinner.start();
-
-  chrome.runtime.sendMessage({
-    type: 'anyfetch::backgroundGetResults',
-    context: context,
-    check: check
-  }, function(response) {
-    // Let's ignore old requests
-    if(response.check === check) {
-      spinner.stop();
-      module.exports.setSearchResults(response);
-    }
-    cb(null);
-  });
-};
-
-module.exports.setContext = function setContext(context) {
-  var contextDisplay = $('#context');
+module.exports.setSearchHeader = function setSearchHeader(results) {
+  var headerDisplay = $('#header');
   var view = {
-    context: context,
+    contactHeader: results.contacts.length ? results.contacts[0] : null,
   };
-  var resultsHtml = Mustache.render(templates.context, view);
-  contextDisplay.html(resultsHtml);
-  $('#context .context-selection .context-item > span').on('click', function(e) {
-    chrome.runtime.sendMessage({
-      type: 'anyfetch::backgroundToggleContextItem',
-      name: e && e.target && e.target.textContent,
-      context: context
-    }, function(response) {
-      setContext(response.context);
-      module.exports.search(response.context);
-    });
-  });
+
+  var headerHtml = Mustache.render(templates.header, view);
+  headerDisplay.html(headerHtml);
 };
+

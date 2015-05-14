@@ -38,6 +38,10 @@ var paths = {
     {
       files: ['bower_components/anyfetch-assets/images/document-types/**/*'],
       target: 'extension/images/document-types/'
+    },
+    {
+      files: ['bower_components/anyfetch-assets/images/providers/**/*'],
+      target: 'extension/images/providers/'
     }
   ],
   less: {
