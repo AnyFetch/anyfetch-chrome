@@ -92,12 +92,9 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
           var self = this;
 
           var iframes = document.querySelectorAll(site.injection.selector + ' > #anyfetch-iframe');
-          if(iframes.length > 1) {
-            nodeListToArray(iframes).forEach(function(elem) {
-              if(elem === iframe) {
-                elem.remove(); // Non standard, only supported in Chrome (but we are in a chrome extension!)
-              }
-            });
+          if(iframes.length > 1) { // There is already an iframe injected, let's remove ourself
+            self.remove();
+            return;
           }
 
           // Adjust iframe height to fill available height, taking into account existing elements
@@ -117,14 +114,15 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
             });
 
             // Find the inner height of the content (the results) of the iframe.
-            var contentDiv;
-            if(self.contentWindow) {
-              contentDiv = self.contentWindow.document.getElementById('content');
+            var contentDiv = self.contentWindow && self.contentWindow.document.getElementById('content');
+            if(!contentDiv) {
+              console.warn('The iframe was lost. Someone may have destroyed us');
+              return true; // no need to retry
             }
 
             // We can now find out if the iframe is scrollable (i.e. lots of results), and if we should expand the
             // frame to maximum available height.
-            if(contentDiv && contentDiv.scrollHeight === contentDiv.clientHeight) {
+            if(contentDiv.scrollHeight === contentDiv.clientHeight) {
               // Not overflowing
               size = self.contentWindow.document.documentElement.clientHeight;
               // Remove overflowing class
@@ -151,18 +149,20 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
         return;
       }
 
+      // If the last injected iframe was on this href, we don't need to re-inject it
+      if(this.injectedHref && this.injectedHref === document.location.href) {
+        console.info('Prevented double injection (same href)');
+        return;
+      }
+
       // Try to remove any other iframe that we may have injected before
       // This should fix the double inclusion bug
       var iframes = document.querySelectorAll(site.injection.selector + ' > #anyfetch-iframe');
       if(iframes.length) {
-        console.warn('Prevented double injection');
+        console.info('Iframe already present (same href)');
         return;
       }
 
-      if(this.injectedHref && this.injectedHref === document.location.href) {
-        console.warn('Prevented double injection');
-        return;
-      }
       this.injectedHref = document.location.href;
 
       var iframe = document.createElement('iframe');
