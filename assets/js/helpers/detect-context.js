@@ -18,6 +18,20 @@ function getFromTitle(tab, rule) {
     // The first element is the input. We return the captured elements
     // from the string (parenthesis in the regexp)
     matches.shift();
+    // Add rule's option to every context item
+    matches = matches.map(function(match) {
+      var item = {};
+      item.value = match;
+      item.quote = !!rule.quote;
+      if(rule.active === false) {
+        item.active = rule.active;
+      }
+      else {
+        item.active = true;
+      }
+      return item;
+    });
+
     return getContextObject(matches);
   }
   return [];
