@@ -40,9 +40,7 @@ var Store = function Store(keys, defaults) {
     if(aeraName !== 'sync') {
       return;
     }
-    console.log(changes);
     Object.keys(changes).forEach(function(key) {
-      // console.log('updating', key, 'with value', changes[key].newValue);
       self._cache[key] = changes[key].newValue;
     });
   });
