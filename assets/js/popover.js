@@ -99,6 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if(err && (err instanceof Error || err.message)) {
       if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
         errors.showSetupAccountError(err);
+        if(!popup) {
+          // send a request to the background page since we are not allowed to open internal url from an external context
+          document.querySelector('#loginlink').addEventListener('click', function bindCall(e) {
+            e.preventDefault();
+            chrome.runtime.sendMessage({
+              type: 'anyfetch::backgroundOpenUrl',
+              url: e.target.href
+            });
+          });
+        }
       }
       else {
         errors.show(err);

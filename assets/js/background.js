@@ -287,6 +287,17 @@ var setToken = function setToken(request, sender, sendResponse) {
 };
 
 /**
+ * Message listener to open a url from the background page
+ * We return true to tell Chrome this listener is synchronous
+ * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
+ */
+var openUrl = function openUrl(request, sender, sendResponse) {
+  chrome.tabs.create({url: request.url});
+  sendResponse();
+  return false;
+};
+
+/**
  * When the extension is installed or upgraded
  */
 chrome.runtime.onInstalled.addListener(function(details) {
@@ -311,7 +322,8 @@ chrome.runtime.onMessage.addListener(function messageHandler(request, sender, se
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
-    'anyfetch::backgroundSetToken': setToken
+    'anyfetch::backgroundSetToken': setToken,
+    'anyfetch::backgroundOpenUrl': openUrl
   };
   if(request.type && handlers[request.type]) {
     // return to chrome while explicitly casting to boolean
