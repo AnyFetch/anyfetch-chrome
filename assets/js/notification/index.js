@@ -2,12 +2,20 @@
 var config = require('../config/');
 require('../mixpanel.js');
 
+var lastShownNotLogged = new Date(0);
+
 /**
  * Display a notification explaining you're not logged yet,
  * Clicking on it will open the authentication page.
  */
 module.exports.displayNotLogged = function notLoggedNotification(site) {
-  var notificationId = "not_logged-" + site.name;
+  if(new Date() - lastShownNotLogged < 1000 * 60 * 60 * 24) { // 24h
+    // Don't display notification again if user already clicked on it
+    console.log("Cooldown for not logged in notification.");
+    return;
+  }
+
+  var notificationId = "not_logged-" + site.name + '-' + new Date().getTime();
   var options = {
     type: "basic",
     title: "Setup AnyFetch!",
@@ -16,9 +24,12 @@ module.exports.displayNotLogged = function notLoggedNotification(site) {
     isClickable: true,
   };
   chrome.notifications.create(notificationId, options, function() {});
+  // Show again in 1h if we are still not logged in
+  lastShownNotLogged = new Date(new Date().getTime() - 1000 * 60 * 60 * 23); // 23h ago
 
   chrome.notifications.onClicked.addListener(function(_notificationId) {
     if(notificationId === _notificationId) {
+      lastShownNotLogged = new Date();
       chrome.tabs.create({url: '/first-run.html'});
     }
   });
@@ -30,20 +41,20 @@ module.exports.displayNotLogged = function notLoggedNotification(site) {
 };
 
 
-var lastClickedOnNoProviders = new Date(0);
+var lastShownNoProviders = new Date(0);
 
 /**
- * Display a notification explaining you're not logged yet,
- * Clicking on it will open the authentication page.
+ * Display a notification explaining you don't have any provider connected yet.
+ * Clicking on it will open the manager.
  */
 module.exports.displayNoProviders = function noProvidersNotification() {
-  if(new Date() - lastClickedOnNoProviders < 1000 * 60 * 15) {
+  if(new Date() - lastShownNoProviders < 1000 * 60 * 60 * 24) { // 24h
     // Don't display notification again if user already clicked on it
     console.log("Cooldown for marketplace notification.");
     return;
   }
 
-  var notificationId = "no-providers";
+  var notificationId = "no-providers-" + new Date().getTime();
   var options = {
     type: "basic",
     title: "Add accounts to your AnyFetch!",
@@ -52,10 +63,12 @@ module.exports.displayNoProviders = function noProvidersNotification() {
     isClickable: true,
   };
   chrome.notifications.create(notificationId, options, function() {});
+  lastShownNoProviders = new Date();
 
   chrome.notifications.onClicked.addListener(function(_notificationId) {
     if(notificationId === _notificationId) {
-      lastClickedOnNoProviders = new Date();
+      // Show again in 15 minutes if still no providers
+      lastShownNoProviders = new Date(new Date().getTime() - 1000 * 60 * 60 * 23.75); // 23h45 ago
       config.store.loadSettings(function() {
         var email = '';
         if(config.store.email) {
