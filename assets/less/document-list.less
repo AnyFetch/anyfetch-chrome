@@ -236,14 +236,18 @@ ul.anyfetch-pipe-list {
             text-overflow: ellipsis;
             overflow: hidden;
             width: 100%;
-            // white-space: nowrap;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            // color: #0E566B;
             span.anyfetch-hlt {
               color: #3A9FD2;
               background: none;
+            }
+            p {
+              display: inline;
+              br {
+                display: none;
+              }
             }
           }
 
@@ -266,6 +270,12 @@ ul.anyfetch-pipe-list {
               border: 1px solid #DBDBDB;
               padding: 2px;
               max-height: 3em;
+            }
+          }
+
+          &.anyfetch-type-document {
+            main.anyfetch-content {
+              -webkit-line-clamp: 3;
             }
           }
         }

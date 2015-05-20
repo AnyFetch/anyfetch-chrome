@@ -10,9 +10,24 @@ var sliceInTime = require('../helpers/slice-in-time.js');
 var analyticsHelper = require('../helpers/analytics-helper.js');
 
 var renderDocument = function(doc) {
+  if(doc.data.snippet) {
+    // Sanitize the snippet
+    // 1 Removes the <br>
+    // 2 Replaces all spaces or following spaces (including &nbsp; which is important for us) by a single space
+    // 3 Replaces ponctuation at the beginning (ex ", Hello" => "Hello")
+    // 4 Same thing at the and, because why not
+    doc.data.snippet = doc.data.snippet.trim();
+    doc.data.snippet = doc.data.snippet
+                        .replace(/<br\s*[\/]?>/gi, '')
+                        .replace(/\s+/g, ' ')
+                        .replace(/^[\.,-\/#!$%\^&\*;:{}=\-_`~()]+\s*/g, '')
+                        .replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]+\s*$/g, '');
+  }
+
   if(templates['doctype_' + doc.document_type.id]) {
     doc.rendered_snippet = Mustache.render(templates['doctype_' + doc.document_type.id], doc.data);
   }
+
   var view = {
     snippet: doc.rendered_snippet,
     actionUrl: doc.actions.show,

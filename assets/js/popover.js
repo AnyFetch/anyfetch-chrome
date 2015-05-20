@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     function getContext(cb) {
       if(!config.store.token) {
-        errors.showSetupAccountError();
+        cb(new Error('InvalidCredentials'));
         return;
       }
 
@@ -86,14 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
         context: response.context
       }, function(results) {
         if(results.err) {
-          cb(results.err);
+          return cb(results.err);
         }
-        else {
-          results.context = response.context;
-          view.setSearchResults(results);
-          view.setSearchHeader(results);
-          cb(null);
-        }
+        results.context = response.context;
+        view.setSearchResults(results);
+        view.setSearchHeader(results);
+        cb(null);
       });
     }
   ], function(err) {
