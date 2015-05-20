@@ -1,0 +1,28 @@
+<article class="anyfetch-document-snippet anyfetch-type-contact">
+  <header class="anyfetch-header">
+    <figure class="anyfetch-aside-image">
+      <img src="{{ image }}" alt="{{ name }}" />
+    </figure>
+    <hgroup class="anyfetch-title-group">
+      <h1 class="anyfetch-title">{{{ name }}}</h1>
+      <p class="anyfetch-title-detail">{{{ job }}}</p>
+    </hgroup>
+    <main class="anyfetch-content">
+      <ul class="anyfetch-inline-list anyfetch-comma-list">
+        {{ #email }}
+          <li><span class="anyfetch-email">{{ . }}</span></li>
+        {{ /email }}
+      </ul>
+      <ul class="anyfetch-inline-list anyfetch-comma-list">
+        {{ #phone }}
+          <li><span class="anyfetch-phone">{{ . }}</span></li>
+        {{ /phone }}
+      </ul>
+      <ul class="anyfetch-inline-list anyfetch-comma-list">
+        {{ #address }}
+          <li><span class="anyfetch-address">{{ . }}</span></li>
+        {{ /address }}
+      </ul>
+    </main>
+  </header>
+</article>

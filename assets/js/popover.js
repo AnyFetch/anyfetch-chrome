@@ -1,6 +1,7 @@
 'use strict';
 
 var async = require('async');
+var rarity = require('rarity');
 
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
@@ -60,10 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       chrome.runtime.sendMessage({
         type: 'anyfetch::backgroundFindContext',
-      }, function(response) {
-        view.setContext(response.context);
-        cb(null, response);
-      });
+      }, rarity.pad([null], cb));
     },
     function reportAnalyticsAndSearch(response, cb) {
       var site = response.site;
@@ -86,12 +84,14 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.runtime.sendMessage({
         type: 'anyfetch::backgroundGetResults',
         context: response.context
-      }, function(response) {
-        if(response.err) {
-          cb(response.err);
+      }, function(results) {
+        if(results.err) {
+          cb(results.err);
         }
         else {
-          view.setSearchResults(response);
+          results.context = response.context;
+          view.setSearchResults(results);
+          view.setSearchHeader(results);
           cb(null);
         }
       });

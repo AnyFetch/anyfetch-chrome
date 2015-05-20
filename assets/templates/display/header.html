@@ -1,0 +1,20 @@
+{{#contactHeader}}
+<a id="contact" href="{{actions.show}}" target="_blank">
+  <img class="avatar" src="{{data.image}}"></img>
+  <div class="infos">
+    <span class="name">{{{data.name}}}</span>
+    <span class="phone">{{{data.phone.0}}}</span>
+    <span class="email">{{{data.email.0}}}</span>
+  </div>
+</a>
+{{/contactHeader}}
+
+{{#contactFallback}}
+<div id="contact">
+  <img class="avatar" src="/images/icons/default-avatar.png"></img>
+  <div class="infos">
+    <span class="name">{{{.}}}</span>
+    <i class="info">This person is not in your contacts</i>
+  </div>
+</a>
+{{/contactFallback}}

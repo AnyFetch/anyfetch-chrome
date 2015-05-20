@@ -1,0 +1,31 @@
+<article class="anyfetch-document-snippet anyfetch-type-email">
+  <header class="anyfetch-header">
+    <h1 class="anyfetch-title">{{{subject}}}</h1>
+  </header>
+
+  <main class="anyfetch-content">
+    <p>{{{snippet}}}</p>
+  </main>
+
+  <ul class="anyfetch-pipe-list anyfetch-inline-list anyfetch-participants">
+    {{#from}}
+     <li class="{{#highlight}}anyfetch-hlt{{/highlight}}">
+        <span class="anyfetch-name">{{{name}}}</span>
+        <span class="anyfetch-email">{{{address}}}</span>
+      </li>
+    {{/from}}
+    <li class="anyfetch-right-arrow"></li>
+    {{#to}}
+     <li class="{{#highlight}}anyfetch-hlt{{/highlight}}">
+        <span class="anyfetch-name">{{{name}}}</span>
+        <span class="anyfetch-email">{{{address}}}</span>
+      </li>
+    {{/to}}
+    {{#cc}}
+     <li class="{{#highlight}}anyfetch-hlt{{/highlight}}">
+        <span class="anyfetch-name">{{{name}}}</span>
+        <span class="anyfetch-email">{{{address}}}</span>
+      </li>
+    {{/cc}}
+  </ul>
+</article>

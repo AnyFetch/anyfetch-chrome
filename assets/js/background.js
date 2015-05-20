@@ -8,6 +8,7 @@ var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;
 var getCount = require('./anyfetch/get-count.js');
 var getDocuments = require('./anyfetch/get-documents.js');
+var getContacts = require('./anyfetch/get-contacts.js');
 var getSiteFromTab = require('./helpers/get-site-from-tab.js');
 var tabFunctions = require('./tab');
 var saveUserData = require('./anyfetch/save-user-data.js');
@@ -196,20 +197,22 @@ var findContext = function findContext(request, sender, sendResponse) {
 
       // Unsupported website, skip.
       if(!site) {
-        return;
+        return cb(new Error('Unsupported website'));
       }
 
       // Everything looks fine (supported website), retrieve context
       detectContextWithRetry(tab, site, 5, 500, cb);
     },
-    function callSendResponse(context, cb) {
-      sendResponse({
-        site: site,
-        context: blacklist.filterQuery(context)
-      });
-      cb();
+  ], function(err, context) {
+    if(err) {
+      sendResponse({err: err});
+      return false;
     }
-  ]);
+    sendResponse({
+      site: site,
+      context: blacklist.filterQuery(context)
+    });
+  });
   return true;
 };
 
@@ -231,55 +234,29 @@ var getResults = function getResults(request, sender, sendResponse) {
     check: request.check
   };
 
-  async.waterfall([
-    function(cb) {
+  async.auto({
+    loadSettings: function loadSettings(cb) {
       config.store.loadSettings(cb);
     },
-    function search(cb) {
+    searchDocuments: ['loadSettings', function searchDocuments(cb) {
       getDocuments(query, cb);
-    },
-    function respond(documents, count, cb) {
-      payload.count = count;
-      payload.documents = documents;
-      sendResponse(payload);
-      cb(null);
-    }
-  ], function(err) {
+    }],
+    searchContacts: ['loadSettings', function searchContacts(cb) {
+      getContacts(query, cb);
+    }]
+  }, function(err, results) {
     if(err) {
-      sendResponse({'err': {message: err.message}});
+      sendResponse({err: err});
+      return false;
     }
+    payload.documents = results.searchDocuments[0];
+    payload.count = results.searchDocuments[1];
+    payload.contacts = results.searchContacts[0];
+    sendResponse(payload);
   });
 
   return true;
 };
-
-/**
- * Message listener for toggle context requests
- * We return true to tell Chrome this listener is asynchronous or false to close the message channel
- * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
- */
-var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
-  request.context.some(function(item, index, context) {
-    if(item.value === request.name) {
-      var newState = !item.active;
-      context[index].active = newState;
-      if(config.store.blacklist[item.value.toLowerCase()] && newState) {
-        delete config.store.blacklist[item.value.toLowerCase()];
-      }
-      else if(!newState) {
-        config.store.blacklist[item.value.toLowerCase()] = true;
-      }
-      return true;
-    }
-    return false;
-  });
-
-  // We modified internal properties of `blacklist`, so we call forceSync
-  config.store.forceSync();
-  sendResponse({context: request.context});
-  return false;
-};
-
 
 /**
  * Search each tab for a context, and update icon with managePageAction
@@ -331,7 +308,6 @@ chrome.runtime.onMessage.addListener(function messageHandler(request, sender, se
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
-    'anyfetch::backgroundToggleContextItem': toggleContextItem,
     'anyfetch::backgroundSetToken': setToken
   };
   if(request.type && handlers[request.type]) {

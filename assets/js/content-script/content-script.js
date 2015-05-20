@@ -40,6 +40,7 @@ if(!document.documentElement.hasAttribute("data-anyfetch-injected")) {
       nodes = nodes.map(function(node) {
         var item = {};
         item.value = node;
+        item.type = rule.type;
         item.quote = !!rule.quote;
         if(rule.active === false) {
           item.active = rule.active;
