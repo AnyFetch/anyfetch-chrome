@@ -27,10 +27,10 @@ module.exports.setSearchResults = function setSearchResults(results) {
   var resultsDisplay = $('#results');
   errors.clear();
 
-  // Remove documen which match contact in header
+  // Remove document which match contact in header
   var headerContact = results.contacts.length ? results.contacts[0] : null;
   if(headerContact) {
-    results.documents = results.documents = results.documents.filter(function(doc) {
+    results.documents = results.documents.filter(function(doc) {
       return doc.id !== headerContact.id;
     });
   }
