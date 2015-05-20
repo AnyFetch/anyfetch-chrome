@@ -209,12 +209,11 @@ ul.anyfetch-pipe-list {
           padding: .5em;
 
           h1.anyfetch-title {
-
             font-size: 1em;
             font-weight: bold;
             color: #3A3A3A;
             span.anyfetch-hlt {
-              background-color: none;
+              background: none;
             }
           }
 
@@ -227,6 +226,7 @@ ul.anyfetch-pipe-list {
             color: #B5B5B5;
             li.anyfetch-hlt {
               color: #2AABE0;
+              background: none;
             }
           }
 
@@ -243,11 +243,39 @@ ul.anyfetch-pipe-list {
             // color: #0E566B;
             span.anyfetch-hlt {
               color: #3A9FD2;
+              background: none;
             }
           }
 
           main.anyfetch-content:first-letter {
             text-transform: uppercase;
+          }
+
+          &.anyfetch-type-image {
+            hgroup {
+              overflow-x: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-wrap: break-word;
+            }
+            .anyfetch-flex {
+              display: flex;
+              &.anyfetch-flex-row {
+                flex-direction: row;
+              }
+            }
+            figure.anyfetch-aside-image {
+              margin: 0;
+              margin-left: 1em;
+
+              border: 1px solid #DBDBDB;
+              padding: 2px;
+              max-height: 3em;
+              img {
+                height: 100%;
+                width: 100%;
+              }
+            }
           }
         }
       }

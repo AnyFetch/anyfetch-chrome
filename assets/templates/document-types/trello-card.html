@@ -11,9 +11,9 @@
         <time class="anyfetch-date">{{ date }}</time>
       </p>
 
-      <ul class="anyfetch-pill-list">
+      <ul class="anyfetch-pipe-list anyfetch-inline-list">
         {{ #members }}
-          <li class="anyfetch-pill {{#highlight}}anyfetch-hlt{{/highlight}}">
+          <li class="{{#highlight}}anyfetch-hlt{{/highlight}}">
             <span class="anyfetch-name">{{ . }}</span>
           </li>
         {{ /members }}
