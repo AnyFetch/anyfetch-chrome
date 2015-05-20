@@ -29,7 +29,7 @@
       "19": "images/icons/extension/page-action/icon19.png",
       "38": "images/icons/extension/page-action/icon38.png"
     },
-    "default_popup": "popover.html",
+    "default_popup": "page-action.html",
     "default_title": "AnyFetch"
   },
   "background": {
