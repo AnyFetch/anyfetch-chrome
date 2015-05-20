@@ -259,34 +259,6 @@ var getResults = function getResults(request, sender, sendResponse) {
 };
 
 /**
- * Message listener for toggle context requests
- * We return true to tell Chrome this listener is asynchronous or false to close the message channel
- * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
- */
-var toggleContextItem = function toggleContextItem(request, sender, sendResponse) {
-  request.context.some(function(item, index, context) {
-    if(item.value === request.name) {
-      var newState = !item.active;
-      context[index].active = newState;
-      if(config.store.blacklist[item.value.toLowerCase()] && newState) {
-        delete config.store.blacklist[item.value.toLowerCase()];
-      }
-      else if(!newState) {
-        config.store.blacklist[item.value.toLowerCase()] = true;
-      }
-      return true;
-    }
-    return false;
-  });
-
-  // We modified internal properties of `blacklist`, so we call forceSync
-  config.store.forceSync();
-  sendResponse({context: request.context});
-  return false;
-};
-
-
-/**
  * Search each tab for a context, and update icon with managePageAction
  */
 function refreshTabs() {
@@ -336,7 +308,6 @@ chrome.runtime.onMessage.addListener(function messageHandler(request, sender, se
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
-    'anyfetch::backgroundToggleContextItem': toggleContextItem,
     'anyfetch::backgroundSetToken': setToken
   };
   if(request.type && handlers[request.type]) {
