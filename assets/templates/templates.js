@@ -11,7 +11,6 @@ var fs = require('fs');
  */
 
 module.exports = {
-  context: fs.readFileSync(__dirname + '/display/context.html', 'utf8'),
   results: fs.readFileSync(__dirname + '/display/results.html', 'utf8'),
   spinner: fs.readFileSync(__dirname + '/display/spinner.html', 'utf8'),
   login: fs.readFileSync(__dirname + '/display/please-login.html', 'utf8'),
