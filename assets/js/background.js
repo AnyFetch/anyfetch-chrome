@@ -294,6 +294,9 @@ chrome.runtime.onInstalled.addListener(function(details) {
     // open first run page on install
     chrome.tabs.create({url: '/first-run.html'});
   }
+  else if(details.reason === 'update') {
+    refreshTabs();
+  }
 });
 
 /**
