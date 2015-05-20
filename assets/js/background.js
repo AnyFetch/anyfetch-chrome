@@ -80,11 +80,11 @@ function managePageAction(tab) {
 
       // We have detected a context, show a gray icon, while we don't have confirmation of some results
       tabFunctions.activateExtension(tab.id, false);
+      tabFunctions.showExtension(tab.id);
 
       cb(null, context);
     },
     function loadSettings(context, cb) {
-      tabFunctions.showExtension(tab.id);
       config.store.loadSettings(rarity.carry([context], cb));
     },
     function ensureUserLoaded(context, cb) {
