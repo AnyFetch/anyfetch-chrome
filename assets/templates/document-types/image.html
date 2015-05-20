@@ -1,10 +1,15 @@
 <article class="anyfetch-document-snippet anyfetch-type-image">
   <header class="anyfetch-header">
     <h1 class="anyfetch-title">{{{ title }}}</h1>
-    <div class="anyfetch-flex anyfetch-flex-row">
+    <div class="">
+      {{#thumb}}
+        <figure class="anyfetch-aside-image">
+          <img src="{{ thumb }}" alt="{{ title }}" />
+        </figure>
+      {{/thumb}}
       <hgroup class="anyfetch-title-group">
         {{#author}}
-          <p class="anyfetch-title-detail anyfetch-person">Coucou{{.}}</p>
+          <p class="anyfetch-title-detail anyfetch-person">{{.}}</p>
         {{/author}}
         <ul class="anyfetch-pipe-list anyfetch-inline-list anyfetch-participants">
         {{#keywords}}
@@ -12,11 +17,6 @@
         {{/keywords}}
         </ul>
       </hgroup>
-      {{#thumb}}
-        <figure class="anyfetch-aside-image">
-          <img src="{{ thumb }}" alt="{{ title }}" />
-        </figure>
-      {{/thumb}}
     </div>
   </header>
 </article>
