@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "AnyFetch Instant Context",
   "short_name": "AnyFetch",
-  "description": "Find documents related to the current page with AnyFetch.",
+  "description": "Build smarter relationships.",
   "version": "3.0.0",
   "icons": {
     "16": "images/icons/extension/icon16.png",
