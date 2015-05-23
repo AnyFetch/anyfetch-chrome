@@ -31,7 +31,8 @@ module.exports = {
         target: 'title',
         selector: '.ep-gl-guest',
       },
-      quote: true
+      quote: true,
+      type: 'contact',
     },
   ]
 };
