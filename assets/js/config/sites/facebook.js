@@ -27,6 +27,7 @@ module.exports = {
     {
       title: /^(?:\(\d+\)\s)?(.+)$/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };

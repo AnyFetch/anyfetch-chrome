@@ -28,6 +28,7 @@ module.exports = {
     {
       title: /^(.+?)\s\((.+)\)(?:\s·\sGitHub)?$/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };

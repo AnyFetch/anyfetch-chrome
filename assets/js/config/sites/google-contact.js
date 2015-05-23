@@ -18,6 +18,7 @@ module.exports = {
     {
       title: /^(.+)\s-\s.*contact.*/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };

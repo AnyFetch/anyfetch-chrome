@@ -15,6 +15,7 @@ module.exports = {
     {
       title: /^(.+)\s\(@(.+)\)\s\| Twitter$/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };

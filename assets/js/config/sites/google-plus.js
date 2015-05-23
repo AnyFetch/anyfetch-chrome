@@ -18,6 +18,7 @@ module.exports = {
     {
       title: /^(.+?)\s?(?:\((.*)\))?(?:\s-\s.*)?\s-\sGoogle\+$/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };

@@ -15,6 +15,7 @@ module.exports = {
     {
       title: /Base\sCRM:\s(.+)/i,
       quote: true,
+      type: 'main-contact',
     },
   ]
 };

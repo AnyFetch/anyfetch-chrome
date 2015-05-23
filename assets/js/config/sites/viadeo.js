@@ -16,6 +16,7 @@ module.exports = {
     {
       title: /^(.+?), (.+?) - (?:.+) \| Viadeo$/i,
       quote: true,
+      type: 'main-contact',
     }
   ]
 };
