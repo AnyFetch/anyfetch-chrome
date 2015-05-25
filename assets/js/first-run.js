@@ -54,6 +54,20 @@ var showSuccess = function showSuccess(message) {
     }, null);
   });
 
+  document.getElementById('open-gmail').addEventListener('click', function() {
+    chrome.tabs.query({url: '*://mail.google.com/*'}, function(tabs) {
+      if(tabs && tabs.length) {
+        chrome.tabs.update(tabs[0].id, {selected: true});
+      }
+      else {
+        chrome.windows.create({
+          url: 'https://mail.google.com/mail',
+          type: 'tab',
+        }, null);
+      }
+    });
+  });
+
   document.getElementById('close').addEventListener('click', function() {
     window.close();
   });
