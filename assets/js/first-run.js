@@ -39,6 +39,30 @@ var showSuccess = function showSuccess(message) {
   window.mixpanel.track('Login', {
     email: config.store.email,
   });
+
+  var marketplaceUrl = config.store.managerUrl + '/marketplace';
+  if(config.store.email) {
+    marketplaceUrl = config.store.managerUrl + '/sign_in?redirection=%2Fmarketplace&email=' + config.store.email;
+  }
+
+  document.getElementById('open-marketplace').addEventListener('click', function() {
+    chrome.windows.create({
+      url: marketplaceUrl,
+      type: 'popup',
+      width: 1100,
+      height: 800
+    }, null);
+  });
+
+  document.getElementById('close').addEventListener('click', function() {
+    window.close();
+  });
+
+  window.mixpanel.track_links("#open-marketplace", "Open marketplace", {
+    email: config.store.email,
+    origin: "end login"
+  });
+
   // The background page will catch this and reload contexts which might have some results
   chrome.runtime.sendMessage({
     type: 'anyfetch::backgroundLoginSuccessful',
