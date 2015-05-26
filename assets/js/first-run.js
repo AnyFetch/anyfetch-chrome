@@ -60,9 +60,8 @@ var showSuccess = function showSuccess(message) {
         chrome.tabs.update(tabs[0].id, {selected: true});
       }
       else {
-        chrome.windows.create({
-          url: 'https://mail.google.com/mail',
-          type: 'tab',
+        chrome.tabs.create({
+          url: 'https://mail.google.com/mail'
         }, null);
       }
     });
