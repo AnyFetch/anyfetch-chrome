@@ -270,7 +270,7 @@ function refreshTabs() {
 }
 
 /**
- * Message listener for the en of authentification
+ * Message listener for the end of authentification
  * We return false to tell Chrome this listener is synchronous
  * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
