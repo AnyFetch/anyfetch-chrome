@@ -270,25 +270,19 @@ function refreshTabs() {
 }
 
 /**
- * Message listener to set the token in chrome's storage
- * We return true to tell Chrome this listener is asynchronous
+ * Message listener for the end of authentification
+ * We return false to tell Chrome this listener is synchronous
  * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
-var setToken = function setToken(request, sender, sendResponse) {
-  config.store.token = request.token;
-  saveUserData(function(err) {
-    if(err) {
-      console.error(err);
-    }
-    refreshTabs();
-    sendResponse();
-  });
-  return true;
+var loginSuccessful = function loginSuccessful(request, sender, sendResponse) {
+  refreshTabs();
+  sendResponse();
+  return false;
 };
 
 /**
  * Message listener to open a url from the background page
- * We return true to tell Chrome this listener is synchronous
+ * We return false to tell Chrome this listener is synchronous
  * (@see https://developer.chrome.com/extensions/runtime#event-onMessage)
  */
 var openUrl = function openUrl(request, sender, sendResponse) {
@@ -322,7 +316,7 @@ chrome.runtime.onMessage.addListener(function messageHandler(request, sender, se
   var handlers = {
     'anyfetch::backgroundFindContext': findContext,
     'anyfetch::backgroundGetResults': getResults,
-    'anyfetch::backgroundSetToken': setToken,
+    'anyfetch::backgroundLoginSuccessful': loginSuccessful,
     'anyfetch::backgroundOpenUrl': openUrl
   };
   if(request.type && handlers[request.type]) {
