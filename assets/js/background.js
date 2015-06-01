@@ -3,6 +3,7 @@
 var async = require('async');
 var rarity = require('rarity');
 
+require('./helpers/error-stringifiable.js');
 var config = require('./config/index.js');
 var detectContext = require('./helpers/detect-context.js');
 var generateQuery = require('./helpers/content-helper.js').generateQuery;

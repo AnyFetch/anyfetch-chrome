@@ -3,6 +3,7 @@
 var async = require('async');
 var rarity = require('rarity');
 
+require('./helpers/error-stringifiable.js');
 var config = require('./config/index.js');
 var errors = require('./helpers/errors.js');
 var view = require('./popover/view.js');
