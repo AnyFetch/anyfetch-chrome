@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
   ], function(err) {
     spinner.stop();
     if(err && (err instanceof Error || err.message)) {
-      if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1) {
+      if(err.message.indexOf('InvalidCredentials') !== -1 || err.message.indexOf('InvalidScope') !== -1
+        || err.message.indexOf('GoneError') !== -1) {
         errors.showSetupAccountError(err);
         if(!popup) {
           // send a request to the background page since we are not allowed to open internal url from an external context
