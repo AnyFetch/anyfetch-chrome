@@ -94,7 +94,7 @@ var showError = function showError(err) {
     });
   }
   else {
-    message.innerHTML = 'Error: ' + err.toString;
+    message.innerHTML = 'Error: ' + err.toString();
   }
 };
 
