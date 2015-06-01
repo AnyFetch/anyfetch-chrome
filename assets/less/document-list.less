@@ -55,12 +55,15 @@ ul.anyfetch-pipe-list {
 }
 
 #errors {
-  width: 100%;
-  padding: 17px;
+  padding: 1em;
   background: @errorBackground;
   color: @errorColor;
   margin: 0px;
   font-weight: 500;
+
+  opacity: 0;
+  -webkit-animation: fadein .4s;
+  -webkit-animation-fill-mode: forwards;
 
   a {
     color: @errorColor;
