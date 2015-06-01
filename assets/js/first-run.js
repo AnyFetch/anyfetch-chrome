@@ -108,11 +108,11 @@ var finalHandler = function finalHandler(err) {
 var buttonHandler = function oauthButtonHandler(cb) {
   document.getElementById('start-oauth').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/connect' + '?state=v2');
+    oauthStart(cb, '/init/connect');
   });
   document.getElementById('start-register').addEventListener('click', function() {
     showById('loader');
-    oauthStart(cb, '/init/register' + '?state=v2');
+    oauthStart(cb, '/init/register');
   });
 };
 
